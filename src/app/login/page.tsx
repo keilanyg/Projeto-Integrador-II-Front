@@ -1,8 +1,19 @@
 'use client';
 import Image from 'next/image'
 
+import {
+  LoginButton,
+  LogoutButton,
+  ProfileButton,
+  RegisterButton,
+} from "@/components/buttons.component";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { User } from "@/components/user.component";
+
 export default async function Home() {
-  
+  const session = await getServerSession(authOptions);
+  console.log(session);
   
   return (
     <section className='flex items-center justify-center h-[80vh]'>
