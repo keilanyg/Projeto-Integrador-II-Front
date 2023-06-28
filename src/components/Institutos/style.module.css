@@ -1,0 +1,19 @@
+.infoinstituto{
+  display: flex;
+  flex-direction: column;
+  padding: 0%;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+}
+.instituicoes{
+    background-color: #ffffff;
+  }
+  .imageminstituicao{
+    width: 15rem;
+    border-radius: 50%;
+    margin: 5px 10px;
+  }
+  .detalheinfor{
+      color: #4C3228;
+    }
