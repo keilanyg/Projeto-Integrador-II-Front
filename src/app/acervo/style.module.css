@@ -1,0 +1,8 @@
+.body{
+  background-color: #ffffff;
+}
+.livro{
+  display: flex;
+  flex-direction: row;
+  padding: 0 0 20px 0;
+}

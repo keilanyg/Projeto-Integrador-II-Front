@@ -20,7 +20,7 @@
     top: 233px;
     left: 87px;
     font-size: 40px;
-    color: #8c5c3d;
+    color: #4C3228;
   }
   .frase2 {
     position: absolute;
@@ -28,7 +28,7 @@
     top: 289px;
     left: 87px;
     font-size: 20px;
-    color: #8c5c3d;
+    color: #4C3228;
   }
  
   .contenu_carou_auto {
@@ -121,7 +121,7 @@
   font-weight: 490;
 }
 .quemsomos{
-  color: #8c5c3d;
+  color: #4C3228;
   padding: 5% 18%;
   display: flex;
   flex-direction: column;
@@ -132,7 +132,7 @@
   background-color: #EDD6A0;
   display: flex;
   flex-basis: 50%;
-  color: #8c5c3d;
+  color: #4C3228;
   gap:16px;
   align-items: center;
 }
@@ -147,7 +147,7 @@
   margin-right: 200px;
 }
 .sectionacervo{
-  color: #8c5c3d;
+  color: #4C3228;
   padding: 10%;
   text-align: center;
   font-size: 17px;
