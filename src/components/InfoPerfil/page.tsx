@@ -1,12 +1,15 @@
 'use client';
-
+import { ReactNode } from 'react';
 import style from './style.module.css'
 import Image from 'next/dist/client/image';
 import Estudante from 'public/Estudante.jpg'
-import BarraNavegacao from '../BarraNavegacao/page';
 
+interface InfoProps {
+    children: ReactNode; /*Obrigatoria*/
+    /*children?: ReactNode; Opcional*/
+}
 
-export default function InformacaoPerfil() {
+export default function InformacaoPerfil({ children }: InfoProps) {
     return (
 
         <div className={style.body}>
@@ -14,16 +17,8 @@ export default function InformacaoPerfil() {
             <Image className={style.fotoperfil} src={Estudante} alt="Estudante" />
 
             <div className={style.info}>
-                <p>Nome:<br />IFRN - Instituto Federal do Rio Grande do Norte</p><br />
-
-                <p>Campus:<br />Pau Dos Ferros</p><br />
-
-                <p>Email:</p><br />
-
-                <p>Quantidade de livros:</p><br />
-
+                {children}
             </div>
-
         </div>
 
 
