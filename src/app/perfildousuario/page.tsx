@@ -12,7 +12,7 @@ export default function PerfilUsuario() {
 
         <div className={style.body}>
             <BarraNavegacao />
-
+            <br />
             <InformacaoPerfil>
                 <p>Nome:<br /> Ana Izadora</p><br />
 

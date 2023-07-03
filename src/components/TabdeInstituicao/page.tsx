@@ -6,7 +6,7 @@ const Tabs = () => {
   const [openTab, setOpenTab] = React.useState(1);
   return (
     <>
-      <div className="flex flex-wrap" style={{ color: "#8c5c3d", margin: "20px 90px" }}>
+      <div className="flex flex-wrap" style={{ color: "#4C3228", margin: "20px 90px" }}>
         <div className="w-full">
           <ul
             className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"

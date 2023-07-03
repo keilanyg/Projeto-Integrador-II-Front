@@ -2,13 +2,13 @@
     color: #4C3228;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    margin: 10px 7px 10px 40px;
+    justify-content: space-around;
+    margin: 35px 100px 15px 100px;
 }
 
 .info {
     width: 75%;
-    height: 80%;
+    height: 70%;
     display: flex;
     margin-top: 15px;
     flex-direction: column;
@@ -17,4 +17,5 @@
 .fotoperfil {
     width: 15rem;
     height: 18rem;
+    border-radius: 10px;
 }

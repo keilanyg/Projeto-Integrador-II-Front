@@ -5,22 +5,11 @@
 .coluna {
     display: flex;
     flex-direction: column;
+    margin-bottom: 70px;
 }
 
 .linha {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-}
-
-.botoes {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin: 15px 120px;
-}
-
-.titulo {
-    color: #4C3228;
-    font-size: 20px;
 }
