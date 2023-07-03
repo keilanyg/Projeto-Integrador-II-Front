@@ -4,7 +4,7 @@ import BarraNavegacao from "@/components/BarraNavegacao/page";
 import style from './style.module.css'
 import Rodape from "@/components/Rodape/page";
 import InformacaoPerfil from "@/components/InfoPerfil/page";
-import TabelaUser from "@/components/TabelaUsuario/page";
+import TabelaUsuario from "@/components/TabelaUsuario/page";
 
 
 export default function PerfilUsuario() {
@@ -22,7 +22,7 @@ export default function PerfilUsuario() {
 
             </InformacaoPerfil>
 
-            <TabelaUser />
+            <TabelaUsuario />
 
 
             <Rodape />

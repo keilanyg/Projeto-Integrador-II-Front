@@ -1,0 +1,20 @@
+.body {
+    color: #4C3228;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 10px 7px 10px 40px;
+}
+
+.info {
+    width: 75%;
+    height: 80%;
+    display: flex;
+    margin-top: 15px;
+    flex-direction: column;
+}
+
+.fotoperfil {
+    width: 15rem;
+    height: 18rem;
+}

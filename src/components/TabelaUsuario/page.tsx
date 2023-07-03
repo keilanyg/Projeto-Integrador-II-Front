@@ -1,7 +1,7 @@
 'use client';
 import style from './style.module.css'
 
-export default function TabelaUser() {
+export default function TabelaUsuario() {
     return (
         <div className={style.body}>
             <section className="container px-4 mx-auto">

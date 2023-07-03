@@ -1,0 +1,25 @@
+.body {
+    background-color: #fff;
+}
+
+.coluna {
+    display: flex;
+    flex-direction: column;
+}
+
+.linha {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.botoes {
+    display: flex;
+    margin: 16px 280px;
+    justify-content: space-around;
+}
+
+.titulo {
+    color: #4C3228;
+    font-size: 20px;
+}
