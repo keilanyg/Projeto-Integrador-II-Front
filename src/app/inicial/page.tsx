@@ -1,13 +1,20 @@
-'use client';
-
-import BarraNavegacao from "@/components/BarraNavegacao/page";
+import BarraNavegacao from "@/components/BarraNavegacao/index";
 import style from './style.module.css'
 import Image from "next/image"
 import BannerHome from 'public/BannerHome.jpg'
-import Logo from 'public/Logo.png'
+import Livro1 from 'public/Livro1.jpeg'
+import Livro2 from 'public/Livro2.jpg'
+import Livro3 from 'public/Livro3.jpg'
+import Livro4 from 'public/Livro4.jpg'
+import Livro5 from 'public/Livro5.jpeg'
+import Livro6 from 'public/Livro6.jpeg'
+import Livro7 from "public/Livro7.jpeg"
+import Livro8 from 'public/Livro8.jpg'
+
+
 import Estudante from 'public/Estudante.jpg'
-import Instituto from "@/components/Institutos/page";
-import Rodape from "@/components/Rodape/page";
+import Instituto from "@/components/Institutos/index";
+import Rodape from "@/components/Rodape/index";
 
 
 export default function Inicial() {
@@ -28,14 +35,14 @@ export default function Inicial() {
                 <div>
                     <div className={style.contenu_carou_auto}>
                         <div className={style.caroussel_image}>
-                            <Image className={style.imgestante} src={Logo} alt="" />
-                            <Image className={style.imgestante} src={Logo} alt="" />
-                            <Image className={style.imgestante} src={Logo} alt="" />
-                            <Image className={style.imgestante} src={Logo} alt="" />
-                            <Image className={style.imgestante} src={Logo} alt="" />
-                            <Image className={style.imgestante} src={Logo} alt="" />
-                            <Image className={style.imgestante} src={Logo} alt="" />
-                            <Image className={style.imgestante} src={Logo} alt="" />
+                            <Image className={style.imgestante} src={Livro1} alt="" />
+                            <Image className={style.imgestante} src={Livro2} alt="" />
+                            <Image className={style.imgestante} src={Livro3} alt="" />
+                            <Image className={style.imgestante} src={Livro4} alt="" />
+                            <Image className={style.imgestante} src={Livro5} alt="" />
+                            <Image className={style.imgestante} src={Livro6} alt="" />
+                            <Image className={style.imgestante} src={Livro7} alt="" />
+                            <Image className={style.imgestante} src={Livro8} alt="" />
                         </div>
                     </div>
                 </div>
@@ -68,10 +75,13 @@ export default function Inicial() {
 
             <section>
                 <div className={style.comofunciona}>
-                    <div style={{ position: "relative" }}>
+                    <div className="relative w-7/12 overflow-hidden bg-cover bg-no-repeat"
+                        data-te-ripple-init
+                    >
                         <Image className={style.estudante} src={Estudante} alt="Estudante" />
                     </div>
-                    <div className={style.descricaocomofunciona}>
+                    <div id="descricaocomofunciona" className="relative w-7/12 overflow-hidden bg-cover bg-no-repeat m-10"
+                        data-te-ripple-init>
                         <div className={style.titulocomofunciona}>
                             <p>Como Funciona</p>
                         </div>
@@ -85,12 +95,12 @@ export default function Inicial() {
 
             <section>
                 <div className={style.sectionacervo}>
-                    <a className={style.linkacervo} href="#">Explore o nosso acervo completo</a>
+                    <a className={style.linkacervo} href="/acervo">Explore o nosso acervo completo</a>
                 </div>
             </section>
 
             <hr /><p className={style.titulobibliotecas}>Bibliotecas Cadastradas</p><hr />
-            <div className={style.instit}>
+            <div className={style.instit} id="institut" >
                 <Instituto />
                 <Instituto />
             </div>

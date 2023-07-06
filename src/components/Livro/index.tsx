@@ -1,7 +1,7 @@
 import Image from "next/image"
 import style from './style.module.css'
 import Estudante from 'public/Estudante.jpg'
-import Botao from "../Botao/page"
+import Botao from "../Botao/index"
 
 
 export default function Livro() {

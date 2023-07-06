@@ -1,20 +1,21 @@
-'use client';
+'use client'
 
-import BarraNavegacao from "@/components/BarraNavegacao/page";
+import BarraNavegacao from "@/components/BarraNavegacao/index";
 import style from './style.module.css'
-import Rodape from "@/components/Rodape/page";
-import InformacaoLivro from "@/components/InfoLivro/page";
-import Botao from "@/components/Botao/page";
-import Paginacao from "@/components/Paginacao/page";
-import InputSelecaoProps from "@/components/CamposdeInformacao/page";
-import InputProps from "@/components/CamposdeInformacao/Input/page";
+import Rodape from "@/components/Rodape/index";
+import InformacaoLivro from "@/components/InfoLivro/index";
+import Botao from "@/components/Botao/index";
+import Paginacao from "@/components/Paginacao/index";
+import InputSelecaoProps from "@/components/CamposdeInformacao/InputSelect/index";
+import InputProps from "@/components/CamposdeInformacao/Input/index";
+
 
 export default function AcessoLivroInstituicao() {
     return (
         <div className={style.body}>
             <BarraNavegacao />
             <InformacaoLivro>
-                <div className={style.coluna}>
+                <form className={style.coluna}>
 
                     <div className={style.linha}>
                         <InputSelecaoProps label="Nome do Livro" />
@@ -33,15 +34,19 @@ export default function AcessoLivroInstituicao() {
 
                     <div className={style.linha}>
                         <InputProps type="date" label="Data de Lançamento" />
-                        <InputSelecaoProps label="Instituto(s)" />
+                        <InputProps type="date" label="Data de Cadastro" />
                     </div>
-                </div>
 
+                    <div className={style.linha}>
+                        <InputSelecaoProps label="Instituto(s)" />
+                        <InputProps type="tex" label="Descrição" />
+                    </div>
+                </form>
+                <div className={style.botoes}>
+                    <Botao>Salvar</Botao>
+                    <Botao>Excluir</Botao>
+                </div>
             </InformacaoLivro>
-            <div className={style.botoes}>
-                <Botao>Salvar</Botao>
-                <Botao>Excluir</Botao>
-            </div>
 
             <section className="container px-4 mx-auto">
                 <h2 className={style.titulo}>Histórico de Empréstimo</h2>

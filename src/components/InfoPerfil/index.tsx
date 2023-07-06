@@ -1,8 +1,8 @@
-'use client';
+
 import { ReactNode } from 'react';
 import style from './style.module.css'
-import Image from 'next/dist/client/image';
-import Estudante from 'public/Estudante.jpg'
+import Image from 'next/dist/client/image'
+import Estudante from 'public/Estudante.jpg';
 
 interface InfoProps {
     children: ReactNode; /*Obrigatoria*/

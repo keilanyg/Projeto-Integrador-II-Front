@@ -1,9 +1,12 @@
-.body{
+.body {
   background-color: #ffffff;
+  min-height: 65.4vh;
 }
-.bemvindo{
-    display: flex;
+
+.bemvindo {
+  display: flex;
 }
+
 .retanguloDaEstante {
   position: absolute;
   top: 380px;
@@ -15,112 +18,138 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.25),
     0 4px 4px rgba(0, 0, 0, 0.25);
 }
-  .frase1 {
-    position: absolute;
-    top: 233px;
-    left: 87px;
-    font-size: 40px;
-    color: #4C3228;
-  }
-  .frase2 {
-    position: absolute;
-    margin: 0;
-    top: 289px;
-    left: 87px;
-    font-size: 20px;
-    color: #4C3228;
-  }
- 
-  .contenu_carou_auto {
-    margin: 50px auto;
-    width: 200px;
-    height: 200px;
-    perspective: 9000px;
 
+.frase1 {
+  position: absolute;
+  top: 233px;
+  left: 87px;
+  font-size: 40px;
+  color: #4C3228;
+}
+
+.frase2 {
+  position: absolute;
+  margin: 0;
+  top: 289px;
+  left: 87px;
+  font-size: 20px;
+  color: #4C3228;
+}
+
+.contenu_carou_auto {
+  margin: 50px auto;
+  width: 200px;
+  height: 200px;
+  perspective: 9000px;
+
+}
+
+.caroussel_image {
+  animation: rotation 16s infinite alternate linear;
+  transform-style: preserve-3d;
+  position: relative;
+  left: 380%;
+}
+
+.caroussel_image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.caroussel_image img {
+  filter: drop-shadow(0 5px 5px hsla(0, 0%, 0%, 0.4));
+  width: 120px;
+  height: 170px;
+  left: 10px;
+  outline: 1px solid transparent;
+  backface-visibility: hidden;
+  margin: 10px;
+}
+
+.caroussel_image img:nth-child(1) {
+  transform: translate3d(0, 0, 180px);
+}
+
+.caroussel_image img:nth-child(2) {
+  transform: rotateY(45deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(3) {
+  transform: rotateY(90deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(4) {
+  transform: rotateY(135deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(5) {
+  transform: rotateY(180deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(6) {
+  transform: rotateY(225deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(7) {
+  transform: rotateY(270deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(8) {
+  transform: rotateY(315deg) translateZ(180px);
+}
+
+@keyframes rotation {
+  from {
+    transform: rotatey(0);
   }
-  .caroussel_image {
-    animation: rotation 16s infinite alternate linear;
-    transform-style: preserve-3d;
-    position: relative;
-    left: 380%;
-  } 
-  .caroussel_image img {
-    position: absolute;
-    top: 0;
-    left: 0;
-  } 
-  .caroussel_image img {
-    filter: drop-shadow(0 5px 5px hsla(0, 0%, 0%, 0.4));
-    width: 120px;
-    height: 170px;
-    left: 10px;
-    outline: 1px solid transparent;
-    backface-visibility: hidden;
-    margin: 10px;
-  } 
-  .caroussel_image img:nth-child(1) {
-    transform: translate3d(0, 0, 180px);
-  } 
-  .caroussel_image img:nth-child(2) {
-    transform: rotateY(45deg) translateZ(180px);
+
+  to {
+    transform: rotatey(0.5turn);
   }
-  .caroussel_image img:nth-child(3) {
-    transform: rotateY(90deg) translateZ(180px);
-  } 
-  .caroussel_image img:nth-child(4) {
-    transform: rotateY(135deg) translateZ(180px);
-  } 
-  .caroussel_image img:nth-child(5) {
-    transform: rotateY(180deg) translateZ(180px);
-  } 
-  .caroussel_image img:nth-child(6) {
-    transform: rotateY(225deg) translateZ(180px);
-  } 
-  .caroussel_image img:nth-child(7) {
-    transform: rotateY(270deg) translateZ(180px);
-  } 
-  .caroussel_image img:nth-child(8) {
-    transform: rotateY(315deg) translateZ(180px);
-  } 
-  @keyframes rotation {
-    from {
-      transform: rotatey(0);
-    }
-    to {
-      transform: rotatey(0.5turn);
-    }
-  }
-  
-  /*****fin carrousel 3d automatique*****/
+}
+
+/*****fin carrousel 3d automatique*****/
 .paginaHomeItem {
-    position: relative;
+  position: relative;
 }
+
 .nossaMissao {
-    position: absolute;
-    left: 38px;
-    top: 38px;
-    width: 446px;
-    height: 200px;
-    background-color: rgba(237, 214, 160, 0.6);
+  position: absolute;
+  left: 38px;
+  top: 38px;
+  width: 446px;
+  height: 200px;
+  background-color: rgba(237, 214, 160, 0.6);
 }
-.imagembanner{
-    width: 100%;
-    height: 270px;
+
+.imagembanner {
+  width: 100%;
+  height: 270px;
 }
-.titulomisao, .tituloquemsomos, .titulocomofunciona{
+
+.titulomisao,
+.tituloquemsomos,
+.titulocomofunciona {
   font-size: 30px;
   margin-bottom: 10px;
-  
+
 }
-.frasemisao, .frasequemsomos, .frasecomofunciona{
+
+.frasemisao,
+.frasequemsomos,
+.frasecomofunciona {
   font-size: 18px;
 }
-.frasemisao, .titulomisao {
+
+.frasemisao,
+.titulomisao {
   margin: 13px 0 6px 30px;
   color: #4C3228;
   font-weight: 490;
 }
-.quemsomos{
+
+.quemsomos {
   color: #4C3228;
   padding: 5% 18%;
   display: flex;
@@ -128,46 +157,47 @@
   align-items: center;
 }
 
-.comofunciona{
+.comofunciona {
   background-color: #EDD6A0;
   display: flex;
   flex-basis: 50%;
   color: #4C3228;
-  gap:16px;
+  gap: 16px;
   align-items: center;
 }
-.estudante{
+
+.estudante {
   width: 40%;
   border-radius: 50%;
-  margin-left: 220px;
-  padding: 10% 0;
-  margin-right: 0;
+  padding: 7% 0;
+  margin: 0 200px;
 }
-.descricaocomofunciona{
-  margin-right: 200px;
-}
-.sectionacervo{
+
+
+
+.sectionacervo {
   color: #4C3228;
   padding: 10%;
   text-align: center;
   font-size: 17px;
 }
-.linkacervo{
+
+.linkacervo {
   padding: 14px;
   background-color: #EDD6A0;
   border-radius: 10px;
 }
 
-.titulobibliotecas{
+.titulobibliotecas {
   font-size: 30px;
   background-color: #EDD6A0;
   color: #4C3228;
   text-align: center;
-  padding: 2%;
+  padding: 1.4%;
 }
-.instit{
+
+.instit {
   display: flex;
   flex-direction: row;
   padding: 0 0 20px 0;
 }
-
