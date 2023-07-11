@@ -4,10 +4,9 @@ import BarraNavegacao from "@/components/BarraNavegacao/index";
 import style from './style.module.css'
 import Rodape from "@/components/Rodape/index";
 import InformacaoLivro from "@/components/InfoLivro/index";
-import Botao from "@/components/Botao/index";
 import Paginacao from "@/components/Paginacao/index";
-import InputSelecaoProps from "@/components/CamposdeInformacao/InputSelect/index";
-import InputProps from "@/components/CamposdeInformacao/Input/index";
+import ApresentacaoProps from "@/components/CamposdeInformacao/Apresentacao/index"
+
 
 
 export default function AcessoLivroInstituicao() {
@@ -15,36 +14,32 @@ export default function AcessoLivroInstituicao() {
         <div className={style.body}>
             <BarraNavegacao />
             <InformacaoLivro>
-                <form className={style.coluna}>
+                <div className={style.coluna}>
 
                     <div className={style.linha}>
-                        <InputSelecaoProps label="Nome do Livro" />
-                        <InputSelecaoProps label="Autor" />
+                        <ApresentacaoProps titulo="Nome do livro" conteudo="Teste" />
+                        <ApresentacaoProps titulo="Autor" conteudo="Teste" />
                     </div>
 
                     <div className={style.linha}>
-                        <InputSelecaoProps label="Categoria" />
-                        <InputSelecaoProps label="Editora" />
+                        <ApresentacaoProps titulo="Categoria" conteudo="Teste" />
+                        <ApresentacaoProps titulo="Editora" conteudo="Teste" />
                     </div>
 
                     <div className={style.linha}>
-                        <InputProps type="number" label="Quantidade disponível" />
-                        <InputProps type="number" label="Quantidade cadastrada" />
+                        <ApresentacaoProps titulo="Quantidade disponível" conteudo="Teste" />
+                        <ApresentacaoProps titulo="Quantidade cadastrada" conteudo="Teste" />
                     </div>
 
                     <div className={style.linha}>
-                        <InputProps type="date" label="Data de Lançamento" />
-                        <InputProps type="date" label="Data de Cadastro" />
+                        <ApresentacaoProps titulo="Data de Cadastro" conteudo="Teste" />
+                        <ApresentacaoProps titulo="Data de LançamentoAutor" conteudo="Teste" />
                     </div>
 
                     <div className={style.linha}>
-                        <InputSelecaoProps label="Instituto(s)" />
-                        <InputProps type="tex" label="Descrição" />
+                        <ApresentacaoProps titulo="Instituto(s)" conteudo="Teste" />
+                        <ApresentacaoProps titulo="Descrição" conteudo="Teste" />
                     </div>
-                </form>
-                <div className={style.botoes}>
-                    <Botao>Salvar</Botao>
-                    <Botao>Excluir</Botao>
                 </div>
             </InformacaoLivro>
 
@@ -120,7 +115,6 @@ export default function AcessoLivroInstituicao() {
                                             </td>
 
 
-
                                         </tr>
                                     </tbody>
                                 </table>
@@ -137,3 +131,4 @@ export default function AcessoLivroInstituicao() {
         </div>
     )
 }
+

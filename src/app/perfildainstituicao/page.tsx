@@ -3,15 +3,57 @@
 import BarraNavegacao from "@/components/BarraNavegacao/index";
 import style from './style.module.css'
 import Rodape from "@/components/Rodape/index";
-import React, { useState } from "react";
+import React from "react";
 import Botao from "@/components/Botao/index";
+import InputSelecaoProps from "@/components/CamposdeInformacao/InputSelect/index";
+import InputProps from "@/components/CamposdeInformacao/Input/index";
 import InformacaoPerfil from "@/components/InfoPerfil";
-import InputSelecaoProps from "@/components/CamposdeInformacao/InputSelect";
-import InputProps from "@/components/CamposdeInformacao/Input";
-import Listadoitem from "@/components/ListagemItem";
+import { useState, useEffect } from "react";
 
-export default async function PerfilInstituicao() {
+export default function PerfilInstituicao() {
     const [openTab, setOpenTab] = React.useState(1);
+
+    const [livros, setLivros] = useState([]);
+    const [categoria, setCategoria] = useState([]);
+    const [editora, setEditora] = useState([]);
+    const [autor, setAutor] = useState([]);
+
+    async function fetchDataLivro() {
+        const urlLivro = "http://localhost:3001/livros";
+        const response = await fetch(urlLivro);
+        const data = await response.json();
+        setLivros(data);
+        console.log(response)
+    }
+    async function fetchDataCategoria() {
+        const urlCategoria = "http://localhost:3001/categoria";
+        const response = await fetch(urlCategoria);
+        const data = await response.json();
+        setCategoria(data);
+        console.log(response)
+    }
+    async function fetchDataEditora() {
+        const urlEditora = "http://localhost:3001/editora";
+        const response = await fetch(urlEditora);
+        const data = await response.json();
+        setEditora(data);
+        console.log(response)
+    }
+    async function fetchDataAutor() {
+        const urlAutor = "http://localhost:3001/autor";
+        const response = await fetch(urlAutor);
+        const data = await response.json();
+        setAutor(data);
+        console.log(response)
+    }
+
+    useEffect(() => {
+        fetchDataLivro();
+        fetchDataCategoria();
+        fetchDataEditora();
+        fetchDataAutor();
+    }, []);
+
     return (
         <div className={style.body}>
             <BarraNavegacao />
@@ -23,10 +65,9 @@ export default async function PerfilInstituicao() {
 
                 <p>Email:</p><br />
 
-                <p>Quantidade de livros:</p><br />
             </InformacaoPerfil>
 
-            <div className="flex flex-wrap" style={{ color: "#8c5c3d", margin: "20px 90px" }}>
+            <div className="flex flex-wrap" style={{ color: "#4C3228", margin: "20px 90px" }}>
                 <div className="w-full">
                     <ul
                         className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
@@ -154,73 +195,147 @@ export default async function PerfilInstituicao() {
 
                     </ul>
 
-                    <form className="relative flex flex-col min-w-0 break-words bg--orange-900 w-full mb-6 shadow-lg rounded">
-                        <div className="px-4 py-5 flex-auto">
-                            <div className="tab-content tab-space">
-                                <div className={openTab === 1 ? "block" : "hidden"} id="link1" >
-                                    <form>
-                                        <InputProps label="Nome da categoria" type="text" />
-                                        <br /><Botao>Salvar</Botao>
-                                    </form>
-                                    <Listadoitem label="categoria" />
-                                </div>
+                    <form>
+                        <div className="relative flex flex-col min-w-0 break-words bg--orange-900 w-full mb-6 shadow-lg rounded">
+                            <div className="px-4 py-5 flex-auto">
+                                <div className="tab-content tab-space">
+                                    <div className={openTab === 1 ? "block" : "hidden"} id="link1">
+                                        <div>
+                                            <InputProps label="Nome da categoria" type="text" />
+                                            <br /><Botao>Salvar</Botao>
+                                        </div>
+                                        <div>
+                                            <ul>
+                                                {categoria.map(({ id, nome_categoria }) => (
+                                                    <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between" }}>
+                                                        <div>
+                                                            {nome_categoria}
+                                                        </div>
+                                                        <div style={{ display: "flex", gap: "10px" }}>
+                                                            <Botao>Editar</Botao>
+                                                            <Botao>Excluir</Botao>
+                                                        </div>
 
-                                <div className={openTab === 2 ? "block" : "hidden"} id="link2" >
-                                    <form>
-                                        <InputProps label="Nome do(a) Autor(a)" type="text" />
-                                        <br /><Botao>Salvar</Botao>
-                                    </form>
-                                    <Listadoitem label="autor" />
-                                </div>
+                                                    </li>
+                                                ))}
 
-                                <div className={openTab === 3 ? "block" : "hidden"} id="link3" >
-                                    <form>
-                                        <InputProps label="Nome da editora" type="text" />
-                                        <br /><Botao>Salvar</Botao>
-                                    </form>
-                                    <Listadoitem label="editora" />
-                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                                <div className={openTab === 4 ? "block" : "hidden"} id="link4">
-                                    <form style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
-                                        <InputProps label="Nome do Livro" type="text" />
-                                        <InputProps label="Imagem" type="file" />
-                                        <InputProps label="Data de Cadastro" type="date" />
-                                        <InputProps label="Data de Lançamento" type="date" />
-                                        <InputSelecaoProps label="Autor" />
-                                        <InputSelecaoProps label="Categoria" />
-                                        <Botao> Salvar</Botao>
-                                    </form>
-                                    <br /><Listadoitem label="livro" />
-                                    <Listadoitem label="livro" />
-                                </div>
+                                    <div className={openTab === 2 ? "block" : "hidden"} id="link2">
+                                        <div>
+                                            <InputProps label="Nome do(a) Autor(a)" type="text" />
+                                            <br /><Botao>Salvar</Botao>
+                                        </div>
+                                        <div>
+                                            <ul>
+                                                {autor.map(({ id, nome_autor }) => (
+                                                    <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between" }}>
+                                                        <div>
+                                                            {nome_autor}
+                                                        </div>
+                                                        <div style={{ display: "flex", gap: "10px" }}>
+                                                            <Botao>Editar</Botao>
+                                                            <Botao>Excluir</Botao>
+                                                        </div>
 
-                                <div className={openTab === 5 ? "block" : "hidden"} id="link5" >
-                                    <form>
-                                        <InputSelecaoProps label="Data de empréstimo" />
-                                        <InputSelecaoProps label="Data de devolução" />
-                                        <InputSelecaoProps label="Livro" />
-                                        <br /><Botao>Salvar</Botao>
-                                    </form>
-                                    <Listadoitem label="emprestimo" />
-                                </div>
+                                                    </li>
+                                                ))}
 
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                                <div className={openTab === 6 ? "block" : "hidden"} id="link6">
-                                    <form>
-                                        <InputSelecaoProps label="Nome do Usuário" />
-                                        <InputSelecaoProps label="Livro" />
-                                        <InputSelecaoProps label="Avaliação" />
-                                        <br /><Botao>Salvar</Botao>
-                                    </form>
-                                    <Listadoitem label="devolução" />
+                                    <div className={openTab === 3 ? "block" : "hidden"} id="link3">
+                                        <div>
+                                            <InputProps label="Nome da editora" type="text" />
+                                            <br /><Botao>Salvar</Botao>
+                                        </div>
+                                        <div>
+                                            <ul>
+                                                {editora.map(({ id, nome_editora }) => (
+                                                    <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between" }}>
+                                                        <div>
+                                                            {nome_editora}
+                                                        </div>
+                                                        <div style={{ display: "flex", gap: "10px" }}>
+                                                            <Botao>Editar</Botao>
+                                                            <Botao>Excluir</Botao>
+                                                        </div>
+
+                                                    </li>
+                                                ))}
+
+                                            </ul>
+                                        </div>
+
+                                    </div>
+
+                                    <div className={openTab === 4 ? "block" : "hidden"} id="link4">
+                                        <div style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
+                                            <InputProps label="Nome do Livro" type="text" />
+                                            <InputProps label="Imagem" type="file" />
+                                            <InputProps label="Data de Cadastro" type="date" />
+                                            <InputProps label="Data de Lançamento" type="date" />
+                                            <InputSelecaoProps label="Autor" />
+                                            <InputSelecaoProps label="Categoria" />
+                                            <InputSelecaoProps label="Editora" />
+                                            <InputProps label="Descrição" type="text" />
+                                            <InputProps label="Quantidade" type="number" />
+                                            <Botao> Salvar</Botao>
+                                        </div>
+                                        <br />
+                                        <div>
+                                            <ul>
+                                                {livros.map(({ id, nome_livro, data_cadastro, data_lancamento, quantidade, descricao_livro, categoria, editora, autor }) => (
+                                                    <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between", alignItems: "center" }}>
+                                                        <div>
+                                                            <p>Nome do Livro: {nome_livro}</p>
+                                                            <p>Data de Cadastro: {data_cadastro}</p>
+                                                            <p>Data de Lançamento: {data_lancamento}</p>
+                                                            <p>Quantidade: {quantidade}</p>
+                                                            <p>Descrição: {descricao_livro}</p>
+                                                            <p>Categoria: {categoria}</p>
+                                                            <p>Editora: {editora}</p>
+                                                            <p>Autor: {autor}</p>
+                                                        </div>
+                                                        <div style={{ display: "flex", gap: "10px" }}>
+                                                            <Botao>Editar</Botao>
+                                                            <Botao>Excluir</Botao>
+                                                        </div>
+
+                                                    </li>
+                                                ))}
+
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div className={openTab === 5 ? "block" : "hidden"} id="link5">
+                                        <div>
+                                            <InputSelecaoProps label="Usuário" />
+                                            <InputSelecaoProps label="Data de empréstimo" />
+                                            <InputSelecaoProps label="Data de devolução" />
+                                            <InputSelecaoProps label="Livro" />
+                                            <br /><Botao>Salvar</Botao>
+                                        </div>
+                                    </div>
+
+                                    <div className={openTab === 6 ? "block" : "hidden"} id="link6">
+                                        <div>
+                                            <InputSelecaoProps label="Nome do Usuário" />
+                                            <InputSelecaoProps label="Livro" />
+                                            <InputSelecaoProps label="Avaliação" />
+                                            <br /><Botao>Salvar</Botao>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </form >
-                </div >
-            </div >
-
+                    </form>
+                </div>
+            </div>
             <Rodape />
         </div >
     )
