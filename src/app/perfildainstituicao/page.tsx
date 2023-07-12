@@ -9,49 +9,66 @@ import InputSelecaoProps from "@/components/CamposdeInformacao/InputSelect/index
 import InputProps from "@/components/CamposdeInformacao/Input/index";
 import InformacaoPerfil from "@/components/InfoPerfil";
 import { useState, useEffect } from "react";
+import { api } from "../services/api";
+
+interface Categoria {
+    id: number;
+    nome_categoria: string;
+}
+interface Autor {
+    id: number;
+    nome_autor: string;
+}
+interface Editora {
+    id: number;
+    nome_editora: string;
+}
+interface Livros {
+    id: number;
+    nome_livro: string;
+    data_cadastro: Date;
+    data_lancamento: Date;
+    quantidade: number;
+    descricao_livro: string;
+    categoria: string;
+    editora: string;
+    autor: string;
+}
 
 export default function PerfilInstituicao() {
     const [openTab, setOpenTab] = React.useState(1);
 
-    const [livros, setLivros] = useState([]);
-    const [categoria, setCategoria] = useState([]);
-    const [editora, setEditora] = useState([]);
-    const [autor, setAutor] = useState([]);
+    const [livros, setLivros] = useState<Livros[]>([]);
+    const [categoria, setCategoria] = useState<Categoria[]>([]);
+    const [editora, setEditora] = useState<Editora[]>([]);
+    const [autor, setAutor] = useState<Autor[]>([]);
 
-    async function fetchDataLivro() {
-        const urlLivro = "http://localhost:3001/livros";
-        const response = await fetch(urlLivro);
-        const data = await response.json();
-        setLivros(data);
-        console.log(response)
+
+    const getLivros = async () => {
+        const { data } = await api.get('livro/')
+        setLivros(data)
     }
-    async function fetchDataCategoria() {
-        const urlCategoria = "http://localhost:3001/categoria";
-        const response = await fetch(urlCategoria);
-        const data = await response.json();
-        setCategoria(data);
-        console.log(response)
+    const getCategoria = async () => {
+        const { data } = await api.get('categoria/')
+        console.log(data)
+        setCategoria(data)
     }
-    async function fetchDataEditora() {
-        const urlEditora = "http://localhost:3001/editora";
-        const response = await fetch(urlEditora);
-        const data = await response.json();
-        setEditora(data);
-        console.log(response)
+    const getEditora = async () => {
+        const { data } = await api.get('editora/')
+        console.log(data)
+        setEditora(data)
     }
-    async function fetchDataAutor() {
-        const urlAutor = "http://localhost:3001/autor";
-        const response = await fetch(urlAutor);
-        const data = await response.json();
-        setAutor(data);
-        console.log(response)
+    const getAutor = async () => {
+        const { data } = await api.get('autor/')
+        console.log(data)
+        setAutor(data)
     }
 
     useEffect(() => {
-        fetchDataLivro();
-        fetchDataCategoria();
-        fetchDataEditora();
-        fetchDataAutor();
+        getLivros();
+        getCategoria();
+        getEditora();
+        getAutor();
     }, []);
 
     return (
@@ -195,15 +212,15 @@ export default function PerfilInstituicao() {
 
                     </ul>
 
-                    <form>
+                    <div>
                         <div className="relative flex flex-col min-w-0 break-words bg--orange-900 w-full mb-6 shadow-lg rounded">
                             <div className="px-4 py-5 flex-auto">
                                 <div className="tab-content tab-space">
                                     <div className={openTab === 1 ? "block" : "hidden"} id="link1">
-                                        <div>
+                                        <form>
                                             <InputProps label="Nome da categoria" type="text" />
-                                            <br /><Botao>Salvar</Botao>
-                                        </div>
+                                            <br /><br /><Botao>Salvar</Botao>
+                                        </form>
                                         <div>
                                             <ul>
                                                 {categoria.map(({ id, nome_categoria }) => (
@@ -223,10 +240,10 @@ export default function PerfilInstituicao() {
                                         </div>
                                     </div>
 
-                                    <div className={openTab === 2 ? "block" : "hidden"} id="link2">
+                                    <form className={openTab === 2 ? "block" : "hidden"} id="link2">
                                         <div>
                                             <InputProps label="Nome do(a) Autor(a)" type="text" />
-                                            <br /><Botao>Salvar</Botao>
+                                            <br /><br /><Botao>Salvar</Botao>
                                         </div>
                                         <div>
                                             <ul>
@@ -242,15 +259,14 @@ export default function PerfilInstituicao() {
 
                                                     </li>
                                                 ))}
-
                                             </ul>
                                         </div>
-                                    </div>
+                                    </form>
 
-                                    <div className={openTab === 3 ? "block" : "hidden"} id="link3">
+                                    <form className={openTab === 3 ? "block" : "hidden"} id="link3">
                                         <div>
                                             <InputProps label="Nome da editora" type="text" />
-                                            <br /><Botao>Salvar</Botao>
+                                            <br /><br /><Botao>Salvar</Botao>
                                         </div>
                                         <div>
                                             <ul>
@@ -269,10 +285,9 @@ export default function PerfilInstituicao() {
 
                                             </ul>
                                         </div>
+                                    </form>
 
-                                    </div>
-
-                                    <div className={openTab === 4 ? "block" : "hidden"} id="link4">
+                                    <form className={openTab === 4 ? "block" : "hidden"} id="link4">
                                         <div style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
                                             <InputProps label="Nome do Livro" type="text" />
                                             <InputProps label="Imagem" type="file" />
@@ -285,9 +300,10 @@ export default function PerfilInstituicao() {
                                             <InputProps label="Quantidade" type="number" />
                                             <Botao> Salvar</Botao>
                                         </div>
-                                        <br />
+
                                         <div>
                                             <ul>
+
                                                 {livros.map(({ id, nome_livro, data_cadastro, data_lancamento, quantidade, descricao_livro, categoria, editora, autor }) => (
                                                     <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between", alignItems: "center" }}>
                                                         <div>
@@ -310,30 +326,30 @@ export default function PerfilInstituicao() {
 
                                             </ul>
                                         </div>
-                                    </div>
+                                    </form>
 
-                                    <div className={openTab === 5 ? "block" : "hidden"} id="link5">
+                                    <form className={openTab === 5 ? "block" : "hidden"} id="link5">
                                         <div>
                                             <InputSelecaoProps label="Usuário" />
                                             <InputSelecaoProps label="Data de empréstimo" />
                                             <InputSelecaoProps label="Data de devolução" />
                                             <InputSelecaoProps label="Livro" />
-                                            <br /><Botao>Salvar</Botao>
+                                            <br /><br /><Botao>Salvar</Botao>
                                         </div>
-                                    </div>
+                                    </form>
 
-                                    <div className={openTab === 6 ? "block" : "hidden"} id="link6">
+                                    <form className={openTab === 6 ? "block" : "hidden"} id="link6">
                                         <div>
                                             <InputSelecaoProps label="Nome do Usuário" />
                                             <InputSelecaoProps label="Livro" />
                                             <InputSelecaoProps label="Avaliação" />
-                                            <br /><Botao>Salvar</Botao>
+                                            <br /><br /><Botao>Salvar</Botao>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <Rodape />
