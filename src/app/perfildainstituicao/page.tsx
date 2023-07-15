@@ -6,7 +6,6 @@ import Rodape from "@/components/Rodape/index";
 import React from "react";
 import Botao from "@/components/Botao/index";
 import InputSelecaoProps from "@/components/CamposdeInformacao/InputSelect/index";
-import InputProps from "@/components/CamposdeInformacao/Input/index";
 import InformacaoPerfil from "@/components/InfoPerfil";
 import { useState, useEffect } from "react";
 import { api } from "../services/api";
@@ -43,7 +42,6 @@ export default function PerfilInstituicao() {
     const [editora, setEditora] = useState<Editora[]>([]);
     const [autor, setAutor] = useState<Autor[]>([]);
 
-
     const getLivros = async () => {
         const { data } = await api.get('livro/')
         setLivros(data)
@@ -63,13 +61,81 @@ export default function PerfilInstituicao() {
         console.log(data)
         setAutor(data)
     }
-
     useEffect(() => {
         getLivros();
         getCategoria();
         getEditora();
         getAutor();
     }, []);
+
+    const [nomecat, setNomecategoria] = useState("")
+    const handleNameCategoria = async (e) => {
+        e.preventDefault();
+        console.log(nomecat);
+        setNomecategoria("");
+
+        const newCat = {
+            nome_categoria: nomecat
+        }
+        const data = await api.post('categoria/', newCat)
+    };
+    const [nomeautor, setNomeautor] = useState("")
+    const handleNameAutor = async (e) => {
+        e.preventDefault();
+        console.log(nomeautor);
+        setNomeautor("");
+
+        const newAutor = {
+            nome_autor: nomeautor
+        }
+        const data = await api.post('autor/', newAutor)
+    };
+    const [nomeeditora, setNomeeditora] = useState("")
+    const handleNameEditora = async (e) => {
+        e.preventDefault();
+        console.log(nomeeditora);
+        setNomeeditora("");
+
+        const newEditora = {
+            nome_editora: nomeeditora
+        }
+        const data = await api.post('editora/', newEditora)
+    };
+    const [nomelivro, setNomeLivro] = useState("")
+    const [datalancamento, setDataLancamento] = useState("")
+    const [quantidade, setQuantidade] = useState("")
+    const [descricaolivro, setDescricaoLivro] = useState("")
+    const [categorialivro, setCategoriaLivro] = useState("")
+    const [editoralivro, setEditoraLivro] = useState("")
+    const [autorlivro, setAutorLivro] = useState("")
+    const handleLivro = async (e) => {
+        e.preventDefault();
+        console.log(nomelivro);
+        console.log(datalancamento);
+        console.log(quantidade);
+        console.log(descricaolivro);
+        console.log(categorialivro);
+        console.log(editoralivro);
+        console.log(autorlivro);
+        setNomeLivro("");
+        setDataLancamento("");
+        setQuantidade("");
+        setDescricaoLivro("");
+        setCategoriaLivro("");
+        setEditoraLivro("");
+        setAutorLivro("");
+
+        const newLivro = {
+            nome_livro: nomelivro,
+            data_lancamento: datalancamento,
+            quantidade: quantidade,
+            descricao_livro: descricaolivro,
+            categoria: categorialivro,
+            editora: editoralivro,
+            autor: autorlivro
+        }
+        const data = await api.post('livro/', newLivro)
+    };
 
     return (
         <div className={style.body}>
@@ -211,16 +277,17 @@ export default function PerfilInstituicao() {
                         </li>
 
                     </ul>
-
                     <div>
                         <div className="relative flex flex-col min-w-0 break-words bg--orange-900 w-full mb-6 shadow-lg rounded">
                             <div className="px-4 py-5 flex-auto">
                                 <div className="tab-content tab-space">
                                     <div className={openTab === 1 ? "block" : "hidden"} id="link1">
-                                        <form>
-                                            <InputProps label="Nome da categoria" type="text" />
-                                            <br /><br /><Botao>Salvar</Botao>
+                                        <form onSubmit={handleNameCategoria}>
+                                            <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome Categoria</label><br />
+                                            <input type="text" value={nomecat} onChange={(e) => setNomecategoria(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            <br /><br /><Botao type="submit">Salvar</Botao >
                                         </form>
+
                                         <div>
                                             <ul>
                                                 {categoria.map(({ id, nome_categoria }) => (
@@ -240,11 +307,12 @@ export default function PerfilInstituicao() {
                                         </div>
                                     </div>
 
-                                    <form className={openTab === 2 ? "block" : "hidden"} id="link2">
-                                        <div>
-                                            <InputProps label="Nome do(a) Autor(a)" type="text" />
-                                            <br /><br /><Botao>Salvar</Botao>
-                                        </div>
+                                    <div className={openTab === 2 ? "block" : "hidden"} id="link2">
+                                        <form onSubmit={handleNameAutor}>
+                                            <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome do(a) Autor(a)</label><br />
+                                            <input type="text" value={nomeautor} onChange={(e) => setNomeautor(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            <br /><br /><Botao type="submit">Salvar</Botao>
+                                        </form>
                                         <div>
                                             <ul>
                                                 {autor.map(({ id, nome_autor }) => (
@@ -261,13 +329,15 @@ export default function PerfilInstituicao() {
                                                 ))}
                                             </ul>
                                         </div>
-                                    </form>
+                                    </div>
 
-                                    <form className={openTab === 3 ? "block" : "hidden"} id="link3">
-                                        <div>
-                                            <InputProps label="Nome da editora" type="text" />
-                                            <br /><br /><Botao>Salvar</Botao>
-                                        </div>
+                                    <div className={openTab === 3 ? "block" : "hidden"} id="link3">
+                                        <form onSubmit={handleNameEditora}>
+                                            <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome da Editora</label><br />
+                                            <input type="text" value={nomeeditora} onChange={(e) => setNomeeditora(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            <br /><br /><Botao type="submit" >Salvar</Botao>
+                                        </form>
+
                                         <div>
                                             <ul>
                                                 {editora.map(({ id, nome_editora }) => (
@@ -279,31 +349,60 @@ export default function PerfilInstituicao() {
                                                             <Botao>Editar</Botao>
                                                             <Botao>Excluir</Botao>
                                                         </div>
-
                                                     </li>
                                                 ))}
 
                                             </ul>
                                         </div>
-                                    </form>
+                                    </div>
 
-                                    <form className={openTab === 4 ? "block" : "hidden"} id="link4">
-                                        <div style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
-                                            <InputProps label="Nome do Livro" type="text" />
-                                            <InputProps label="Imagem" type="file" />
-                                            <InputProps label="Data de Cadastro" type="date" />
-                                            <InputProps label="Data de Lançamento" type="date" />
-                                            <InputSelecaoProps label="Autor" />
-                                            <InputSelecaoProps label="Categoria" />
-                                            <InputSelecaoProps label="Editora" />
-                                            <InputProps label="Descrição" type="text" />
-                                            <InputProps label="Quantidade" type="number" />
-                                            <Botao> Salvar</Botao>
-                                        </div>
+                                    <div className={openTab === 4 ? "block" : "hidden"} id="link4">
+                                        <form onSubmit={handleLivro} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
+                                            <div>
+                                                <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro</label><br />
+                                                <input type="text" value={nomelivro} onChange={(e) => setNomeLivro(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            </div>
+                                            <div>
+                                                <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Data de Lançamento</label><br />
+                                                <input type="date" value={datalancamento} onChange={(e) => setDataLancamento(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            </div>
 
+                                            <div>
+                                                <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Descrição</label><br />
+                                                <input type="text" value={descricaolivro} onChange={(e) => setDescricaoLivro(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            </div>
+                                            <div>
+                                                <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Quantidade</label><br />
+                                                <input type="number" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            </div>
+                                            <div>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Categoria</label><br />
+                                                <select onChange={(e) => setCategoriaLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    {categoria.map(({ id, nome_categoria }) => (
+                                                        <option value={id} key={id}>{nome_categoria}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Editora</label><br />
+                                                <select onChange={(e) => setEditoraLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    {editora.map(({ id, nome_editora }) => (
+                                                        <option value={id} key={id}>{nome_editora}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Autor</label><br />
+                                                <select onChange={(e) => setAutorLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    {autor.map(({ id, nome_autor }) => (
+                                                        <option value={id} key={id}>{nome_autor}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <br /><br /><Botao type="submit">Salvar</Botao>
+                                        </form>
                                         <div>
                                             <ul>
-
                                                 {livros.map(({ id, nome_livro, data_cadastro, data_lancamento, quantidade, descricao_livro, categoria, editora, autor }) => (
                                                     <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between", alignItems: "center" }}>
                                                         <div>
@@ -320,13 +419,11 @@ export default function PerfilInstituicao() {
                                                             <Botao>Editar</Botao>
                                                             <Botao>Excluir</Botao>
                                                         </div>
-
                                                     </li>
                                                 ))}
-
                                             </ul>
                                         </div>
-                                    </form>
+                                    </div>
 
                                     <form className={openTab === 5 ? "block" : "hidden"} id="link5">
                                         <div>
