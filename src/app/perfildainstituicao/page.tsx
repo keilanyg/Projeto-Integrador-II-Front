@@ -9,7 +9,6 @@ import InputSelecaoProps from "@/components/CamposdeInformacao/InputSelect/index
 import InformacaoPerfil from "@/components/InfoPerfil";
 import { useState, useEffect } from "react";
 import { api } from "../services/api";
-
 interface Categoria {
     id: number;
     nome_categoria: string;
@@ -69,7 +68,7 @@ export default function PerfilInstituicao() {
     }, []);
 
     const [nomecat, setNomecategoria] = useState("")
-    const handleNameCategoria = async (e) => {
+    const postNameCategoria = async (e) => {
         e.preventDefault();
         console.log(nomecat);
         setNomecategoria("");
@@ -79,8 +78,9 @@ export default function PerfilInstituicao() {
         }
         const data = await api.post('categoria/', newCat)
     };
+
     const [nomeautor, setNomeautor] = useState("")
-    const handleNameAutor = async (e) => {
+    const postNameAutor = async (e) => {
         e.preventDefault();
         console.log(nomeautor);
         setNomeautor("");
@@ -91,7 +91,7 @@ export default function PerfilInstituicao() {
         const data = await api.post('autor/', newAutor)
     };
     const [nomeeditora, setNomeeditora] = useState("")
-    const handleNameEditora = async (e) => {
+    const postNameEditora = async (e) => {
         e.preventDefault();
         console.log(nomeeditora);
         setNomeeditora("");
@@ -108,7 +108,7 @@ export default function PerfilInstituicao() {
     const [categorialivro, setCategoriaLivro] = useState("")
     const [editoralivro, setEditoraLivro] = useState("")
     const [autorlivro, setAutorLivro] = useState("")
-    const handleLivro = async (e) => {
+    const postLivro = async (e) => {
         e.preventDefault();
         console.log(nomelivro);
         console.log(datalancamento);
@@ -136,6 +136,21 @@ export default function PerfilInstituicao() {
         }
         const data = await api.post('livro/', newLivro)
     };
+
+    const deleteCategoria = async (id: number) => {
+        const { data } = await api.delete(`categoria/${id}/`)
+    };
+    const deleteEditora = async (id: number) => {
+        const { data } = await api.delete(`editora/${id}/`)
+    };
+    const deleteAutor = async (id: number) => {
+        const { data } = await api.delete(`autor/${id}/`)
+    };
+    const deleteLivro = async (id: number) => {
+        const { data } = await api.delete(`livro/${id}/`)
+    };
+
+
 
     return (
         <div className={style.body}>
@@ -282,24 +297,22 @@ export default function PerfilInstituicao() {
                             <div className="px-4 py-5 flex-auto">
                                 <div className="tab-content tab-space">
                                     <div className={openTab === 1 ? "block" : "hidden"} id="link1">
-                                        <form onSubmit={handleNameCategoria}>
+                                        <form onSubmit={postNameCategoria}>
                                             <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome Categoria</label><br />
                                             <input type="text" value={nomecat} onChange={(e) => setNomecategoria(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
                                             <br /><br /><Botao type="submit">Salvar</Botao >
                                         </form>
-
                                         <div>
                                             <ul>
                                                 {categoria.map(({ id, nome_categoria }) => (
                                                     <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between" }}>
-                                                        <div>
+                                                        <div style={{ display: "flex", gap: "10px" }}>
                                                             {nome_categoria}
                                                         </div>
                                                         <div style={{ display: "flex", gap: "10px" }}>
                                                             <Botao>Editar</Botao>
-                                                            <Botao>Excluir</Botao>
+                                                            <Botao funcao={() => deleteCategoria(id)}>Excluir</Botao>
                                                         </div>
-
                                                     </li>
                                                 ))}
 
@@ -308,7 +321,7 @@ export default function PerfilInstituicao() {
                                     </div>
 
                                     <div className={openTab === 2 ? "block" : "hidden"} id="link2">
-                                        <form onSubmit={handleNameAutor}>
+                                        <form onSubmit={postNameAutor}>
                                             <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome do(a) Autor(a)</label><br />
                                             <input type="text" value={nomeautor} onChange={(e) => setNomeautor(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
                                             <br /><br /><Botao type="submit">Salvar</Botao>
@@ -322,7 +335,7 @@ export default function PerfilInstituicao() {
                                                         </div>
                                                         <div style={{ display: "flex", gap: "10px" }}>
                                                             <Botao>Editar</Botao>
-                                                            <Botao>Excluir</Botao>
+                                                            <Botao funcao={() => deleteAutor(id)}>Excluir</Botao>
                                                         </div>
 
                                                     </li>
@@ -332,7 +345,7 @@ export default function PerfilInstituicao() {
                                     </div>
 
                                     <div className={openTab === 3 ? "block" : "hidden"} id="link3">
-                                        <form onSubmit={handleNameEditora}>
+                                        <form onSubmit={postNameEditora}>
                                             <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome da Editora</label><br />
                                             <input type="text" value={nomeeditora} onChange={(e) => setNomeeditora(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
                                             <br /><br /><Botao type="submit" >Salvar</Botao>
@@ -347,7 +360,7 @@ export default function PerfilInstituicao() {
                                                         </div>
                                                         <div style={{ display: "flex", gap: "10px" }}>
                                                             <Botao>Editar</Botao>
-                                                            <Botao>Excluir</Botao>
+                                                            <Botao funcao={() => deleteEditora(id)}>Excluir</Botao>
                                                         </div>
                                                     </li>
                                                 ))}
@@ -357,7 +370,7 @@ export default function PerfilInstituicao() {
                                     </div>
 
                                     <div className={openTab === 4 ? "block" : "hidden"} id="link4">
-                                        <form onSubmit={handleLivro} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
+                                        <form onSubmit={postLivro} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
                                             <div>
                                                 <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro</label><br />
                                                 <input type="text" value={nomelivro} onChange={(e) => setNomeLivro(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
@@ -378,6 +391,7 @@ export default function PerfilInstituicao() {
                                             <div>
                                                 <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Categoria</label><br />
                                                 <select onChange={(e) => setCategoriaLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    <option selected disabled>Selecione</option>
                                                     {categoria.map(({ id, nome_categoria }) => (
                                                         <option value={id} key={id}>{nome_categoria}</option>
                                                     ))}
@@ -386,6 +400,7 @@ export default function PerfilInstituicao() {
                                             <div>
                                                 <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Editora</label><br />
                                                 <select onChange={(e) => setEditoraLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    <option selected disabled>Selecione</option>
                                                     {editora.map(({ id, nome_editora }) => (
                                                         <option value={id} key={id}>{nome_editora}</option>
                                                     ))}
@@ -394,6 +409,7 @@ export default function PerfilInstituicao() {
                                             <div>
                                                 <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Autor</label><br />
                                                 <select onChange={(e) => setAutorLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    <option selected disabled>Selecione</option>
                                                     {autor.map(({ id, nome_autor }) => (
                                                         <option value={id} key={id}>{nome_autor}</option>
                                                     ))}
@@ -417,7 +433,7 @@ export default function PerfilInstituicao() {
                                                         </div>
                                                         <div style={{ display: "flex", gap: "10px" }}>
                                                             <Botao>Editar</Botao>
-                                                            <Botao>Excluir</Botao>
+                                                            <Botao funcao={() => deleteLivro(id)}>Excluir</Botao>
                                                         </div>
                                                     </li>
                                                 ))}

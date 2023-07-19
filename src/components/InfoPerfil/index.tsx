@@ -14,7 +14,7 @@ export default function InformacaoPerfil({ children }: InfoProps) {
 
         <div className={style.body}>
 
-            <Image className={style.fotoperfil} src={Estudante} alt="Estudante" />
+            <Image className={style.fotoperfil} src={Estudante} alt="" />
 
             <div className={style.info}>
                 {children}
