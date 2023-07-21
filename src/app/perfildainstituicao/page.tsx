@@ -70,37 +70,35 @@ export default function PerfilInstituicao() {
     const [nomecat, setNomecategoria] = useState("")
     const postNameCategoria = async (e) => {
         e.preventDefault();
-        console.log(nomecat);
-        setNomecategoria("");
-
         const newCat = {
             nome_categoria: nomecat
         }
         const data = await api.post('categoria/', newCat)
+        getCategoria()
+        setNomecategoria("");
     };
 
     const [nomeautor, setNomeautor] = useState("")
     const postNameAutor = async (e) => {
         e.preventDefault();
-        console.log(nomeautor);
-        setNomeautor("");
-
         const newAutor = {
             nome_autor: nomeautor
         }
         const data = await api.post('autor/', newAutor)
+        getAutor()
+        setNomeautor("");
     };
     const [nomeeditora, setNomeeditora] = useState("")
     const postNameEditora = async (e) => {
         e.preventDefault();
-        console.log(nomeeditora);
-        setNomeeditora("");
-
         const newEditora = {
             nome_editora: nomeeditora
         }
         const data = await api.post('editora/', newEditora)
+        getEditora()
+        setNomeeditora("");
     };
+
     const [nomelivro, setNomeLivro] = useState("")
     const [datalancamento, setDataLancamento] = useState("")
     const [quantidade, setQuantidade] = useState("")
@@ -110,21 +108,6 @@ export default function PerfilInstituicao() {
     const [autorlivro, setAutorLivro] = useState("")
     const postLivro = async (e) => {
         e.preventDefault();
-        console.log(nomelivro);
-        console.log(datalancamento);
-        console.log(quantidade);
-        console.log(descricaolivro);
-        console.log(categorialivro);
-        console.log(editoralivro);
-        console.log(autorlivro);
-        setNomeLivro("");
-        setDataLancamento("");
-        setQuantidade("");
-        setDescricaoLivro("");
-        setCategoriaLivro("");
-        setEditoraLivro("");
-        setAutorLivro("");
-
         const newLivro = {
             nome_livro: nomelivro,
             data_lancamento: datalancamento,
@@ -135,22 +118,32 @@ export default function PerfilInstituicao() {
             autor: autorlivro
         }
         const data = await api.post('livro/', newLivro)
+        getLivros()
+        setNomeLivro("");
+        setDataLancamento("");
+        setQuantidade("");
+        setDescricaoLivro("");
+        setCategoriaLivro("");
+        setEditoraLivro("");
+        setAutorLivro("");
     };
 
     const deleteCategoria = async (id: number) => {
         const { data } = await api.delete(`categoria/${id}/`)
+        getCategoria()
     };
     const deleteEditora = async (id: number) => {
         const { data } = await api.delete(`editora/${id}/`)
+        getEditora()
     };
     const deleteAutor = async (id: number) => {
         const { data } = await api.delete(`autor/${id}/`)
+        getAutor()
     };
     const deleteLivro = async (id: number) => {
         const { data } = await api.delete(`livro/${id}/`)
+        getLivros()
     };
-
-
 
     return (
         <div className={style.body}>
@@ -441,24 +434,24 @@ export default function PerfilInstituicao() {
                                         </div>
                                     </div>
 
-                                    <form className={openTab === 5 ? "block" : "hidden"} id="link5">
-                                        <div>
+                                    <div className={openTab === 5 ? "block" : "hidden"} id="link5">
+                                        <form>
                                             <InputSelecaoProps label="Usuário" />
                                             <InputSelecaoProps label="Data de empréstimo" />
                                             <InputSelecaoProps label="Data de devolução" />
                                             <InputSelecaoProps label="Livro" />
                                             <br /><br /><Botao>Salvar</Botao>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
 
-                                    <form className={openTab === 6 ? "block" : "hidden"} id="link6">
-                                        <div>
+                                    <div className={openTab === 6 ? "block" : "hidden"} id="link6">
+                                        <form>
                                             <InputSelecaoProps label="Nome do Usuário" />
                                             <InputSelecaoProps label="Livro" />
                                             <InputSelecaoProps label="Avaliação" />
                                             <br /><br /><Botao>Salvar</Botao>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
