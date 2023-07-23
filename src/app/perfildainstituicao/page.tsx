@@ -9,6 +9,10 @@ import InputSelecaoProps from "@/components/CamposdeInformacao/InputSelect/index
 import InformacaoPerfil from "@/components/InfoPerfil";
 import { useState, useEffect } from "react";
 import { api } from "../services/api";
+/*Menssagens*/
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 interface Categoria {
     id: number;
     nome_categoria: string;
@@ -34,6 +38,44 @@ interface Livros {
 }
 
 export default function PerfilInstituicao() {
+
+    const notifyPost = () => {
+        toast.success('Cadastrado com Sucesso!', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
+    const notifyPut = () => {
+        toast.success('Editado com Sucesso!', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
+    const notifyDelete = () => {
+        toast.success('Deletado com Sucesso!', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
+
     const [openTab, setOpenTab] = React.useState(1);
 
     const [livros, setLivros] = useState<Livros[]>([]);
@@ -67,6 +109,7 @@ export default function PerfilInstituicao() {
         getAutor();
     }, []);
 
+
     const [nomecat, setNomecategoria] = useState("")
     const postNameCategoria = async (e) => {
         e.preventDefault();
@@ -76,8 +119,9 @@ export default function PerfilInstituicao() {
         const data = await api.post('categoria/', newCat)
         getCategoria()
         setNomecategoria("");
+        notifyPost();
+        <ToastContainer />
     };
-
     const [nomeautor, setNomeautor] = useState("")
     const postNameAutor = async (e) => {
         e.preventDefault();
@@ -87,6 +131,8 @@ export default function PerfilInstituicao() {
         const data = await api.post('autor/', newAutor)
         getAutor()
         setNomeautor("");
+        notifyPost();
+        <ToastContainer />
     };
     const [nomeeditora, setNomeeditora] = useState("")
     const postNameEditora = async (e) => {
@@ -97,8 +143,9 @@ export default function PerfilInstituicao() {
         const data = await api.post('editora/', newEditora)
         getEditora()
         setNomeeditora("");
+        notifyPost();
+        <ToastContainer />
     };
-
     const [nomelivro, setNomeLivro] = useState("")
     const [datalancamento, setDataLancamento] = useState("")
     const [quantidade, setQuantidade] = useState("")
@@ -126,22 +173,33 @@ export default function PerfilInstituicao() {
         setCategoriaLivro("");
         setEditoraLivro("");
         setAutorLivro("");
+        notifyPost();
+        <ToastContainer />
     };
+
 
     const deleteCategoria = async (id: number) => {
         const { data } = await api.delete(`categoria/${id}/`)
+        notifyDelete();
+        <ToastContainer />
         getCategoria()
     };
     const deleteEditora = async (id: number) => {
         const { data } = await api.delete(`editora/${id}/`)
+        notifyDelete();
+        <ToastContainer />
         getEditora()
     };
     const deleteAutor = async (id: number) => {
         const { data } = await api.delete(`autor/${id}/`)
+        notifyDelete();
+        <ToastContainer />
         getAutor()
     };
     const deleteLivro = async (id: number) => {
         const { data } = await api.delete(`livro/${id}/`)
+        notifyDelete();
+        <ToastContainer />
         getLivros()
     };
 
@@ -157,6 +215,9 @@ export default function PerfilInstituicao() {
                 <p>Email:</p><br />
 
             </InformacaoPerfil>
+
+            <Botao funcao={notifyDelete}>TESTE</Botao>
+            <ToastContainer />
 
             <div className="flex flex-wrap" style={{ color: "#4C3228", margin: "20px 90px" }}>
                 <div className="w-full">
@@ -298,7 +359,7 @@ export default function PerfilInstituicao() {
                                         <div>
                                             <ul>
                                                 {categoria.map(({ id, nome_categoria }) => (
-                                                    <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between" }}>
+                                                    <li key={id} className={style.li}>
                                                         <div style={{ display: "flex", gap: "10px" }}>
                                                             {nome_categoria}
                                                         </div>
@@ -322,7 +383,7 @@ export default function PerfilInstituicao() {
                                         <div>
                                             <ul>
                                                 {autor.map(({ id, nome_autor }) => (
-                                                    <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between" }}>
+                                                    <li key={id} className={style.li}>
                                                         <div>
                                                             {nome_autor}
                                                         </div>
@@ -347,7 +408,7 @@ export default function PerfilInstituicao() {
                                         <div>
                                             <ul>
                                                 {editora.map(({ id, nome_editora }) => (
-                                                    <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between" }}>
+                                                    <li key={id} className={style.li}>
                                                         <div>
                                                             {nome_editora}
                                                         </div>
@@ -413,7 +474,7 @@ export default function PerfilInstituicao() {
                                         <div>
                                             <ul>
                                                 {livros.map(({ id, nome_livro, data_cadastro, data_lancamento, quantidade, descricao_livro, categoria, editora, autor }) => (
-                                                    <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between", alignItems: "center" }}>
+                                                    <li key={id} className={style.li}>
                                                         <div>
                                                             <p>Nome do Livro: {nome_livro}</p>
                                                             <p>Data de Cadastro: {data_cadastro}</p>
