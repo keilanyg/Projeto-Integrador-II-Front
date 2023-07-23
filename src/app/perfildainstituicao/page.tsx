@@ -216,9 +216,6 @@ export default function PerfilInstituicao() {
 
             </InformacaoPerfil>
 
-            <Botao funcao={notifyDelete}>TESTE</Botao>
-            <ToastContainer />
-
             <div className="flex flex-wrap" style={{ color: "#4C3228", margin: "20px 90px" }}>
                 <div className="w-full">
                     <ul
