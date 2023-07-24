@@ -12,7 +12,6 @@ import { api } from "../services/api";
 /*Menssagens*/
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { json } from "stream/consumers";
 
 interface Categoria {
     id: number;
@@ -81,22 +80,24 @@ export default function PerfilInstituicao() {
     const [openTab, setOpenTab] = React.useState(1);
 
     const [livros, setLivros] = useState<Livros[]>([]);
-    const [categoria, setCategoria] = useState<Categoria[]>([]);
-    const [editora, setEditora] = useState<Editora[]>([]);
-    const [autor, setAutor] = useState<Autor[]>([]);
-
     const getLivros = async () => {
         const { data } = await api.get('livro/')
         setLivros(data)
     }
+
+    const [categoria, setCategoria] = useState<Categoria[]>([]);
     const getCategoria = async () => {
         const { data } = await api.get('categoria/')
         setCategoria(data)
     }
+
+    const [editora, setEditora] = useState<Editora[]>([]);
     const getEditora = async () => {
         const { data } = await api.get('editora/')
         setEditora(data)
     }
+
+    const [autor, setAutor] = useState<Autor[]>([]);
     const getAutor = async () => {
         const { data } = await api.get('autor/')
         setAutor(data)
@@ -108,6 +109,7 @@ export default function PerfilInstituicao() {
         getEditora();
         getAutor();
     }, []);
+
 
 
     const [nomecat, setNomecategoria] = useState("")
@@ -122,6 +124,7 @@ export default function PerfilInstituicao() {
         notifyPost();
         <ToastContainer />
     };
+
     const [nomeautor, setNomeautor] = useState("")
     const postNameAutor = async (e) => {
         e.preventDefault();
@@ -135,6 +138,7 @@ export default function PerfilInstituicao() {
         <ToastContainer />
 
     };
+
     const [nomeeditora, setNomeeditora] = useState("")
     const postNameEditora = async (e) => {
         e.preventDefault();
@@ -217,11 +221,11 @@ export default function PerfilInstituicao() {
             <BarraNavegacao />
 
             <InformacaoPerfil>
-                <p>Nome:IFRN - Instituto Federal do Rio Grande do Norte</p><br />
+                <p>Nome:<br /><br />IFRN - Instituto Federal do Rio Grande do Norte</p><br />
 
-                <p>Campus:Pau Dos Ferros</p><br />
+                <p>Campus:<br /><br />Pau Dos Ferros</p><br />
 
-                <p>Email:</p><br />
+                <p>Email:<br /><br /></p><br />
 
             </InformacaoPerfil>
 
@@ -489,8 +493,6 @@ export default function PerfilInstituicao() {
                                                     <li key={id} className={style.li}>
                                                         <div>
                                                             <p>Nome do Livro: {nome_livro}</p>
-                                                            <Image src={cover} width={100} height={100} alt='' />
-                                                            <p>{JSON.stringify(cover)}</p>
                                                             <p>Data de Cadastro: {data_cadastro}</p>
                                                             <p>Data de Lançamento: {data_lancamento}</p>
                                                             <p>Quantidade: {quantidade}</p>
@@ -499,6 +501,7 @@ export default function PerfilInstituicao() {
                                                             <p>Editora: {editora}</p>
                                                             <p>Autor: {autor}</p>
                                                         </div>
+                                                        <Image src={cover} width={100} height={100} alt='' />
                                                         <div style={{ display: "flex", gap: "10px" }}>
                                                             <Botao>Editar</Botao>
                                                             <Botao funcao={() => deleteLivro(id)}>Excluir</Botao>
@@ -511,7 +514,7 @@ export default function PerfilInstituicao() {
 
                                     <div className={openTab === 5 ? "block" : "hidden"} id="link5">
                                         <form>
-                                            <InputSelecaoProps label="Usuário" />
+                                            <InputSelecaoProps label="Livro" />
                                             <InputSelecaoProps label="Data de empréstimo" />
                                             <InputSelecaoProps label="Usuario" />
 

@@ -5,13 +5,14 @@ import style from './style.module.css'
 import Rodape from "@/components/Rodape/index"
 import BannerAcervo from 'public/BannerAcervo.png'
 import Image from "next/image"
-import Estudante from 'public/Estudante.jpg'
 import Botao from "@/components/Botao/index"
 import { api } from "@/app/services/api";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface Livros {
     id: number;
+    cover: File;
     nome_livro: string;
 }
 export default function Acervo() {
@@ -50,14 +51,16 @@ export default function Acervo() {
                 <div className={style.livro}>
                     <div className={style.infolivro}>
                         <ul>
-                            {livros.map(({ id, nome_livro }) => (
+                            {livros.map(({ id, nome_livro, cover }) => (
                                 <li key={id} style={{ display: "flex", margin: "20px 400px 20px 10px", justifyContent: "space-between", flexDirection: "column" }}>
                                     <div>
-                                        <br /><Image className={style.imagemlivro} src={Estudante} alt="Estudante" />
+                                        <br /><Image className={style.imagemlivro} src={cover} width={100} height={120} alt="" />
                                     </div>
                                     <div className={style.titulo}>
                                         <p>{nome_livro}</p>
-                                        <Botao>Acessar</Botao>
+                                        <Link href={`acessolivro/${id}`}>
+                                            <Botao>Acessar</Botao>
+                                        </Link>
                                     </div>
                                 </li>
                             ))}

@@ -1,6 +1,6 @@
 interface ApresentacaoProps {
     titulo: string;
-    conteudo: string;
+    conteudo: string | number | Date;
 
 }
 /*Campos da página Perfil do Usuario*/

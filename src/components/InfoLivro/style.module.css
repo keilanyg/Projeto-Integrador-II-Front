@@ -3,19 +3,13 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin: 35px 100px 15px 100px;
+    margin: 35px 50px 15px 50px;
 }
 
 .info {
-    width: 75%;
+    width: 85%;
     height: 70%;
     display: flex;
     margin-top: 15px;
     flex-direction: column;
-}
-
-.fotoperfil {
-    width: 15rem;
-    height: 18rem;
-    border-radius: 10px;
 }
