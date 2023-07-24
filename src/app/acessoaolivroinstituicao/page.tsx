@@ -7,9 +7,7 @@ import InformacaoLivro from "@/components/InfoLivro/index";
 import Paginacao from "@/components/Paginacao/index";
 import ApresentacaoProps from "@/components/CamposdeInformacao/Apresentacao/index"
 
-
-
-export default function AcessoLivroInstituicao() {
+export default function AcessoLivro() {
     return (
         <div className={style.body}>
             <BarraNavegacao />

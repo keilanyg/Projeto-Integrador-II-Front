@@ -1,5 +1,5 @@
 'use client';
-
+import Image from "next/image";
 import BarraNavegacao from "@/components/BarraNavegacao/index";
 import style from './style.module.css'
 import Rodape from "@/components/Rodape/index";
@@ -12,6 +12,7 @@ import { api } from "../services/api";
 /*Menssagens*/
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { json } from "stream/consumers";
 
 interface Categoria {
     id: number;
@@ -27,6 +28,7 @@ interface Editora {
 }
 interface Livros {
     id: number;
+    cover: File;
     nome_livro: string;
     data_cadastro: Date;
     data_lancamento: Date;
@@ -36,6 +38,7 @@ interface Livros {
     editora: string;
     autor: string;
 }
+
 
 export default function PerfilInstituicao() {
 
@@ -75,7 +78,6 @@ export default function PerfilInstituicao() {
             theme: "light",
         });
     }
-
     const [openTab, setOpenTab] = React.useState(1);
 
     const [livros, setLivros] = useState<Livros[]>([]);
@@ -89,19 +91,17 @@ export default function PerfilInstituicao() {
     }
     const getCategoria = async () => {
         const { data } = await api.get('categoria/')
-        console.log(data)
         setCategoria(data)
     }
     const getEditora = async () => {
         const { data } = await api.get('editora/')
-        console.log(data)
         setEditora(data)
     }
     const getAutor = async () => {
         const { data } = await api.get('autor/')
-        console.log(data)
         setAutor(data)
     }
+
     useEffect(() => {
         getLivros();
         getCategoria();
@@ -117,8 +117,8 @@ export default function PerfilInstituicao() {
             nome_categoria: nomecat
         }
         const data = await api.post('categoria/', newCat)
-        getCategoria()
         setNomecategoria("");
+        getCategoria()
         notifyPost();
         <ToastContainer />
     };
@@ -133,6 +133,7 @@ export default function PerfilInstituicao() {
         setNomeautor("");
         notifyPost();
         <ToastContainer />
+
     };
     const [nomeeditora, setNomeeditora] = useState("")
     const postNameEditora = async (e) => {
@@ -141,12 +142,15 @@ export default function PerfilInstituicao() {
             nome_editora: nomeeditora
         }
         const data = await api.post('editora/', newEditora)
-        getEditora()
-        setNomeeditora("");
+
         notifyPost();
         <ToastContainer />
+        getEditora()
+        setNomeeditora("");
     };
+
     const [nomelivro, setNomeLivro] = useState("")
+    const [imglivro, setImgLivro] = useState<File | null>(null)
     const [datalancamento, setDataLancamento] = useState("")
     const [quantidade, setQuantidade] = useState("")
     const [descricaolivro, setDescricaoLivro] = useState("")
@@ -157,6 +161,7 @@ export default function PerfilInstituicao() {
         e.preventDefault();
         const newLivro = {
             nome_livro: nomelivro,
+            cover: imglivro,
             data_lancamento: datalancamento,
             quantidade: quantidade,
             descricao_livro: descricaolivro,
@@ -164,17 +169,21 @@ export default function PerfilInstituicao() {
             editora: editoralivro,
             autor: autorlivro
         }
-        const data = await api.post('livro/', newLivro)
-        getLivros()
+        const data = await api.post('livro/', newLivro, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        notifyPost();
+        <ToastContainer />
         setNomeLivro("");
+        setImgLivro(null);
         setDataLancamento("");
         setQuantidade("");
         setDescricaoLivro("");
         setCategoriaLivro("");
         setEditoraLivro("");
         setAutorLivro("");
-        notifyPost();
-        <ToastContainer />
+        getLivros()
+
     };
 
 
@@ -208,13 +217,14 @@ export default function PerfilInstituicao() {
             <BarraNavegacao />
 
             <InformacaoPerfil>
-                <p>Nome:<br />IFRN - Instituto Federal do Rio Grande do Norte</p><br />
+                <p>Nome:IFRN - Instituto Federal do Rio Grande do Norte</p><br />
 
-                <p>Campus:<br />Pau Dos Ferros</p><br />
+                <p>Campus:Pau Dos Ferros</p><br />
 
                 <p>Email:</p><br />
 
             </InformacaoPerfil>
+
 
             <div className="flex flex-wrap" style={{ color: "#4C3228", margin: "20px 90px" }}>
                 <div className="w-full">
@@ -344,6 +354,7 @@ export default function PerfilInstituicao() {
 
                     </ul>
                     <div>
+                        <ToastContainer />
                         <div className="relative flex flex-col min-w-0 break-words bg--orange-900 w-full mb-6 shadow-lg rounded">
                             <div className="px-4 py-5 flex-auto">
                                 <div className="tab-content tab-space">
@@ -427,6 +438,10 @@ export default function PerfilInstituicao() {
                                                 <input type="text" value={nomelivro} onChange={(e) => setNomeLivro(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
                                             </div>
                                             <div>
+                                                <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>IMG</label><br />
+                                                <input type="file" onChange={(e) => e.target.files && setImgLivro(e.target.files[0])} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            </div>
+                                            <div>
                                                 <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Data de Lançamento</label><br />
                                                 <input type="date" value={datalancamento} onChange={(e) => setDataLancamento(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
                                             </div>
@@ -470,10 +485,12 @@ export default function PerfilInstituicao() {
                                         </form>
                                         <div>
                                             <ul>
-                                                {livros.map(({ id, nome_livro, data_cadastro, data_lancamento, quantidade, descricao_livro, categoria, editora, autor }) => (
+                                                {livros.map(({ id, nome_livro, cover, data_cadastro, data_lancamento, quantidade, descricao_livro, categoria, editora, autor }) => (
                                                     <li key={id} className={style.li}>
                                                         <div>
                                                             <p>Nome do Livro: {nome_livro}</p>
+                                                            <Image src={cover} width={100} height={100} alt='' />
+                                                            <p>{JSON.stringify(cover)}</p>
                                                             <p>Data de Cadastro: {data_cadastro}</p>
                                                             <p>Data de Lançamento: {data_lancamento}</p>
                                                             <p>Quantidade: {quantidade}</p>
@@ -496,8 +513,8 @@ export default function PerfilInstituicao() {
                                         <form>
                                             <InputSelecaoProps label="Usuário" />
                                             <InputSelecaoProps label="Data de empréstimo" />
-                                            <InputSelecaoProps label="Data de devolução" />
-                                            <InputSelecaoProps label="Livro" />
+                                            <InputSelecaoProps label="Usuario" />
+
                                             <br /><br /><Botao>Salvar</Botao>
                                         </form>
                                     </div>
