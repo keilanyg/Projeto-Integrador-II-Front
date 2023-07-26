@@ -4,7 +4,6 @@ import BarraNavegacao from "@/components/BarraNavegacao/index";
 import style from './style.module.css'
 import Rodape from "@/components/Rodape/index";
 import InformacaoLivro from "@/components/InfoLivro/index";
-import Paginacao from "@/components/Paginacao/index";
 import ApresentacaoProps from "@/components/CamposdeInformacao/Apresentacao/index"
 import { api } from "../../services/api";
 import { useState, useEffect } from "react";
@@ -44,31 +43,24 @@ export default function AcessoLivro({ params }: livroprops) {
             <BarraNavegacao />
             <InformacaoLivro>
 
-                <div className={style.coluna}>
-                    <Image src={livros?.cover} width={200} height={200} alt='' />
+                <div className={style.linha}>
+                    <div style={{ marginTop: "50px" }}>
+                        <Image src={livros?.cover} width={200} height={200} alt='' />
+                    </div>
 
-                    <div className={style.linha}>
+                    <div className={style.coluna}>
                         <ApresentacaoProps titulo="Nome do livro" conteudo={livros?.nome_livro} />
                         <ApresentacaoProps titulo="Autor" conteudo={livros?.autor} />
-                    </div>
-
-                    <div className={style.linha}>
                         <ApresentacaoProps titulo="Categoria" conteudo={livros?.categoria} />
                         <ApresentacaoProps titulo="Editora" conteudo={livros?.editora} />
+                        <ApresentacaoProps titulo="Instituto(s)" conteudo="Teste" />
                     </div>
 
-                    <div className={style.linha}>
+                    <div className={style.coluna}>
                         <ApresentacaoProps titulo="Quantidade disponível" conteudo={livros?.quantidade} />
                         <ApresentacaoProps titulo="Descrição" conteudo={livros?.descricao_livro} />
-                    </div>
-
-                    <div className={style.linha}>
                         <ApresentacaoProps titulo="Data de Cadastro" conteudo={livros?.data_cadastro} />
                         <ApresentacaoProps titulo="Data de Lançamento" conteudo={livros?.data_lancamento} />
-                    </div>
-
-                    <div className={style.linha}>
-                        <ApresentacaoProps titulo="Instituto(s)" conteudo="Teste" />
                     </div>
                 </div>
             </InformacaoLivro>

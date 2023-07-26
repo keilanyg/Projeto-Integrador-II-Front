@@ -14,3 +14,19 @@
     background-color: #eae8dc;
     border-radius: 10px;
 }
+
+.fotoperfil {
+    color: #4C3228;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 20px 100px;
+}
+
+.info {
+    width: 60%;
+    height: 80%;
+    display: flex;
+    margin-top: 15px;
+    flex-direction: column;
+}

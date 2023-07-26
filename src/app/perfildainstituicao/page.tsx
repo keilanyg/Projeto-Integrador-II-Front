@@ -5,8 +5,6 @@ import style from './style.module.css'
 import Rodape from "@/components/Rodape/index";
 import React from "react";
 import Botao from "@/components/Botao/index";
-import InputSelecaoProps from "@/components/CamposdeInformacao/InputSelect/index";
-import InformacaoPerfil from "@/components/InfoPerfil";
 import { useState, useEffect } from "react";
 import { api } from "../services/api";
 /*Menssagens*/
@@ -36,6 +34,21 @@ interface Livros {
     categoria: string;
     editora: string;
     autor: string;
+}
+interface Emprestimo {
+    id: number;
+    nome_emprestado_usuario: string;
+    data_emprestimo: Date;
+    livro: string;
+    status: string;
+}
+interface Devolucao {
+    id: number;
+    nome_emprestado_usuario: string;
+    emprestimo: string;
+    observacoes: string;
+    data_devolucao: Date;
+    avaliacao: string;
 }
 
 
@@ -103,11 +116,26 @@ export default function PerfilInstituicao() {
         setAutor(data)
     }
 
+    const [emprestimo, setEmprestimo] = useState<Emprestimo[]>([]);
+    const getEmprestimo = async () => {
+        const { data } = await api.get('emprestimo/')
+        setEmprestimo(data)
+    }
+
+    const [devolucao, setDevolucao] = useState<Devolucao[]>([]);
+    const getDevolucao = async () => {
+        const { data } = await api.get('devolucao/')
+        setDevolucao(data)
+    }
+
     useEffect(() => {
         getLivros();
         getCategoria();
         getEditora();
         getAutor();
+        getEmprestimo();
+        getDevolucao();
+
     }, []);
 
 
@@ -190,6 +218,49 @@ export default function PerfilInstituicao() {
 
     };
 
+    const [nomeLivroDevolucao, setNomeLivroDev] = useState("")
+    const [datadevolucao, setDataDevolucao] = useState("")
+    const [avaliacaodouser, setAvaliacao] = useState("")
+    const [nomeemprestadousuariodev, setNomeEmprestimoDev] = useState("")
+
+    const postDevolucao = async (e) => {
+        e.preventDefault();
+        const newDevolucao = {
+            emprestimo: nomeLivroDevolucao,
+            data_devolucao: datadevolucao,
+            avaliacao: avaliacaodouser,
+            nome_emprestado_usuario_dev: nomeemprestadousuariodev
+
+        }
+        const data = await api.post('devolucao/', newDevolucao)
+        notifyPost();
+        <ToastContainer />
+        getDevolucao()
+        setNomeLivroDev("");
+        setDataDevolucao("");
+        setNomeEmprestimoDev("");
+        setAvaliacao("")
+    };
+
+    const [nomeemprestadousuario, setNomeEmprestimo] = useState("")
+    const [dataemprestimo, setDataEmprestimo] = useState("")
+    const [nomelivroemp, setNomeLivroEmp] = useState("")
+    const postEmprestimo = async (e) => {
+        e.preventDefault();
+        const newEmprestimo = {
+            nome_emprestado_usuario: nomeemprestadousuario,
+            data_emprestimo: dataemprestimo,
+            livro: nomelivroemp
+        }
+        const data = await api.post('emprestimo/', newEmprestimo)
+        notifyPost();
+        <ToastContainer />
+        setNomeEmprestimo("");
+        setDataEmprestimo("");
+        setNomeLivroEmp("");
+        getEmprestimo()
+    };
+
 
     const deleteCategoria = async (id: number) => {
         const { data } = await api.delete(`categoria/${id}/`)
@@ -216,19 +287,23 @@ export default function PerfilInstituicao() {
         getLivros()
     };
 
+
     return (
         <div className={style.body}>
             <BarraNavegacao />
 
-            <InformacaoPerfil>
-                <p>Nome:<br /><br />IFRN - Instituto Federal do Rio Grande do Norte</p><br />
+            <div className={style.fotoperfil}>
+                <div>
+                    <Image src={''} width={200} height={200} alt='' />
+                </div>
+                <div className={style.info}>
+                    <p>Nome:<br />IFRN - Instituto Federal do Rio Grande do Norte</p><br /><br />
 
-                <p>Campus:<br /><br />Pau Dos Ferros</p><br />
+                    <p>Campus:<br />Pau Dos Ferros</p><br /><br />
 
-                <p>Email:<br /><br /></p><br />
-
-            </InformacaoPerfil>
-
+                    <p>Email:<br /></p><br /><br />
+                </div>
+            </div>
 
             <div className="flex flex-wrap" style={{ color: "#4C3228", margin: "20px 90px" }}>
                 <div className="w-full">
@@ -485,7 +560,7 @@ export default function PerfilInstituicao() {
                                                     ))}
                                                 </select>
                                             </div>
-                                            <br /><br /><Botao type="submit">Salvar</Botao>
+                                            <br /><Botao type="submit">Salvar</Botao>
                                         </form>
                                         <div>
                                             <ul>
@@ -497,9 +572,9 @@ export default function PerfilInstituicao() {
                                                             <p>Data de Lançamento: {data_lancamento}</p>
                                                             <p>Quantidade: {quantidade}</p>
                                                             <p>Descrição: {descricao_livro}</p>
-                                                            <p>Categoria: {categoria}</p>
-                                                            <p>Editora: {editora}</p>
-                                                            <p>Autor: {autor}</p>
+                                                            <p>Categoria: {categoria.nome_categoria}</p>
+                                                            <p>Editora: {editora.nome_editora}</p>
+                                                            <p>Autor: {autor.nome_autor}</p>
                                                         </div>
                                                         <Image src={cover} width={100} height={100} alt='' />
                                                         <div style={{ display: "flex", gap: "10px" }}>
@@ -513,22 +588,219 @@ export default function PerfilInstituicao() {
                                     </div>
 
                                     <div className={openTab === 5 ? "block" : "hidden"} id="link5">
-                                        <form>
-                                            <InputSelecaoProps label="Livro" />
-                                            <InputSelecaoProps label="Data de empréstimo" />
-                                            <InputSelecaoProps label="Usuario" />
+                                        <form onSubmit={postEmprestimo} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
 
-                                            <br /><br /><Botao>Salvar</Botao>
+                                            <div>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Usuário</label><br />
+                                                <select onChange={(e) => setNomeEmprestimo(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    <option selected disabled>Selecione</option>
+                                                    {emprestimo.map(({ id, nome_emprestado_usuario }) => (
+                                                        <option value={id} key={id}>{nome_emprestado_usuario}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Data do Empréstimo</label><br />
+                                                <input type="date" value={dataemprestimo} onChange={(e) => setDataEmprestimo(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            </div>
+                                            <div>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro</label><br />
+                                                <select onChange={(e) => setNomeLivroEmp(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    <option selected disabled>Selecione</option>
+                                                    {livros.map(({ id, nome_livro }) => (
+                                                        <option value={id} key={id}>{nome_livro}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            <br /><Botao type="submit" >Salvar</Botao>
                                         </form>
+
+                                        <div className="container px-4 mx-auto">
+                                            <br /><h2>Histórico de Empréstimo</h2>
+                                            <div className="flex flex-col mt-6">
+                                                <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                                    <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                                        <div className="overflow-hidden border border-gray-200 md:rounded-lg">
+
+                                                            <table className="min-w-full divide-y divide-gray-200 ">
+                                                                <thead className="bg-gray-50 ">
+                                                                    <tr>
+                                                                        <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 ">
+                                                                            <button className="flex items-center gap-x-3 focus:outline-none">
+                                                                                <span>Nome</span>
+                                                                                <svg className="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                    <path d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z" fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                                                                                    <path d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z" fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                                                                                    <path d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z" fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+                                                                                </svg>
+                                                                            </button>
+                                                                        </th>
+
+                                                                        <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-700">
+                                                                            Livro
+                                                                        </th>
+
+                                                                        <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-700">
+                                                                            Data de empréstimo
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody className="bg-white divide-y divide-gray-200">
+                                                                    {emprestimo.map(({ id, nome_emprestado_usuario, data_emprestimo, livro }) => (
+
+                                                                        <tr>
+                                                                            <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                                                                                <div className="inline-flex items-center gap-x-3">
+                                                                                    <div className="flex items-center gap-x-2">
+                                                                                        <img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />
+                                                                                        <div>
+                                                                                            <h2 className="font-medium text-gray-800 ">{nome_emprestado_usuario}</h2>
+                                                                                            <p className="text-sm font-normal text-gray-600 dark:text-gray-400">@authurmelo</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+
+                                                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
+                                                                                <div>
+                                                                                    <h4 className="text-gray-700">{livro}</h4>
+                                                                                </div>
+                                                                            </td>
+
+                                                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
+                                                                                <div>
+                                                                                    <h4 className="text-gray-700">{data_emprestimo}</h4>
+                                                                                </div>
+                                                                            </td>
+
+                                                                        </tr>
+                                                                    ))}
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div className={openTab === 6 ? "block" : "hidden"} id="link6">
-                                        <form>
-                                            <InputSelecaoProps label="Nome do Usuário" />
-                                            <InputSelecaoProps label="Livro" />
-                                            <InputSelecaoProps label="Avaliação" />
-                                            <br /><br /><Botao>Salvar</Botao>
+                                        <form onSubmit={postDevolucao} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
+                                            <div>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro</label><br />
+                                                <select onChange={(e) => setNomeLivroDev(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    <option selected disabled>Selecione</option>
+                                                    {livros.map(({ id, nome_livro }) => (
+                                                        <option value={id} key={id}>{nome_livro}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Usuário</label><br />
+                                                <select onChange={(e) => setNomeEmprestimoDev(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    <option selected disabled>Selecione</option>
+                                                    {devolucao.map(({ id, nome_emprestado_usuario }) => (
+                                                        <option value={id} key={id}>{nome_emprestado_usuario}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Avaliação</label><br />
+                                                <select onChange={(e) => setAvaliacao(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    <option selected disabled>Selecione</option>
+                                                    {devolucao.map(({ id, avaliacao }) => (
+                                                        <option value={id} key={id}>{avaliacao}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Data de Devolução</label><br />
+                                                <input type="date" value={datadevolucao} onChange={(e) => setDataDevolucao(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            </div>
+
+                                            <br /><Botao type="submit" >Salvar</Botao>
                                         </form>
+
+                                        <div className="container px-4 mx-auto">
+                                            <br /><h2>Histórico de Devolução</h2>
+                                            <div className="flex flex-col mt-6">
+                                                <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                                    <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                                        <div className="overflow-hidden border border-gray-200 md:rounded-lg">
+
+                                                            <table className="min-w-full divide-y divide-gray-200 ">
+                                                                <thead className="bg-gray-50 ">
+                                                                    <tr>
+                                                                        <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 ">
+                                                                            <button className="flex items-center gap-x-3 focus:outline-none">
+                                                                                <span>Nome do Usuário</span>
+                                                                                <svg className="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                    <path d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z" fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                                                                                    <path d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z" fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                                                                                    <path d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z" fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+                                                                                </svg>
+                                                                            </button>
+                                                                        </th>
+
+                                                                        <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-700">
+                                                                            Nome do Livro
+                                                                        </th>
+
+                                                                        <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-700">
+                                                                            Data de Devolução
+                                                                        </th>
+
+                                                                        <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-700">
+                                                                            Avaliação
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody className="bg-white divide-y divide-gray-200">
+                                                                    {devolucao.map(({ id, nome_emprestado_usuario, emprestimo, data_devolucao, avaliacao }) => (
+
+                                                                        <tr>
+                                                                            <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                                                                                <div className="inline-flex items-center gap-x-3">
+                                                                                    <div className="flex items-center gap-x-2">
+                                                                                        <img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />
+                                                                                        <div>
+                                                                                            <h2 className="font-medium text-gray-800 ">{nome_emprestado_usuario}</h2>
+                                                                                            {/*<p className="text-sm font-normal text-gray-600 dark:text-gray-400">@authurmelo</p>*/}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+
+                                                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
+                                                                                <div>
+                                                                                    <h4 className="text-gray-700">{emprestimo}</h4>
+                                                                                </div>
+                                                                            </td>
+
+                                                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
+                                                                                <div>
+                                                                                    <h4 className="text-gray-700">{data_devolucao}</h4>
+                                                                                </div>
+                                                                            </td>
+
+                                                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
+                                                                                <div>
+                                                                                    <h4 className="text-gray-700">{avaliacao}</h4>
+                                                                                </div>
+                                                                            </td>
+
+                                                                        </tr>
+                                                                    ))}
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

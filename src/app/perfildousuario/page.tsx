@@ -3,6 +3,7 @@ import BarraNavegacao from "@/components/BarraNavegacao/index";
 import style from './style.module.css'
 import Rodape from "@/components/Rodape/index";
 import InformacaoPerfil from "@/components/InfoPerfil";
+import Image from "next/image";
 
 export default function PerfilUsuario() {
     return (
@@ -10,13 +11,18 @@ export default function PerfilUsuario() {
         <div className={style.body}>
             <BarraNavegacao />
             <br />
-            <InformacaoPerfil>
-                <p>Nome:<br /> Ana Izadora</p><br />
+            <div className={style.fotoperfil}>
+                <div>
+                    <Image src={''} width={200} height={200} alt='' />
+                </div>
+                <div className={style.info}>
+                    <p>Nome:<br />IFRN - Instituto Federal do Rio Grande do Norte</p><br /><br />
 
-                <p>Sobrenome:<br /> Fernandes</p><br />
+                    <p>Campus:<br />Pau Dos Ferros</p><br />
 
-                <p>Email:</p> ana.izadora@escolar.ifrn.edu.br <br />
-            </InformacaoPerfil>
+                    <p>Email:<br /></p><br />
+                </div>
+            </div>
 
             <section className="container px-4 mx-auto">
                 <h2 className={style.titulo}>Meus Empréstimos</h2>

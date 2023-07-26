@@ -58,6 +58,7 @@ export default function Acervo() {
                                     </div>
                                     <div className={style.titulo}>
                                         <p>{nome_livro}</p>
+                                        <p>INSTITUTO DO LIVRO</p>
                                         <Link href={`acessolivro/${id}`}>
                                             <Botao>Acessar</Botao>
                                         </Link>
