@@ -13,7 +13,6 @@ import Livro8 from 'public/Livro8.jpg'
 
 
 import Estudante from 'public/Estudante.jpg'
-import Instituto from "@/components/Institutos/index";
 import Rodape from "@/components/Rodape/index";
 
 
@@ -63,7 +62,7 @@ export default function Inicial() {
                 <Image className={style.imagembanner} src={BannerHome} alt="BannerHome" />
             </section>
 
-            <section className={style.quemsomos}>
+            <section id="quemsomos" className={style.quemsomos}>
                 <div className={style.tituloquemsomos}>
                     <p>Quem Somos</p>
                 </div>
@@ -98,12 +97,6 @@ export default function Inicial() {
                     <a className={style.linkacervo} href="/acervo">Explore o nosso acervo completo</a>
                 </div>
             </section>
-
-            <hr /><p className={style.titulobibliotecas}>Bibliotecas Cadastradas</p><hr />
-            <div className={style.instit} id="institut" >
-                <Instituto />
-                <Instituto />
-            </div>
 
             <Rodape />
 

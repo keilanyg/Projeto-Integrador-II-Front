@@ -8,6 +8,8 @@
 }
 
 .linha {
+    margin-top: 30px;
+    margin-bottom: 8px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;

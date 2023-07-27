@@ -18,10 +18,15 @@ const Elementoaexibir = (x) => {
             </ul>
         </div>;
     } else {
-        return <div>
-            <a href="#">
-                <h4>Entre ou Cadastre-se</h4>
+        return <div style={{ display: "flex" }}>
+            <a href="/login" style={{ marginRight: "10px" }}>
+                <h4>Entre  ou</h4>
             </a>
+
+            <a href="/cadastro" style={{ marginRight: "10px" }}>
+                <h4>Cadastre-se</h4>
+            </a>
+
         </div>;
     }
 };
@@ -32,13 +37,12 @@ export default function BarraNavegacao() {
             <div className={style.secaologo}>
                 <Image src={Logo} width={170} height={170} alt="Logo" />
 
-                {Elementoaexibir(true)}
+                {Elementoaexibir(false)}
             </div>
             <div className={style.links}>
                 <a href="/inicial">Inicio</a>
                 <a href="/acervo">Biblioteca</a>
-                <a href="/inicial/#institut">Instituições</a>
-                <a href="#">Perfil</a>
+                <a href="/inicial/#quemsomos">Quem Somos</a>
             </div>
         </header>
     )

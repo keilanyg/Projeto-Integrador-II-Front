@@ -6,7 +6,11 @@ import Rodape from "@/components/Rodape/index";
 import React from "react";
 import Botao from "@/components/Botao/index";
 import { useState, useEffect } from "react";
-import { api } from "../services/api";
+import { api, core } from "../services/api";
+import ifrn from 'public/ifrn.png'
+import usuarioimg from 'public/usuarioimg.png'
+
+
 /*Menssagens*/
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,25 +36,35 @@ interface Livros {
     quantidade: number;
     descricao_livro: string;
     categoria: string;
+    categoria_obj: Categoria
     editora: string;
+    editora_obj: Editora
     autor: string;
+    autor_obj: Autor;
 }
 interface Emprestimo {
     id: number;
-    nome_emprestado_usuario: string;
     data_emprestimo: Date;
+    nome_emprestado_usuario: string;
+    nome_emprestado_usuario_obj: User;
     livro: string;
-    status: string;
+    livro_obj: Livros;
 }
 interface Devolucao {
     id: number;
-    nome_emprestado_usuario: string;
     emprestimo: string;
-    observacoes: string;
+    emprestimo_obj: Emprestimo;
     data_devolucao: Date;
-    avaliacao: string;
+    usuario_devolucao: string;
+    usuario_devolucao_obj: User;
+    livro: string;
+    livro_obj: Livros;
 }
-
+interface User {
+    id: number;
+    password: string;
+    email: string;
+}
 
 export default function PerfilInstituicao() {
 
@@ -128,14 +142,20 @@ export default function PerfilInstituicao() {
         setDevolucao(data)
     }
 
+    const [usuario, setUsuario] = useState<User[]>([]);
+    const getUsuario = async () => {
+        const { data } = await core.get('user/')
+        setUsuario(data)
+    }
+
     useEffect(() => {
         getLivros();
         getCategoria();
         getEditora();
         getAutor();
         getEmprestimo();
+        getUsuario();
         getDevolucao();
-
     }, []);
 
 
@@ -206,6 +226,7 @@ export default function PerfilInstituicao() {
         })
         notifyPost();
         <ToastContainer />
+        getLivros()
         setNomeLivro("");
         setImgLivro(null);
         setDataLancamento("");
@@ -214,32 +235,27 @@ export default function PerfilInstituicao() {
         setCategoriaLivro("");
         setEditoraLivro("");
         setAutorLivro("");
-        getLivros()
 
     };
 
     const [nomeLivroDevolucao, setNomeLivroDev] = useState("")
     const [datadevolucao, setDataDevolucao] = useState("")
-    const [avaliacaodouser, setAvaliacao] = useState("")
     const [nomeemprestadousuariodev, setNomeEmprestimoDev] = useState("")
-
     const postDevolucao = async (e) => {
         e.preventDefault();
         const newDevolucao = {
             emprestimo: nomeLivroDevolucao,
             data_devolucao: datadevolucao,
-            avaliacao: avaliacaodouser,
-            nome_emprestado_usuario_dev: nomeemprestadousuariodev
+            nome_emprestado_usuario: nomeemprestadousuariodev
 
         }
         const data = await api.post('devolucao/', newDevolucao)
         notifyPost();
         <ToastContainer />
-        getDevolucao()
         setNomeLivroDev("");
         setDataDevolucao("");
         setNomeEmprestimoDev("");
-        setAvaliacao("")
+        getDevolucao()
     };
 
     const [nomeemprestadousuario, setNomeEmprestimo] = useState("")
@@ -255,10 +271,11 @@ export default function PerfilInstituicao() {
         const data = await api.post('emprestimo/', newEmprestimo)
         notifyPost();
         <ToastContainer />
+        getEmprestimo();
         setNomeEmprestimo("");
         setDataEmprestimo("");
         setNomeLivroEmp("");
-        getEmprestimo()
+
     };
 
 
@@ -294,14 +311,14 @@ export default function PerfilInstituicao() {
 
             <div className={style.fotoperfil}>
                 <div>
-                    <Image src={''} width={200} height={200} alt='' />
+                    <Image src={ifrn} width={200} height={200} alt='' />
                 </div>
                 <div className={style.info}>
-                    <p>Nome:<br />IFRN - Instituto Federal do Rio Grande do Norte</p><br /><br />
+                    <p>Nome: IFRN - Instituto Federal do Rio Grande do Norte</p><br />
 
-                    <p>Campus:<br />Pau Dos Ferros</p><br /><br />
+                    <br /><p>Campus: Pau Dos Ferros</p><br />
 
-                    <p>Email:<br /></p><br /><br />
+                    <p>Email:<br /></p><br />
                 </div>
             </div>
 
@@ -439,7 +456,7 @@ export default function PerfilInstituicao() {
                                 <div className="tab-content tab-space">
                                     <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                                         <form onSubmit={postNameCategoria}>
-                                            <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome Categoria</label><br />
+                                            <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome Categoria / Gênero</label><br />
                                             <input type="text" value={nomecat} onChange={(e) => setNomecategoria(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
                                             <br /><br /><Botao type="submit">Salvar</Botao >
                                         </form>
@@ -529,6 +546,7 @@ export default function PerfilInstituicao() {
                                                 <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Descrição</label><br />
                                                 <input type="text" value={descricaolivro} onChange={(e) => setDescricaoLivro(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
                                             </div>
+
                                             <div>
                                                 <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Quantidade</label><br />
                                                 <input type="number" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
@@ -564,18 +582,22 @@ export default function PerfilInstituicao() {
                                         </form>
                                         <div>
                                             <ul>
-                                                {livros.map(({ id, nome_livro, cover, data_cadastro, data_lancamento, quantidade, descricao_livro, categoria, editora, autor }) => (
+                                                {livros.map(({ id, nome_livro, autor_obj, editora_obj, categoria_obj, cover, data_cadastro, data_lancamento, quantidade, descricao_livro, categoria, editora, autor }) => (
                                                     <li key={id} className={style.li}>
-                                                        <div>
+                                                        <div style={{ maxWidth: "22%" }}>
+
                                                             <p>Nome do Livro: {nome_livro}</p>
                                                             <p>Data de Cadastro: {data_cadastro}</p>
                                                             <p>Data de Lançamento: {data_lancamento}</p>
                                                             <p>Quantidade: {quantidade}</p>
-                                                            <p>Descrição: {descricao_livro}</p>
-                                                            <p>Categoria: {categoria.nome_categoria}</p>
-                                                            <p>Editora: {editora.nome_editora}</p>
-                                                            <p>Autor: {autor.nome_autor}</p>
                                                         </div>
+                                                        <div style={{ maxWidth: "22%" }}>
+                                                            <p>Descrição: {descricao_livro}</p>
+                                                            <p>Categoria: {categoria_obj.nome_categoria}</p>
+                                                            <p>Editora: {editora_obj.nome_editora}</p>
+                                                            <p>Autor: {autor_obj.nome_autor}</p>
+                                                        </div>
+
                                                         <Image src={cover} width={100} height={100} alt='' />
                                                         <div style={{ display: "flex", gap: "10px" }}>
                                                             <Botao>Editar</Botao>
@@ -589,13 +611,12 @@ export default function PerfilInstituicao() {
 
                                     <div className={openTab === 5 ? "block" : "hidden"} id="link5">
                                         <form onSubmit={postEmprestimo} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
-
                                             <div>
                                                 <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Usuário</label><br />
                                                 <select onChange={(e) => setNomeEmprestimo(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
                                                     <option selected disabled>Selecione</option>
-                                                    {emprestimo.map(({ id, nome_emprestado_usuario }) => (
-                                                        <option value={id} key={id}>{nome_emprestado_usuario}</option>
+                                                    {emprestimo.map(({ id, nome_emprestado_usuario_obj }) => (
+                                                        <option value={id} key={id}>{nome_emprestado_usuario_obj.email}</option>
                                                     ))}
                                                 </select>
                                             </div>
@@ -628,12 +649,7 @@ export default function PerfilInstituicao() {
                                                                     <tr>
                                                                         <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 ">
                                                                             <button className="flex items-center gap-x-3 focus:outline-none">
-                                                                                <span>Nome</span>
-                                                                                <svg className="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                    <path d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z" fill="currentColor" stroke="currentColor" stroke-width="0.1" />
-                                                                                    <path d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z" fill="currentColor" stroke="currentColor" stroke-width="0.1" />
-                                                                                    <path d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z" fill="currentColor" stroke="currentColor" stroke-width="0.3" />
-                                                                                </svg>
+                                                                                <span>Usuário</span>
                                                                             </button>
                                                                         </th>
 
@@ -647,16 +663,16 @@ export default function PerfilInstituicao() {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody className="bg-white divide-y divide-gray-200">
-                                                                    {emprestimo.map(({ id, nome_emprestado_usuario, data_emprestimo, livro }) => (
+                                                                    {emprestimo.map(({ id, nome_emprestado_usuario_obj, data_emprestimo, livro_obj }) => (
 
                                                                         <tr>
                                                                             <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                                                 <div className="inline-flex items-center gap-x-3">
                                                                                     <div className="flex items-center gap-x-2">
-                                                                                        <img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />
+                                                                                        <Image className="object-cover w-10 h-10 rounded-full" src={usuarioimg} alt="" />
                                                                                         <div>
-                                                                                            <h2 className="font-medium text-gray-800 ">{nome_emprestado_usuario}</h2>
-                                                                                            <p className="text-sm font-normal text-gray-600 dark:text-gray-400">@authurmelo</p>
+                                                                                            <h2 className="font-medium text-gray-800 ">{nome_emprestado_usuario_obj.email}</h2>
+                                                                                            {/* <p className="text-sm font-normal text-gray-600 dark:text-gray-400">@authurmelo</p>*/}
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -664,7 +680,7 @@ export default function PerfilInstituicao() {
 
                                                                             <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                                                 <div>
-                                                                                    <h4 className="text-gray-700">{livro}</h4>
+                                                                                    <h4 className="text-gray-700">{livro_obj.nome_livro}</h4>
                                                                                 </div>
                                                                             </td>
 
@@ -687,34 +703,26 @@ export default function PerfilInstituicao() {
                                     </div>
 
                                     <div className={openTab === 6 ? "block" : "hidden"} id="link6">
-                                        <form onSubmit={postDevolucao} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
+                                        <form onSubmit={postDevolucao} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end", }}>
                                             <div>
-                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro</label><br />
-                                                <select onChange={(e) => setNomeLivroDev(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro - Nome do Usuário</label><br />
+                                                <select onChange={(e) => setNomeEmprestimo(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
                                                     <option selected disabled>Selecione</option>
-                                                    {livros.map(({ id, nome_livro }) => (
-                                                        <option value={id} key={id}>{nome_livro}</option>
+                                                    {emprestimo.map(({ id, nome_emprestado_usuario_obj, livro_obj }) => (
+                                                        <option value={id} key={id}>{livro_obj.nome_livro}-{nome_emprestado_usuario_obj.email}</option>
                                                     ))}
                                                 </select>
                                             </div>
                                             <div>
-                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Usuário</label><br />
-                                                <select onChange={(e) => setNomeEmprestimoDev(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Confirmação do Usuário</label><br />
+                                                <select onChange={(e) => setNomeEmprestimo(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
                                                     <option selected disabled>Selecione</option>
-                                                    {devolucao.map(({ id, nome_emprestado_usuario }) => (
-                                                        <option value={id} key={id}>{nome_emprestado_usuario}</option>
+                                                    {emprestimo.map(({ id, nome_emprestado_usuario_obj }) => (
+                                                        <option value={id} key={id}>{nome_emprestado_usuario_obj.email}</option>
                                                     ))}
                                                 </select>
                                             </div>
-                                            <div>
-                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Avaliação</label><br />
-                                                <select onChange={(e) => setAvaliacao(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
-                                                    <option selected disabled>Selecione</option>
-                                                    {devolucao.map(({ id, avaliacao }) => (
-                                                        <option value={id} key={id}>{avaliacao}</option>
-                                                    ))}
-                                                </select>
-                                            </div>
+
                                             <div>
                                                 <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Data de Devolução</label><br />
                                                 <input type="date" value={datadevolucao} onChange={(e) => setDataDevolucao(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
@@ -735,38 +743,24 @@ export default function PerfilInstituicao() {
                                                                     <tr>
                                                                         <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 ">
                                                                             <button className="flex items-center gap-x-3 focus:outline-none">
-                                                                                <span>Nome do Usuário</span>
-                                                                                <svg className="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                    <path d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z" fill="currentColor" stroke="currentColor" stroke-width="0.1" />
-                                                                                    <path d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z" fill="currentColor" stroke="currentColor" stroke-width="0.1" />
-                                                                                    <path d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z" fill="currentColor" stroke="currentColor" stroke-width="0.3" />
-                                                                                </svg>
+                                                                                <span>Nome do Livro e Usuário</span>
                                                                             </button>
-                                                                        </th>
-
-                                                                        <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-700">
-                                                                            Nome do Livro
                                                                         </th>
 
                                                                         <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-700">
                                                                             Data de Devolução
                                                                         </th>
-
-                                                                        <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-700">
-                                                                            Avaliação
-                                                                        </th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody className="bg-white divide-y divide-gray-200">
-                                                                    {devolucao.map(({ id, nome_emprestado_usuario, emprestimo, data_devolucao, avaliacao }) => (
+                                                                    {devolucao.map(({ data_devolucao, usuario_devolucao_obj, emprestimo_obj, livro_obj }) => (
 
                                                                         <tr>
                                                                             <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                                                 <div className="inline-flex items-center gap-x-3">
                                                                                     <div className="flex items-center gap-x-2">
-                                                                                        <img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />
-                                                                                        <div>
-                                                                                            <h2 className="font-medium text-gray-800 ">{nome_emprestado_usuario}</h2>
+                                                                                        {/*<img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />*/}                                                                                        <div>
+                                                                                            <h2 className="font-medium text-gray-800 ">{emprestimo_obj.livro_obj.nome_livro} - {usuario_devolucao_obj.email}</h2>
                                                                                             {/*<p className="text-sm font-normal text-gray-600 dark:text-gray-400">@authurmelo</p>*/}
                                                                                         </div>
                                                                                     </div>
@@ -775,19 +769,7 @@ export default function PerfilInstituicao() {
 
                                                                             <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                                                 <div>
-                                                                                    <h4 className="text-gray-700">{emprestimo}</h4>
-                                                                                </div>
-                                                                            </td>
-
-                                                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                                                                <div>
                                                                                     <h4 className="text-gray-700">{data_devolucao}</h4>
-                                                                                </div>
-                                                                            </td>
-
-                                                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                                                                <div>
-                                                                                    <h4 className="text-gray-700">{avaliacao}</h4>
                                                                                 </div>
                                                                             </td>
 

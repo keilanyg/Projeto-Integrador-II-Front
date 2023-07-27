@@ -2,7 +2,6 @@
 import BarraNavegacao from "@/components/BarraNavegacao/index";
 import style from './style.module.css'
 import Rodape from "@/components/Rodape/index";
-import InformacaoPerfil from "@/components/InfoPerfil";
 import Image from "next/image";
 
 export default function PerfilUsuario() {
@@ -16,11 +15,11 @@ export default function PerfilUsuario() {
                     <Image src={''} width={200} height={200} alt='' />
                 </div>
                 <div className={style.info}>
-                    <p>Nome:<br />IFRN - Instituto Federal do Rio Grande do Norte</p><br /><br />
+                    <p>Nome: IFRN - Instituto Federal do Rio Grande do Norte</p><br />
 
-                    <p>Campus:<br />Pau Dos Ferros</p><br />
+                    <p>Campus: Pau Dos Ferros</p><br />
 
-                    <p>Email:<br /></p><br />
+                    <p>Email: </p><br />
                 </div>
             </div>
 
@@ -44,28 +43,24 @@ export default function PerfilUsuario() {
                                             <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-700">
                                                 Data de devolução
                                             </th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-700">
-                                                Tempo de duração
-                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         <tr>
                                             <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                 <div>
-                                                    <h4 className="text-gray-700">NOME</h4>                                                </div>
+                                                    <h4 className="text-gray-700">NOME DO LIVRO</h4>
+                                                </div>
                                             </td>
                                             <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                 <div>
-                                                    <h4 className="text-gray-700">DATA</h4>                                                </div>
+                                                    <h4 className="text-gray-700">DATA EMPRESTIMO</h4>
+                                                </div>
                                             </td>
                                             <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                 <div>
-                                                    <h4 className="text-gray-700">DATA</h4>                                                </div>
-                                            </td>
-                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                                <div>
-                                                    <h4 className="text-gray-700">TEMPO</h4>                                                </div>
+                                                    <h4 className="text-gray-700">DATA DEVOLUÇÃO</h4>
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>

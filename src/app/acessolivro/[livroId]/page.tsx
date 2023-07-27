@@ -15,6 +15,18 @@ interface livroprops {
     }
 }
 
+interface Categoria {
+    id: number;
+    nome_categoria: string;
+}
+interface Autor {
+    id: number;
+    nome_autor: string;
+}
+interface Editora {
+    id: number;
+    nome_editora: string;
+}
 interface Livros {
     id: number;
     cover: File;
@@ -24,9 +36,13 @@ interface Livros {
     quantidade: number;
     descricao_livro: string;
     categoria: string;
+    categoria_obj: Categoria
     editora: string;
+    editora_obj: Editora
     autor: string;
+    autor_obj: Autor;
 }
+
 export default function AcessoLivro({ params }: livroprops) {
 
     const [livros, setLivros] = useState<Livros>();
@@ -44,23 +60,23 @@ export default function AcessoLivro({ params }: livroprops) {
             <InformacaoLivro>
 
                 <div className={style.linha}>
-                    <div style={{ marginTop: "50px" }}>
+                    <div style={{ marginTop: "20px" }}>
                         <Image src={livros?.cover} width={200} height={200} alt='' />
                     </div>
 
                     <div className={style.coluna}>
                         <ApresentacaoProps titulo="Nome do livro" conteudo={livros?.nome_livro} />
-                        <ApresentacaoProps titulo="Autor" conteudo={livros?.autor} />
-                        <ApresentacaoProps titulo="Categoria" conteudo={livros?.categoria} />
-                        <ApresentacaoProps titulo="Editora" conteudo={livros?.editora} />
-                        <ApresentacaoProps titulo="Instituto(s)" conteudo="Teste" />
+                        <ApresentacaoProps titulo="Autor" conteudo={livros?.autor_obj.nome_autor} />
+                        <ApresentacaoProps titulo="Categoria" conteudo={livros?.categoria_obj.nome_categoria} />
+                        <ApresentacaoProps titulo="Editora" conteudo={livros?.editora_obj.nome_editora} />
+                        {/*<ApresentacaoProps titulo="Instituto(s)" conteudo="Teste" />*/}
                     </div>
 
                     <div className={style.coluna}>
                         <ApresentacaoProps titulo="Quantidade disponível" conteudo={livros?.quantidade} />
-                        <ApresentacaoProps titulo="Descrição" conteudo={livros?.descricao_livro} />
                         <ApresentacaoProps titulo="Data de Cadastro" conteudo={livros?.data_cadastro} />
                         <ApresentacaoProps titulo="Data de Lançamento" conteudo={livros?.data_lancamento} />
+                        <ApresentacaoProps titulo="Descrição" conteudo={livros?.descricao_livro} />
                     </div>
                 </div>
             </InformacaoLivro>
