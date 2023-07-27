@@ -43,6 +43,7 @@ export default function BarraNavegacao() {
                 <a href="/inicial">Inicio</a>
                 <a href="/acervo">Biblioteca</a>
                 <a href="/inicial/#quemsomos">Quem Somos</a>
+                <a href="/perfildainstituicao/#perfil">Perfil</a>
             </div>
         </header>
     )
