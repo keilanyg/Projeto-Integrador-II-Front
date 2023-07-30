@@ -51,7 +51,7 @@ export default function Acervo() {
                 <Image className={style.imagembanner} src={BannerAcervo} alt="BannerAcervo" />
                 <div id="camposfiltrar" style={{ color: "#4C3228", display: "flex", alignItems: "center", position: "relative", justifyContent: "space-between", margin: "0 200px" }}>
                     <div>
-                        <select className="select select-bordered mt-2 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ minWidth: "110%", maxWidth: "111%", border: "1px solid #8c5c3d" }}>
+                        <select className="select select-bordered mt-2 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ minWidth: "180%", border: "1px solid #8c5c3d" }}>
                             <option selected disabled>Livro</option>
                             {livros.map(({ id, nome_livro }) => (
                                 <option value={id} key={id}>{nome_livro}</option>
