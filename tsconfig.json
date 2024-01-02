@@ -4,7 +4,8 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "es2015"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -34,8 +35,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/CodigosTeste/index.js"
-  ],
+    "src/components/CodigosTeste/index.js",
+    "cypress/support/**/*.ts",
+    "cypress/**/*.ts"
+, "cypress/component/ComponentName-copy-1.cy.js"  ],
   "exclude": [
     "node_modules"
   ]
