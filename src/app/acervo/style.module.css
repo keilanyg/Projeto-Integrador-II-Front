@@ -1,5 +1,6 @@
 .body {
   background-color: #ffffff;
+  min-width: 100.vh;
 }
 
 .livro {

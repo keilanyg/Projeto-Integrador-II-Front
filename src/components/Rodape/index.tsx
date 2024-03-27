@@ -8,16 +8,13 @@ export default function Rodape() {
             <div className={style.secaologo}>
                 <Image src={Logo} width={150} height={150} alt="Logo" />
                 <div>
-                    <h3>Serviços:</h3>
-                </div>
-                <div>
                     <p>Empréstimos</p>
                 </div>
                 <div>
-                    <p>Consultas de Acervo</p>
+                    <p>Consultas de obras</p>
                 </div>
                 <div>
-                    <p>Cadastro de Livros</p>
+                    <p>Controle de Acervo</p>
                 </div>
             </div>
         </footer>)

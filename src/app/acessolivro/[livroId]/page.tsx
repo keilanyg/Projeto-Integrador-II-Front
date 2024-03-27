@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import BarraNavegacao from "@/components/BarraNavegacao/index";
 import style from './style.module.css'
@@ -10,77 +10,66 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 interface livroprops {
-    params: {
-        livroId: number
-    }
+  params: {
+    livroId: number
+  }
 }
 
-interface Categoria {
-    id: number;
-    nome_categoria: string;
-}
-interface Autor {
-    id: number;
-    nome_autor: string;
-}
-interface Editora {
-    id: number;
-    nome_editora: string;
-}
-interface Livros {
-    id: number;
-    cover: File;
-    nome_livro: string;
-    data_cadastro: Date;
-    data_lancamento: Date;
-    quantidade: number;
-    descricao_livro: string;
-    categoria: string;
-    categoria_obj: Categoria
-    editora: string;
-    editora_obj: Editora
-    autor: string;
-    autor_obj: Autor;
+interface Livro {
+  id: string;
+  nome_livro: string;
+  descricao_livro: string;
+  nome_categoria: string;
+  nome_autor: string;
+  nome_editora: string;
+  cover: string;
 }
 
 export default function AcessoLivro({ params }: livroprops) {
 
-    const [livros, setLivros] = useState<Livros>();
-    const getLivros = async () => {
-        const { data } = await api.get(`livro/${params.livroId}/`)
-        setLivros(data)
-    }
-    useEffect(() => {
-        getLivros();
-    }, []);
+  const [livro, setLivro] = useState<Livro | null>(null);
 
-    return (
-        <div className={style.body}>
-            <BarraNavegacao />
-            <InformacaoLivro>
+  useEffect(() => {
+    const getLivro = async () => {
+      try {
+        const { data } = await api.get(`/livros/${params.livroId}/`);
+        setLivro(data);
+      } catch (error) {
+        console.error("Erro ao buscar os dados do livro:", error);
+      }
+    };
+    getLivro();
+  }, [params.livroId]);
 
-                <div className={style.linha}>
-                    <div style={{ marginTop: "20px" }}>
-                        <Image src={livros?.cover} width={200} height={200} alt='' />
-                    </div>
+  if (!livro) {
+    return <p>Carregando...</p>; // Ou outra mensagem de carregamento
+  }
 
-                    <div className={style.coluna}>
-                        <ApresentacaoProps titulo="Nome do livro" conteudo={livros?.nome_livro} />
-                        <ApresentacaoProps titulo="Autor" conteudo={livros?.autor_obj.nome_autor} />
-                        <ApresentacaoProps titulo="Categoria" conteudo={livros?.categoria_obj.nome_categoria} />
-                        <ApresentacaoProps titulo="Editora" conteudo={livros?.editora_obj.nome_editora} />
-                        {/*<ApresentacaoProps titulo="Instituto(s)" conteudo="Teste" />*/}
-                    </div>
+  return (
+    <>
+      <BarraNavegacao />
+      <div className={style.body}>
+        <InformacaoLivro>
+          <div className={style.linha}>
+            <div style={{ marginTop: "20px" }}>
+              <Image src={livro.cover} width={200} height={200} alt='' />
+            </div>
 
-                    <div className={style.coluna}>
-                        <ApresentacaoProps titulo="Quantidade disponível" conteudo={livros?.quantidade} />
-                        <ApresentacaoProps titulo="Data de Cadastro" conteudo={livros?.data_cadastro} />
-                        <ApresentacaoProps titulo="Data de Lançamento" conteudo={livros?.data_lancamento} />
-                        <ApresentacaoProps titulo="Descrição" conteudo={livros?.descricao_livro} />
-                    </div>
-                </div>
-            </InformacaoLivro>
-            <Rodape />
-        </div>
-    )
+            <div className={style.coluna}>
+              <ApresentacaoProps titulo="Nome do livro" conteudo={livro.nome_livro} />
+              <ApresentacaoProps titulo="Autor" conteudo={livro.nome_autor} />
+              <ApresentacaoProps titulo="Categoria" conteudo={livro.nome_categoria} />
+              <ApresentacaoProps titulo="Editora" conteudo={livro.nome_editora} />
+            </div>
+
+            <div className={style.coluna}>
+              <ApresentacaoProps titulo="Descrição" conteudo={livro.descricao_livro} />
+            </div>
+          </div>
+        </InformacaoLivro>
+      </div>
+
+      <Rodape />
+    </>
+  );
 }

@@ -1,13 +1,11 @@
 .body {
   background-color: #ffffff;
-  min-height: 65.4vh;
+  min-height: 100vh;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.bemvindo {
-  display: flex;
-}
-
-.retanguloDaEstante {
+/*.retanguloDaEstante {
   position: absolute;
   top: 380px;
   left: 610px;
@@ -17,31 +15,26 @@
   background-color: #8c5c3d;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.25),
     0 4px 4px rgba(0, 0, 0, 0.25);
-}
+}*/
 
 .frase1 {
-  position: absolute;
-  top: 233px;
-  left: 87px;
-  font-size: 40px;
+  font-size: 45px;
+  font-weight: bold;
   color: #4C3228;
+
 }
 
 .frase2 {
-  position: absolute;
-  margin: 0;
-  top: 289px;
-  left: 87px;
-  font-size: 20px;
+  font-size: 25px;
   color: #4C3228;
 }
 
-.contenu_carou_auto {
+
+/*.contenu_carou_auto {
   margin: 50px auto;
   width: 200px;
   height: 200px;
   perspective: 9000px;
-
 }
 
 .caroussel_image {
@@ -109,7 +102,10 @@
   }
 }
 
-/*****fin carrousel 3d automatique*****/
+
+*/
+
+
 .paginaHomeItem {
   position: relative;
 }
@@ -136,26 +132,8 @@
 
 }
 
-.frasemisao,
-.frasequemsomos,
-.frasecomofunciona {
-  font-size: 18px;
-}
 
-.frasemisao,
-.titulomisao {
-  margin: 13px 0 6px 30px;
-  color: #4C3228;
-  font-weight: 490;
-}
 
-.quemsomos {
-  color: #4C3228;
-  padding: 5% 18%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 .comofunciona {
   background-color: #EDD6A0;
