@@ -299,7 +299,7 @@ export default function PerfilInstituicao() {
         </div>
       </div>
 
-      <div className="flex flex-wrap" style={{ color: "#4C3228", margin: "20px 90px" }}>
+      <div className="flex flex-wrap" style={{ color: "#8C5C3D", margin: "20px 90px" }}>
         <div className="w-full">
           <ul
             className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
@@ -569,10 +569,10 @@ export default function PerfilInstituicao() {
                               <p>Quantidade: {quantidade}</p>
                             </div>
                             <div style={{ maxWidth: "22%" }}>
-                              <p>Descrição: {descricao_livro}</p>
-                              <p>Categoria: {categoria_obj.nome_categoria}</p>
-                              <p>Editora: {editora_obj.nome_editora}</p>
-                              <p>Autor: {autor_obj.nome_autor}</p>
+                              {/* <p>Descrição: {descricao_livro}</p> */}
+                              {/* <p>Categoria: {categoria_obj.nome_categoria}</p> */}
+                              {/* <p>Editora: {editora_obj.nome_editora}</p> */}
+                              {/* <p>Autor: {autor_obj.nome_autor}</p> */}
                             </div>
 
                             <Image src={cover} width={100} height={100} alt='' />

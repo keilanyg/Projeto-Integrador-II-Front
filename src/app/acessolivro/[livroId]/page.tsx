@@ -46,13 +46,13 @@ export default function AcessoLivro({ params }: livroprops) {
   }
 
   return (
-    <>
+    <div>
       <BarraNavegacao />
       <div className={style.body}>
         <InformacaoLivro>
           <div className={style.linha}>
             <div style={{ marginTop: "20px" }}>
-              <Image src={livro.cover} width={200} height={200} alt='' />
+              <Image src={livro.cover} width={150} height={150} alt='' />
             </div>
 
             <div className={style.coluna}>
@@ -68,8 +68,7 @@ export default function AcessoLivro({ params }: livroprops) {
           </div>
         </InformacaoLivro>
       </div>
-
       <Rodape />
-    </>
-  );
+      </div>
+      );
 }

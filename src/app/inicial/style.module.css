@@ -1,7 +1,7 @@
 .body {
   background-color: #ffffff;
   min-height: 100vh;
-  color: black;
+  color: #8C5C3D;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -18,15 +18,15 @@
 }*/
 
 .frase1 {
-  font-size: 45px;
+  font-size: 40px;
   font-weight: bold;
-  color: #4C3228;
-
+  color: #8C5C3D;
 }
 
 .frase2 {
-  font-size: 25px;
-  color: #4C3228;
+  font-size: 20px;
+  color: #8C5C3D;
+  margin-bottom: 10px;
 }
 
 
@@ -101,10 +101,7 @@
     transform: rotatey(0.5turn);
   }
 }
-
-
 */
-
 
 .paginaHomeItem {
   position: relative;
@@ -127,19 +124,15 @@
 .titulomisao,
 .tituloquemsomos,
 .titulocomofunciona {
-  font-size: 30px;
   margin-bottom: 10px;
-
 }
-
-
 
 
 .comofunciona {
   background-color: #EDD6A0;
   display: flex;
   flex-basis: 50%;
-  color: #4C3228;
+  color: #8C5C3D;
   gap: 16px;
   align-items: center;
 }
@@ -152,30 +145,15 @@
 }
 
 
-
 .sectionacervo {
-  color: #4C3228;
+  color: #8C5C3D;
   padding: 10%;
   text-align: center;
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .linkacervo {
   padding: 14px;
   background-color: #EDD6A0;
   border-radius: 10px;
-}
-
-.titulobibliotecas {
-  font-size: 30px;
-  background-color: #EDD6A0;
-  color: #4C3228;
-  text-align: center;
-  padding: 1.4%;
-}
-
-.instit {
-  display: flex;
-  flex-direction: row;
-  padding: 0 0 20px 0;
 }
