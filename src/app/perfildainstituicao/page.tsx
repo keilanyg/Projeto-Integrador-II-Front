@@ -586,30 +586,30 @@ export default function PerfilInstituicao() {
                     </div>
                   </div>
 
-                  {/*<div className={openTab === 5 ? "block" : "hidden"} id="link5">
-                    <form onSubmit={postEmprestimo} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
-                      <div>
-                        <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Usuário</label><br />
-                        <select onChange={(e) => setNomeEmprestimo(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
-                          <option selected disabled>Selecione</option>
-                          {usuario.map(({ id, email }) => (
-                            <option value={id} key={id}>{email}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Data do Empréstimo</label><br />
-                        <input type="date" value={dataemprestimo} onChange={(e) => setDataEmprestimo(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
-                      </div>
-                      <div>
-                        <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro</label><br />
-                        <select onChange={(e) => setNomeLivroEmp(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
-                          <option selected disabled>Selecione</option>
-                          {livros.map(({ id, nome_livro }) => (
-                            <option value={id} key={id}>{nome_livro}</option>
-                          ))}
-                        </select>
-                      </div>
+                                    {/* <div className={openTab === 5 ? "block" : "hidden"} id="link5">
+                                        <form onSubmit={postEmprestimo} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
+                                            <div>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Usuário</label><br />
+                                                <select onChange={(e) => setNomeEmprestimo(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    <option selected disabled>Selecione</option>
+                                                    {usuario.map(({ id, email }) => (
+                                                        <option value={id} key={id}>{email}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Data do Empréstimo</label><br />
+                                                <input type="date" value={dataemprestimo} onChange={(e) => setDataEmprestimo(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+                                            </div>
+                                            <div>
+                                                <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro</label><br />
+                                                <select onChange={(e) => setNomeLivroEmp(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+                                                    <option selected disabled>Selecione</option>
+                                                    {livros.map(({ id, nome_livro }) => (
+                                                        <option value={id} key={id}>{nome_livro}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
 
                       <br /><Botao type="submit" >Salvar</Botao>
                     </form>
@@ -642,17 +642,17 @@ export default function PerfilInstituicao() {
                                 <tbody className="bg-white divide-y divide-gray-200">
                                   {emprestimo.map(({ id, nome_emprestado_usuario_obj, data_emprestimo, livro_obj }) => (
 
-                                    <tr>
-                                      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                                        <div className="inline-flex items-center gap-x-3">
-                                          <div className="flex items-center gap-x-2">
-                                            <Image className="object-cover w-10 h-10 rounded-full" src={usuarioimg} alt="" />
-                                            <div>
-                                              <h2 className="font-medium text-gray-800 ">{nome_emprestado_usuario_obj.email}</h2>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </td>
+                                                                        <tr>
+                                                                            <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                                                                                <div className="inline-flex items-center gap-x-3">
+                                                                                    <div className="flex items-center gap-x-2">
+                                                                                        <Image className="object-cover w-10 h-10 rounded-full" src={usuarioimg} alt="" />
+                                                                                        <div>
+                                                                                            <h2 className="font-medium text-gray-800 ">{nome_emprestado_usuario_obj.email}</h2>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
 
                                       <td className="px-4 py-4 text-sm whitespace-nowrap">
                                         <div>
@@ -735,7 +735,9 @@ export default function PerfilInstituicao() {
                                                                             <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                                                 <div className="inline-flex items-center gap-x-3">
                                                                                     <div className="flex items-center gap-x-2">
+                                                                                        {/*<img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />*/}                                                                                        <div>
                                                                                             <h2 className="font-medium text-gray-800 ">{emprestimo_obj.livro_obj.nome_livro} - {usuario_devolucao_obj.email}</h2>
+                                                                                            {/*<p className="text-sm font-normal text-gray-600 dark:text-gray-400">@authurmelo</p>*/}
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -752,18 +754,19 @@ export default function PerfilInstituicao() {
                               </tbody>
                             </table>
 
-                          </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> */}
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </div>*/}
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <Rodape />
-    </div >
-  )
+            <Rodape />
+        </div >
+    )
 }
