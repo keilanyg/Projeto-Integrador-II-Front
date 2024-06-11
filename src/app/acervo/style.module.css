@@ -1,6 +1,6 @@
 .body {
   background-color: #ffffff;
-  min-width: 110.vh;
+  min-width: 100.vh;
 }
 
 .livro {
@@ -14,28 +14,18 @@
   display: flex;
   flex-direction: row;
   padding: 0%;
+  margin-bottom: 3px;
 }
 
 .imagemlivro {
-  width: 12rem;
-  height: 9rem;
-  margin: 0 10px;
-}
-.titulo {
-  color: #8C5C3D;
-  margin:10px;
-  max-width: 9rem;
-  max-height: 7em; /* Defina a altura máxima em ems */
-  overflow: hidden;
-  text-overflow: ellipsis; /* Adiciona "..." ao final do texto se ele for truncado */
-  white-space: nowrap; /* Evita quebra de linha */
+  width: 9rem;
+  height: 11rem;
+  margin: 5px 10px;
 }
 
-.li {
-  margin-bottom: 3px; /* Adiciona espaço entre cada item da lista */
-}
-.selectedLink {
-  font-weight: bold; /* ou outro estilo de fonte que você preferir */
-  color: white; /* ou outra cor que você preferir */
-  background-color: #8C5C3D;
+.titulo {
+  color: #4C3228;
+  margin: 0 10px;
+  max-width: 9rem;
+  max-height: 5rem;
 }
