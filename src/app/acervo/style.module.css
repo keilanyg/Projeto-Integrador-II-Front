@@ -1,0 +1,31 @@
+.body {
+  background-color: #ffffff;
+  min-width: 100.vh;
+}
+
+.livro {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 0 20px 0;
+  margin: 0 210px;
+}
+
+.infolivro {
+  display: flex;
+  flex-direction: row;
+  padding: 0%;
+  margin-bottom: 3px;
+}
+
+.imagemlivro {
+  width: 9rem;
+  height: 11rem;
+  margin: 5px 10px;
+}
+
+.titulo {
+  color: #4C3228;
+  margin: 0 10px;
+  max-width: 9rem;
+  max-height: 5rem;
+}

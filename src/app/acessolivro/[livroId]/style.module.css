@@ -1,0 +1,19 @@
+.body {
+    background-color: #fff;
+    min-width: 100.vh;
+
+}
+
+.coluna {
+    display: flex;
+    flex-direction: column;
+}
+
+.linha {
+    margin-top: 30px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: start;
+}

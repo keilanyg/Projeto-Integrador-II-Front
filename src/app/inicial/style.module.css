@@ -1,0 +1,181 @@
+.body {
+  background-color: #ffffff;
+  min-height: 100vh;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/*.retanguloDaEstante {
+  position: absolute;
+  top: 380px;
+  left: 610px;
+  width: 520px;
+  height: 12px;
+  border-radius: 15px;
+  background-color: #8c5c3d;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.25),
+    0 4px 4px rgba(0, 0, 0, 0.25);
+}*/
+
+.frase1 {
+  font-size: 45px;
+  font-weight: bold;
+  color: #4C3228;
+
+}
+
+.frase2 {
+  font-size: 25px;
+  color: #4C3228;
+}
+
+
+/*.contenu_carou_auto {
+  margin: 50px auto;
+  width: 200px;
+  height: 200px;
+  perspective: 9000px;
+}
+
+.caroussel_image {
+  animation: rotation 16s infinite alternate linear;
+  transform-style: preserve-3d;
+  position: relative;
+  left: 380%;
+}
+
+.caroussel_image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.caroussel_image img {
+  filter: drop-shadow(0 5px 5px hsla(0, 0%, 0%, 0.4));
+  width: 120px;
+  height: 170px;
+  left: 10px;
+  outline: 1px solid transparent;
+  backface-visibility: hidden;
+  margin: 10px;
+}
+
+.caroussel_image img:nth-child(1) {
+  transform: translate3d(0, 0, 180px);
+}
+
+.caroussel_image img:nth-child(2) {
+  transform: rotateY(45deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(3) {
+  transform: rotateY(90deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(4) {
+  transform: rotateY(135deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(5) {
+  transform: rotateY(180deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(6) {
+  transform: rotateY(225deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(7) {
+  transform: rotateY(270deg) translateZ(180px);
+}
+
+.caroussel_image img:nth-child(8) {
+  transform: rotateY(315deg) translateZ(180px);
+}
+
+@keyframes rotation {
+  from {
+    transform: rotatey(0);
+  }
+
+  to {
+    transform: rotatey(0.5turn);
+  }
+}
+
+
+*/
+
+
+.paginaHomeItem {
+  position: relative;
+}
+
+.nossaMissao {
+  position: absolute;
+  left: 38px;
+  top: 38px;
+  width: 446px;
+  height: 200px;
+  background-color: rgba(237, 214, 160, 0.6);
+}
+
+.imagembanner {
+  width: 100%;
+  height: 270px;
+}
+
+.titulomisao,
+.tituloquemsomos,
+.titulocomofunciona {
+  font-size: 30px;
+  margin-bottom: 10px;
+
+}
+
+
+
+
+.comofunciona {
+  background-color: #EDD6A0;
+  display: flex;
+  flex-basis: 50%;
+  color: #4C3228;
+  gap: 16px;
+  align-items: center;
+}
+
+.estudante {
+  width: 40%;
+  border-radius: 50%;
+  padding: 7% 0;
+  margin: 0 200px;
+}
+
+
+
+.sectionacervo {
+  color: #4C3228;
+  padding: 10%;
+  text-align: center;
+  font-size: 17px;
+}
+
+.linkacervo {
+  padding: 14px;
+  background-color: #EDD6A0;
+  border-radius: 10px;
+}
+
+.titulobibliotecas {
+  font-size: 30px;
+  background-color: #EDD6A0;
+  color: #4C3228;
+  text-align: center;
+  padding: 1.4%;
+}
+
+.instit {
+  display: flex;
+  flex-direction: row;
+  padding: 0 0 20px 0;
+}

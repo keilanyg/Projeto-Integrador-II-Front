@@ -1,0 +1,22 @@
+.links{
+    display: flex;
+}
+
+.secaologo{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  width: 100%;
+  color: black;
+}
+.header{
+  background-color:#ffffff;
+  color: #4C3228;
+  filter: drop-shadow(0 5px 5px hsla(0, 0%, 0%, 0.4));
+  outline: 1px solid transparent;
+}
+.cadalink{
+  display: flex;
+  padding: 0 25px;
+}
