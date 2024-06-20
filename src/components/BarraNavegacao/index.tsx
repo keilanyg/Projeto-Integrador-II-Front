@@ -44,7 +44,7 @@ export default function BarraNavegacao() {
             <a href="/inicial/#servicos">Serviços</a>
           </div>
           <div className={style.cadalink}>
-            <a href="/acervo">Biblioteca</a>
+            <a href="/acervo">Acervo</a>
           </div>
           <div className={style.cadalink}>
             <a href="/perfildainstituicao/#perfil">Perfil</a>
