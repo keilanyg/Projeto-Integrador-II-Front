@@ -1,13 +1,11 @@
 .body {
   background-color: #ffffff;
-  min-height: 65.4vh;
+  min-height: 100vh;
+  color: #8C5C3D;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.bemvindo {
-  display: flex;
-}
-
-.retanguloDaEstante {
+/*.retanguloDaEstante {
   position: absolute;
   top: 380px;
   left: 610px;
@@ -17,31 +15,26 @@
   background-color: #8c5c3d;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.25),
     0 4px 4px rgba(0, 0, 0, 0.25);
-}
+}*/
 
 .frase1 {
-  position: absolute;
-  top: 233px;
-  left: 87px;
   font-size: 40px;
-  color: #4C3228;
+  font-weight: bold;
+  color: #8C5C3D;
 }
 
 .frase2 {
-  position: absolute;
-  margin: 0;
-  top: 289px;
-  left: 87px;
   font-size: 20px;
-  color: #4C3228;
+  color: #8C5C3D;
+  margin-bottom: 10px;
 }
 
-.contenu_carou_auto {
+
+/*.contenu_carou_auto {
   margin: 50px auto;
   width: 200px;
   height: 200px;
   perspective: 9000px;
-
 }
 
 .caroussel_image {
@@ -108,8 +101,8 @@
     transform: rotatey(0.5turn);
   }
 }
+*/
 
-/*****fin carrousel 3d automatique*****/
 .paginaHomeItem {
   position: relative;
 }
@@ -131,37 +124,15 @@
 .titulomisao,
 .tituloquemsomos,
 .titulocomofunciona {
-  font-size: 30px;
   margin-bottom: 10px;
-
 }
 
-.frasemisao,
-.frasequemsomos,
-.frasecomofunciona {
-  font-size: 18px;
-}
-
-.frasemisao,
-.titulomisao {
-  margin: 13px 0 6px 30px;
-  color: #4C3228;
-  font-weight: 490;
-}
-
-.quemsomos {
-  color: #4C3228;
-  padding: 5% 18%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 .comofunciona {
   background-color: #EDD6A0;
   display: flex;
   flex-basis: 50%;
-  color: #4C3228;
+  color: #8C5C3D;
   gap: 16px;
   align-items: center;
 }
@@ -174,30 +145,15 @@
 }
 
 
-
 .sectionacervo {
-  color: #4C3228;
+  color: #8C5C3D;
   padding: 10%;
   text-align: center;
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .linkacervo {
   padding: 14px;
   background-color: #EDD6A0;
   border-radius: 10px;
-}
-
-.titulobibliotecas {
-  font-size: 30px;
-  background-color: #EDD6A0;
-  color: #4C3228;
-  text-align: center;
-  padding: 1.4%;
-}
-
-.instit {
-  display: flex;
-  flex-direction: row;
-  padding: 0 0 20px 0;
 }

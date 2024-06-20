@@ -1,18 +1,22 @@
-.secaologo{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    width: 100%;
-    background-color: #8C5C3D;
-}
 .links{
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    background-color:#ffffff;
-    color: #4C3228;
-    height: 25px;
-    filter: drop-shadow(0 5px 5px hsla(0, 0%, 0%, 0.4));
-    outline: 1px solid transparent;
+}
+
+.secaologo{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  width: 100%;
+  color: 8C5C3D;
+}
+.header{
+  background-color:#ffffff;
+  color: #8C5C3D;
+  filter: drop-shadow(0 5px 5px hsla(0, 0%, 0%, 0.4));
+  outline: 1px solid transparent;
+}
+.cadalink{
+  display: flex;
+  padding: 0 25px;
 }

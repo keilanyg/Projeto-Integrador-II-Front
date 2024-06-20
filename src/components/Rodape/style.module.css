@@ -5,5 +5,9 @@
     margin-right: 20px;
     padding: 15px;
     width: 100%;
-    background-color: #8C5C3D;
+    color: white;
+}
+.footer {
+  background-color: #8C5C3D;
+  min-width: 100.vh;
 }
