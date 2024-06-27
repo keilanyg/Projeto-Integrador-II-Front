@@ -6,7 +6,7 @@ import Rodape from "@/components/Rodape/index";
 import React from "react";
 import Botao from "@/components/Botao/index";
 import { useState, useEffect } from "react";
-import { api, core } from "../services/api";
+import { api } from "../services/api";
 import ifrn from 'public/ifrn.png'
 import usuarioimg from 'public/usuarioimg.png'
 
@@ -56,14 +56,8 @@ interface Devolucao {
     emprestimo_obj: Emprestimo;
     data_devolucao: Date;
     usuario_devolucao: string;
-    usuario_devolucao_obj: User;
     livro: string;
     livro_obj: Livros;
-}
-interface User {
-    id: number;
-    password: string;
-    email: string;
 }
 
 export default function PerfilInstituicao() {
@@ -142,19 +136,12 @@ export default function PerfilInstituicao() {
         setDevolucao(data)
     }
 
-    const [usuario, setUsuario] = useState<User[]>([]);
-    const getUsuario = async () => {
-        const { data } = await core.get('user/')
-        setUsuario(data)
-    }
-
     useEffect(() => {
         getLivros();
         getCategoria();
         getEditora();
         getAutor();
         getEmprestimo();
-        getUsuario();
         getDevolucao();
     }, []);
 
@@ -614,10 +601,7 @@ export default function PerfilInstituicao() {
                                             <div>
                                                 <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Usuário</label><br />
                                                 <select onChange={(e) => setNomeEmprestimo(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
-                                                    <option selected disabled>Selecione</option>
-                                                    {usuario.map(({ id, email }) => (
-                                                        <option value={id} key={id}>{email}</option>
-                                                    ))}
+                                                    <option selected disabled>Selecione</option>        
                                                 </select>
                                             </div>
                                             <div>
