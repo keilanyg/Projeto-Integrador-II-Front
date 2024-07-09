@@ -62,7 +62,7 @@ export default function ConteudoDevolucao() {
   
   const [livros, setLivros] = useState<Livros[]>([]);
   const getLivros = async () => {
-    const { data } = await api.get('livros/')
+    const { data } = await api.get('livro/')
     setLivros(data)
   }
 
@@ -165,8 +165,8 @@ export default function ConteudoDevolucao() {
                           <div className="inline-flex items-center gap-x-3">
                             <div className="flex items-center gap-x-2">
                               {/*<img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />*/}                                                                                        <div>
-                                <h2 className="font-medium text-gray-800 ">{emprestimo_obj.livro_obj.nome_livro} - {usuario_devolucao_obj.email}</h2>
-                                {/*<p className="text-sm font-normal text-gray-600 dark:text-gray-400">@authurmelo</p>*/}
+{/*                                 <h2 className="font-medium text-gray-800 ">{emprestimo_obj.livro_obj.nome_livro} - {usuario_devolucao_obj.email}</h2>
+ */}                                {/*<p className="text-sm font-normal text-gray-600 dark:text-gray-400">@authurmelo</p>*/}
                               </div>
                             </div>
                           </div>

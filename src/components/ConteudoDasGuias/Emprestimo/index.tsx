@@ -97,7 +97,7 @@ export default function ConteudoEmprestimo() {
 
   const [livros, setLivros] = useState<Livros[]>([]);
   const getLivros = async () => {
-    const { data } = await api.get('livros/')
+    const { data } = await api.get('livro/')
     setLivros(data)
   }
 

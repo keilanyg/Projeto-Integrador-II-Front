@@ -35,7 +35,7 @@ export default function Acervo() {
 
   const getLivros = async () => {
     try {
-      const { data } = await api.get('livros/');
+      const { data } = await api.get('livro/');
       setLivros(data);
     } catch (error) {
       console.error("Erro ao obter livros:", error);
@@ -118,7 +118,7 @@ export default function Acervo() {
               {currentBooks.map(({ id, nome_livro, cover }) => (
                 <li key={id} className={style.li} style={{ display: "flex", margin: "0 10px", justifyContent: "space-between", flexDirection: "column" }}>
                   <div>
-                    <br /><Image className={style.imagemlivro} src={cover} width={100} height={150} alt="" />
+                    <br /><Image className={style.imagemlivro} src={cover} width={100} height={150} alt="Teste" />
                   </div>
                   <div className={style.titulo}>
                     <p>{nome_livro}</p>

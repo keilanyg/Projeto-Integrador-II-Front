@@ -37,22 +37,6 @@ interface Livros {
   autor: string;
   autor_obj: Autor;
 }
-interface Emprestimo {
-  id: number;
-  data_emprestimo: Date;
-  nome_emprestado_usuario: string;
-  livro: string;
-  livro_obj: Livros;
-}
-interface Devolucao {
-  id: number;
-  emprestimo: string;
-  emprestimo_obj: Emprestimo;
-  data_devolucao: Date;
-  usuario_devolucao: string;
-  livro: string;
-  livro_obj: Livros;
-}
 
 export default function ConteudoLivro() {
 
@@ -95,7 +79,7 @@ export default function ConteudoLivro() {
 
   const [livros, setLivros] = useState<Livros[]>([]);
   const getLivros = async () => {
-    const { data } = await api.get('livros/')
+    const { data } = await api.get('livro/')
     setLivros(data)
   }
 

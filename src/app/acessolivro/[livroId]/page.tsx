@@ -47,7 +47,7 @@ export default function AcessoLivro({ params }: livroprops) {
 
   const [livros, setLivros] = useState<Livros>();
   const getLivros = async () => {
-    const { data } = await api.get(`livros/${params.livroId}/`)
+    const { data } = await api.get(`livro/${params.livroId}/`)
     setLivros(data)
   }
   useEffect(() => {
