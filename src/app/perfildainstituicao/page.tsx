@@ -14,9 +14,6 @@ import ConteudoCategoria from "@/components/ConteudoDasGuias/Categoria";
 import ConteudoAutor from "@/components/ConteudoDasGuias/Autor";
 import ConteudoEditora from "@/components/ConteudoDasGuias/Editora";
 import ConteudoLivro from "@/components/ConteudoDasGuias/Livro";
-import ConteudoEmprestimo from "@/components/ConteudoDasGuias/Emprestimo";
-import ConteudoDevolucao from "@/components/ConteudoDasGuias/Devolucao";
-
 
 export default function PerfilInstituicao() {
 
@@ -125,46 +122,6 @@ export default function PerfilInstituicao() {
               </a>
             </li>
 
-            <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-              <a
-                className={
-                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
-                  (openTab === 5
-                    ? "bg-orange-100"
-                    : "bg-white")
-                }
-                onClick={e => {
-                  e.preventDefault();
-                  setOpenTab(5);
-                }}
-                data-toggle="tab"
-                href="#link5"
-                role="tablist"
-              >
-                Empréstimo
-              </a>
-            </li>
-
-            <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-              <a
-                className={
-                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
-                  (openTab === 6
-                    ? "bg-orange-100"
-                    : "bg-white")
-                }
-                onClick={e => {
-                  e.preventDefault();
-                  setOpenTab(6);
-                }}
-                data-toggle="tab"
-                href="#link6"
-                role="tablist"
-              >
-                Devolução
-              </a>
-            </li>
-
           </ul>
           <div>
             <ToastContainer />
@@ -185,14 +142,6 @@ export default function PerfilInstituicao() {
 
                   <div className={openTab === 4 ? "block" : "hidden"} id="link4">
                     <ConteudoLivro />
-                  </div>
-
-                  <div className={openTab === 5 ? "block" : "hidden"} id="link5">
-                    <ConteudoEmprestimo />
-                  </div>
-
-                  <div className={openTab === 6 ? "block" : "hidden"} id="link6">
-                    <ConteudoDevolucao />
                   </div>
                 </div>
               </div>

@@ -8,8 +8,6 @@ import comofunciona from 'public/comofunciona.jpg'
 import Banner from 'public/Banner.png'
 import Botao from "@/components/Botao";
 import Link from "next/link";
-
-
 import Rodape from "@/components/Rodape/index";
 
 

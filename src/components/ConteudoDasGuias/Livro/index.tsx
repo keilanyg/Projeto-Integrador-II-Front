@@ -1,12 +1,11 @@
 'use client';
 import Image from "next/image";
 import style from './style.module.css'
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Botao from "@/components/Botao/index";
-import { useState, useEffect } from "react";
 import { api } from "@/app/services/api";
 
-/*Menssagens*/
+/*Mensagens*/
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,7 +23,7 @@ interface Editora {
 }
 interface Livros {
   id: number;
-  cover: File;
+  cover: File | string;
   nome_livro: string;
   data_cadastro: Date;
   data_lancamento: Date;
@@ -52,6 +51,7 @@ export default function ConteudoLivro() {
       theme: "light",
     });
   }
+
   const notifyPut = () => {
     toast.success('Editado com Sucesso!', {
       position: "top-center",
@@ -64,6 +64,7 @@ export default function ConteudoLivro() {
       theme: "light",
     });
   }
+
   const notifyDelete = () => {
     toast.success('Deletado com Sucesso!', {
       position: "top-center",
@@ -79,7 +80,7 @@ export default function ConteudoLivro() {
 
   const [livros, setLivros] = useState<Livros[]>([]);
   const getLivros = async () => {
-    const { data } = await api.get('livro/')
+    const { data } = await api.get('livros/')
     setLivros(data)
   }
 
@@ -117,7 +118,7 @@ export default function ConteudoLivro() {
   const [categorialivro, setCategoriaLivro] = useState("")
   const [editoralivro, setEditoraLivro] = useState("")
   const [autorlivro, setAutorLivro] = useState("")
-  const postLivro = async (e) => {
+  const postLivro = async (e: React.FormEvent) => {
     e.preventDefault();
     const newLivro = {
       nome_livro: nomelivro,
@@ -129,11 +130,10 @@ export default function ConteudoLivro() {
       editora: editoralivro,
       autor: autorlivro
     }
-    const data = await api.post('livros/', newLivro, {
+    await api.post('livros/', newLivro, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
     notifyPost();
-    <ToastContainer />
     getLivros()
     setNomeLivro("");
     setImgLivro(null);
@@ -143,19 +143,18 @@ export default function ConteudoLivro() {
     setCategoriaLivro("");
     setEditoraLivro("");
     setAutorLivro("");
-
   };
 
   const deleteLivro = async (id: number) => {
-    const { data } = await api.delete(`livro/${id}/`)
+    await api.delete(`livros/${id}/`)
     notifyDelete();
-    <ToastContainer />
     getLivros()
   };
 
 
   return (
     <>
+      <ToastContainer />
       <form onSubmit={postLivro} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
         <div>
           <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro</label><br />
@@ -182,7 +181,7 @@ export default function ConteudoLivro() {
         <div>
           <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Categoria</label><br />
           <select onChange={(e) => setCategoriaLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
-            <option selected disabled>Selecione</option>
+            <option disabled>Selecione</option>
             {categoria.map(({ id, nome_categoria }) => (
               <option value={id} key={id}>{nome_categoria}</option>
             ))}
@@ -191,7 +190,7 @@ export default function ConteudoLivro() {
         <div>
           <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Editora</label><br />
           <select onChange={(e) => setEditoraLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
-            <option selected disabled>Selecione</option>
+            <option disabled>Selecione</option>
             {editora.map(({ id, nome_editora }) => (
               <option value={id} key={id}>{nome_editora}</option>
             ))}
@@ -200,7 +199,7 @@ export default function ConteudoLivro() {
         <div>
           <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Autor</label><br />
           <select onChange={(e) => setAutorLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
-            <option selected disabled>Selecione</option>
+            <option disabled>Selecione</option>
             {autor.map(({ id, nome_autor }) => (
               <option value={id} key={id}>{nome_autor}</option>
             ))}
@@ -210,7 +209,7 @@ export default function ConteudoLivro() {
       </form>
       <div>
         <ul>
-          {livros.map(({ id, nome_livro, autor_obj, editora_obj, categoria_obj, cover, data_cadastro, data_lancamento, quantidade, descricao_livro, categoria, editora, autor }) => (
+          {livros.map(({ id, nome_livro, autor_obj, editora_obj, categoria_obj, cover, data_cadastro, data_lancamento, quantidade, descricao_livro }) => (
             <li key={id} className={style.li}>
               <div style={{ maxWidth: "22%" }}>
 
@@ -226,7 +225,11 @@ export default function ConteudoLivro() {
                 <p>Autor: {autor_obj.nome_autor}</p>
               </div>
 
-              <Image src={cover} width={100} height={100} alt='' />
+              {typeof cover === 'string' ? (
+                <Image src={cover} width={100} height={100} alt='Capa do livro' />
+              ) : (
+                cover && <Image src={URL.createObjectURL(cover)} width={100} height={100} alt='Pré-visualização da capa' />
+              )}
               <div style={{ display: "flex", gap: "10px" }}>
                 <Botao>Editar</Botao>
                 <Botao funcao={() => deleteLivro(id)}>Excluir</Botao>
