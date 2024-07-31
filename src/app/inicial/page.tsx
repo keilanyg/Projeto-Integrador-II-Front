@@ -54,21 +54,22 @@ export default function Inicial() {
                 <Image src={iconeservicos} width={60} height={180} alt="Icone de livros" />
               </div>
               <h3 className="text-xl font-semibold">Controle de Acervo</h3>
-              <p>Descrição do serviço </p>
+              <p>Bibliotecas podem registrar todas as informações dos livros, como título, autor, data de lançamento, gênero e outras informações relevantes.</p>
             </div>
             <div className="mx-auto flex flex-col items-center gap-y-4">
               <div className="mx-auto flex items-center justify-center">
                 <Image src={iconeconsultadolivro} width={60} height={180} alt="Icone de livros" />
               </div>
               <h3 className="text-xl font-semibold">Consultas de obras</h3>
-              <p>Descrição do serviço 2</p>
+              <p>Oferece ferramentas de busca para que os usuários possam encontrar livros específicos de várias instituições dentro do acervo.</p>
             </div>
             <div className="mx-auto flex flex-col items-center gap-y-4">
               <div className="mx-auto flex items-center justify-center">
                 <Image src={iconecalendariolivro} width={60} height={180} alt="Icone de livros" />
               </div>
-              <h3 className="text-xl font-semibold">Empréstimos</h3>
-              <p>Descrição do serviço 3</p>
+              <h3 className="text-xl font-semibold">Opções de acesso</h3>
+              <p>O sistema disponibiliza o acesso ao conteúdo da 
+                obra de forma online, permitindo o download e o acesso no Kindle.</p>
             </div>
           </dl>
         </div>
