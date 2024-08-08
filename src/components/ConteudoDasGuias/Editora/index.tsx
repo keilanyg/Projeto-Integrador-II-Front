@@ -57,36 +57,50 @@ export default function ConteudoEditora() {
   }
 
   const [editora, setEditora] = useState<Editora[]>([]);
+  const [nomeeditora, setNomeeditora] = useState("");
+  const [editando, setEditando] = useState(false);
+  const [editoraId, setEditoraId] = useState<number | null>(null);
+  
   const getEditora = async () => {
     const { data } = await api.get('editora/')
     setEditora(data)
   }
-
 
   useEffect(() => {
     getEditora();
   }, []);
 
 
-  const [nomeeditora, setNomeeditora] = useState("")
   const postNameEditora = async (e) => {
     e.preventDefault();
-    const newEditora = {
-      nome_editora: nomeeditora
-    }
-    const data = await api.post('editora/', newEditora)
+    const newEditora = { nome_editora:nomeeditora };
 
-    notifyPost();
-    <ToastContainer />
-    getEditora()
+    if (editando && editoraId) {
+      // Atualiza a editora existente
+      await api.put(`editora/${editoraId}/`, newEditora);
+      notifyPut();
+      setEditando(false);
+      setEditoraId(null);
+    } else {
+      // Cria uma editora nova
+      await api.post('editora/', newEditora);
+      notifyPost();
+    }
+
+    getEditora();
     setNomeeditora("");
   };
 
   const deleteEditora = async (id: number) => {
-    const { data } = await api.delete(`editora/${id}/`)
+    await api.delete(`editora/${id}/`)
     notifyDelete();
-    <ToastContainer />
     getEditora()
+  };
+
+  const editEditora = (id: number, nome: string) => {
+    setNomeeditora(nome);
+    setEditoraId(id);
+    setEditando(true);
   };
 
   return (
@@ -94,7 +108,8 @@ export default function ConteudoEditora() {
       <form onSubmit={postNameEditora}>
         <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome da Editora</label><br />
         <input type="text" value={nomeeditora} onChange={(e) => setNomeeditora(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
-        <br /><br /><Botao type="submit" >Salvar</Botao>
+        <br /><br />
+        <Botao type="submit" >Salvar</Botao>
       </form>
 
       <div>
@@ -105,7 +120,7 @@ export default function ConteudoEditora() {
                 {nome_editora}
               </div>
               <div style={{ display: "flex", gap: "10px" }}>
-                <Botao>Editar</Botao>
+                <Botao funcao={() => editEditora(id, nome_editora)}>Editar</Botao>
                 <Botao funcao={() => deleteEditora(id)}>Excluir</Botao>
               </div>
             </li>

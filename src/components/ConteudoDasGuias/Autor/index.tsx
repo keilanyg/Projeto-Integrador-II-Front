@@ -127,7 +127,6 @@ export default function ConteudoAutor() {
         </ul>
       </div>
 
-      <ToastContainer />
     </>
   );
 }
