@@ -25,10 +25,15 @@ interface Categoria {
   id: number;
   nome_categoria: string;
 }
+interface Editora {
+  id: number;
+  nome_editora: string;
+}
 
 export default function Acervo() {
   const [livros, setLivros] = useState<Livros[]>([]);
   const [autor, setAutor] = useState<Autor[]>([]);
+  const [editora, setEditora] = useState<Editora[]>([]);
   const [categoria, setCategoria] = useState<Categoria[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(21);
@@ -60,10 +65,20 @@ export default function Acervo() {
     }
   }
 
+  const getEditora = async () => {
+    try {
+      const { data } = await api.get('editora/');
+      setEditora(data);
+    } catch (error) {
+      console.error("Erro ao obter editora:", error);
+    }
+  }
+
   useEffect(() => {
     getLivros();
     getAutor();
     getCategoria();
+    getEditora();
   }, []);
 
   const indexOfLastBook = currentPage * booksPerPage;
@@ -81,8 +96,8 @@ export default function Acervo() {
       <BarraNavegacao />
       <div className={style.body}>
         <Image className={style.imagembanner} src={BannerAcervo} alt="BannerAcervo" />
-        <div id="camposfiltrar" style={{ color: "#8C5C3D", display: "flex", alignItems: "center", justifyContent: "center", margin: "10px auto", maxWidth: "600px" }}>
-          <div style={{ flex: "1" }}>
+        <div id="camposfiltrar" style={{ color: "#8C5C3D", display: "flex", alignItems: "center", justifyContent: "center", margin: "10px auto", maxWidth: "700px" }}>
+          <div style={{ flex: "2" }}>
             <select className="select select-bordered mt-2 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ width: "100%", border: "1px solid #8c5c3d" }}>
               <option selected disabled>Livro</option>
               {livros.map(({ id, nome_livro }) => (
@@ -90,7 +105,7 @@ export default function Acervo() {
               ))}
             </select>
           </div>
-          <div style={{ flex: "1", marginLeft: "10px", marginRight: "10px" }}>
+          <div style={{ flex: "2", marginLeft: "10px", marginRight: "10px" }}>
             <select className="select select-bordered mt-2 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ width: "100%", border: "1px solid #8c5c3d" }}>
               <option selected disabled>Categoria</option>
               {categoria.map(({ id, nome_categoria }) => (
@@ -98,7 +113,7 @@ export default function Acervo() {
               ))}
             </select>
           </div>
-          <div style={{ flex: "1" }}>
+          <div style={{ flex: "2" }}>
             <select className="select select-bordered mt-2 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ width: "100%", border: "1px solid #8c5c3d" }}>
               <option selected disabled>Autor</option>
               {autor.map(({ id, nome_autor }) => (
@@ -106,7 +121,15 @@ export default function Acervo() {
               ))}
             </select>
           </div>
-          <div style={{ marginLeft: "10px" }}>
+          <div style={{ flex: "2", marginLeft: "10px", marginRight: "10px" }}>
+            <select className="select select-bordered mt-2 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ width: "100%", border: "1px solid #8c5c3d" }}>
+              <option selected disabled>Editora</option>
+              {editora.map(({ id, nome_editora }) => (
+                <option value={id} key={id}>{nome_editora}</option>
+              ))}
+            </select>
+          </div>
+          <div style={{ marginLeft: "10px", marginTop:"10px" }}>
             <Botao>Filtrar</Botao>
           </div>
         </div>
