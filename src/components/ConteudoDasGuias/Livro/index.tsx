@@ -23,7 +23,7 @@ interface Editora {
 }
 interface Livros {
   id: number;
-  cover: File | string;
+  cover: File;
   nome_livro: string;
   data_cadastro: Date;
   data_lancamento: Date;
@@ -80,7 +80,7 @@ export default function ConteudoLivro() {
 
   const [livros, setLivros] = useState<Livros[]>([]);
   const getLivros = async () => {
-    const { data } = await api.get('livros/')
+    const { data } = await api.get('livro/')
     setLivros(data)
   }
 
@@ -130,7 +130,7 @@ export default function ConteudoLivro() {
       editora: editoralivro,
       autor: autorlivro
     }
-    await api.post('livros/', newLivro, {
+    await api.post('livro/', newLivro, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
     notifyPost();
@@ -146,7 +146,7 @@ export default function ConteudoLivro() {
   };
 
   const deleteLivro = async (id: number) => {
-    await api.delete(`livros/${id}/`)
+    await api.delete(`livro/${id}/`)
     notifyDelete();
     getLivros()
   };
@@ -162,18 +162,15 @@ export default function ConteudoLivro() {
         </div>
         <div>
           <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>IMG</label><br />
-          <input type="file" onChange={(e) => e.target.files && setImgLivro(e.target.files[0])} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
-        </div>
+          <input type="file" onChange={(e) => e.target.files && setImgLivro(e.target.files[0])} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />        </div>
         <div>
           <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Data de Lançamento</label><br />
           <input type="date" value={datalancamento} onChange={(e) => setDataLancamento(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
         </div>
-
         <div>
           <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Descrição</label><br />
           <input type="text" value={descricaolivro} onChange={(e) => setDescricaoLivro(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
         </div>
-
         <div>
           <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Quantidade</label><br />
           <input type="number" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
@@ -181,7 +178,7 @@ export default function ConteudoLivro() {
         <div>
           <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Categoria</label><br />
           <select onChange={(e) => setCategoriaLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
-            <option disabled>Selecione</option>
+            <option selected disabled>Selecione</option>
             {categoria.map(({ id, nome_categoria }) => (
               <option value={id} key={id}>{nome_categoria}</option>
             ))}
@@ -190,7 +187,7 @@ export default function ConteudoLivro() {
         <div>
           <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Editora</label><br />
           <select onChange={(e) => setEditoraLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
-            <option disabled>Selecione</option>
+            <option selected disabled>Selecione</option>
             {editora.map(({ id, nome_editora }) => (
               <option value={id} key={id}>{nome_editora}</option>
             ))}
@@ -199,13 +196,13 @@ export default function ConteudoLivro() {
         <div>
           <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Autor</label><br />
           <select onChange={(e) => setAutorLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
-            <option disabled>Selecione</option>
+            <option selected disabled>Selecione</option>
             {autor.map(({ id, nome_autor }) => (
               <option value={id} key={id}>{nome_autor}</option>
             ))}
           </select>
         </div>
-        <br /><Botao type="submit">Salvar</Botao>
+        <Botao type="submit">Salvar</Botao>
       </form>
       <div>
         <ul>
@@ -225,11 +222,8 @@ export default function ConteudoLivro() {
                 <p>Autor: {autor_obj.nome_autor}</p>
               </div>
 
-              {typeof cover === 'string' ? (
-                <Image src={cover} width={100} height={100} alt='Capa do livro' />
-              ) : (
-                cover && <Image src={URL.createObjectURL(cover)} width={100} height={100} alt='Pré-visualização da capa' />
-              )}
+              <Image src={cover} width={100} height={100} alt='' />
+              
               <div style={{ display: "flex", gap: "10px" }}>
                 <Botao>Editar</Botao>
                 <Botao funcao={() => deleteLivro(id)}>Excluir</Botao>
