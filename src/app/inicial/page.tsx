@@ -37,7 +37,7 @@ export default function Inicial() {
         <div className="max-w-screen-lg p-8 text-center text-white">
           <h2 className="text-4xl mb-7">Quem Somos</h2>
           <p className="text-lg">
-            Surgimos com a necessidade de coletar informações em bibliotecas públicas, pensando em pequenas organizações que podem não ter software de gerenciamento e armazenamento de informações para acervo e empréstimo.
+            Surgimos com a necessidade de coletar informações em bibliotecas públicas, pensando em pequenas organizações que podem não ter software de gerenciamento e armazenamento de informações para acervo.
             <br />
             <br />O objetivo do software é controlar o acesso aos acervos, controlar usuários e produzir relatórios gerenciais.
             Tornando os processos mais rápidos e eficientes, beneficiando alunos, professores e instituições, melhorando assim o controle sobre a movimentação de livros.
@@ -54,14 +54,14 @@ export default function Inicial() {
                 <Image src={iconeservicos} width={60} height={180} alt="Icone de livros" />
               </div>
               <h3 className="text-xl font-semibold">Controle de Acervo</h3>
-              <p>Bibliotecas podem registrar todas as informações dos livros, como título, autor, data de lançamento, gênero e outras informações relevantes.</p>
+              <p>Bibliotecas podem registrar todas as informações dos livros,<br/>como título, autor, data de lançamento, gênero e outras informações relevantes.</p>
             </div>
             <div className="mx-auto flex flex-col items-center gap-y-4">
               <div className="mx-auto flex items-center justify-center">
                 <Image src={iconeconsultadolivro} width={60} height={180} alt="Icone de livros" />
               </div>
               <h3 className="text-xl font-semibold">Consultas de obras</h3>
-              <p>Oferece ferramentas de busca para que os usuários possam encontrar livros específicos de várias instituições dentro do acervo.</p>
+              <p>Oferece ferramentas de busca para que os usuários<br/>possam encontrar livros específicos de várias instituições dentro do acervo.</p>
             </div>
             <div className="mx-auto flex flex-col items-center gap-y-4">
               <div className="mx-auto flex items-center justify-center">
@@ -69,7 +69,7 @@ export default function Inicial() {
               </div>
               <h3 className="text-xl font-semibold">Opções de acesso</h3>
               <p>O sistema disponibiliza o acesso ao conteúdo da 
-                obra de forma online, permitindo o download e o acesso no Kindle.</p>
+                obra<br/>de forma online.</p> {/*permitindo o download e o acesso no Kindle.*/}
             </div>
           </dl>
         </div>
@@ -77,23 +77,22 @@ export default function Inicial() {
 
       <section className="flex flex-col lg:flex-row items-center justify-center" style={{ backgroundColor: '#EDD6A0', color: 'black' }}> {/* Adicionando classes items-center e justify-center para centralizar horizontalmente */}
         <div className={`relative lg:w-12/12 overflow-hidden`}>
-          <Image src={comofunciona} width={440} height={180} alt="Como funciona" />
+          <Image src={comofunciona} width={400} height={180} alt="Como funciona" />
         </div>
-        <div className={`relative lg:w-5/12 overflow-hidden ${style.descricaocomofunciona} lg:m-10`} data-te-ripple-init>
+        <div className={`relative lg:w-5/12 overflow-hidden ${style.descricaocomofunciona} lg:m-5`} data-te-ripple-init>
           <div>
             <h2 className="text-3xl font-semibold mb-2" >Como funciona</h2>
           </div>
           <div className={style.frasecomofunciona}>
-            <p>Este sistema permite que os usuários vejam catálogos das bibliotecas que se registrarem no nosso sistema. Nele o bibliotecário poderá criar o catálogo dos livros que consta na sua biblioteca, adicionando todas as informações dos mesmos para que os usuários possam pesquisar por um título e ver informações desse tema e da instituição.</p>
+            <p>Este sistema permite que os usuários vejam catálogos das bibliotecas que se registrarem no nosso sistema. Nele o bibliotecário poderá criar o catálogo dos livros que consta na sua biblioteca, adicionando todas as informações dos mesmos para que os usuários possam pesquisar por um título e ver informações desse tema.</p>
           </div>
         </div>
       </section>
 
-      <section>
-        <div className={style.sectionacervo}>
+        <section className={style.sectionacervo}>
           <a className={style.linkacervo} href="/acervo">Explore o nosso acervo completo</a>
-        </div>
-      </section>
+        </section>
+
 
       <Rodape />
     </div>

@@ -1,6 +1,7 @@
 .body {
   background-color: #ffffff;
-  min-width: 110.vh;
+  min-width: 100vw;
+  min-height: 78.1vh;
 }
 
 .livro {
