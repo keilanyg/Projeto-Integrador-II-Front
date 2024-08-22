@@ -23,10 +23,10 @@ interface Editora {
 }
 interface Livros {
   id: number;
-  cover: File;
+  cover: string; // Mudado para string, pois o File não é suportado pelo Next.js Image
   nome_livro: string;
-  data_cadastro: Date;
-  data_lancamento: Date;
+  data_cadastro: string; // Mudado para string para compatibilidade com a exibição
+  data_lancamento: string; // Mudado para string para compatibilidade com a exibição
   quantidade: number;
   descricao_livro: string;
   categoria: string;
@@ -79,24 +79,26 @@ export default function ConteudoLivro() {
   }
 
   const [livros, setLivros] = useState<Livros[]>([]);
+  const [categoria, setCategoria] = useState<Categoria[]>([]);
+  const [editora, setEditora] = useState<Editora[]>([]);
+  const [autor, setAutor] = useState<Autor[]>([]);
+  const [pesquisa, setPesquisa] = useState(""); // Estado para armazenar o termo de pesquisa
+
   const getLivros = async () => {
     const { data } = await api.get('livro/')
     setLivros(data)
   }
 
-  const [categoria, setCategoria] = useState<Categoria[]>([]);
   const getCategoria = async () => {
     const { data } = await api.get('categoria/')
     setCategoria(data)
   }
 
-  const [editora, setEditora] = useState<Editora[]>([]);
   const getEditora = async () => {
     const { data } = await api.get('editora/')
     setEditora(data)
   }
 
-  const [autor, setAutor] = useState<Autor[]>([]);
   const getAutor = async () => {
     const { data } = await api.get('autor/')
     setAutor(data)
@@ -109,7 +111,6 @@ export default function ConteudoLivro() {
     getAutor();
   }, []);
 
-
   const [nomelivro, setNomeLivro] = useState("")
   const [imglivro, setImgLivro] = useState<File | null>(null)
   const [datalancamento, setDataLancamento] = useState("")
@@ -118,6 +119,7 @@ export default function ConteudoLivro() {
   const [categorialivro, setCategoriaLivro] = useState("")
   const [editoralivro, setEditoraLivro] = useState("")
   const [autorlivro, setAutorLivro] = useState("")
+
   const postLivro = async (e: React.FormEvent) => {
     e.preventDefault();
     const newLivro = {
@@ -151,33 +153,70 @@ export default function ConteudoLivro() {
     getLivros()
   };
 
+  const livrosFiltrados = livros.filter(livro =>
+    livro.nome_livro.toLowerCase().includes(pesquisa.toLowerCase())
+  ); // Filtra a lista de livros
 
   return (
     <>
       <ToastContainer />
       <form onSubmit={postLivro} style={{ display: "flex", flexWrap: "wrap", gap: "9px", alignItems: "end" }}>
         <div>
-          <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro</label><br />
-          <input type="text" value={nomelivro} onChange={(e) => setNomeLivro(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+          <label className="text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Nome do Livro</label><br />
+          <input
+            type="text"
+            value={nomelivro}
+            onChange={(e) => setNomeLivro(e.target.value)}
+            className="mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            style={{ border: "1px solid #8c5c3d" }}
+          />
         </div>
         <div>
-          <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>IMG</label><br />
-          <input type="file" onChange={(e) => e.target.files && setImgLivro(e.target.files[0])} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />        </div>
-        <div>
-          <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Data de Lançamento</label><br />
-          <input type="date" value={datalancamento} onChange={(e) => setDataLancamento(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+          <label className="text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>IMG</label><br />
+          <input
+            type="file"
+            onChange={(e) => e.target.files && setImgLivro(e.target.files[0])}
+            className="mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            style={{ border: "1px solid #8c5c3d" }}
+          />
         </div>
         <div>
-          <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Descrição</label><br />
-          <input type="text" value={descricaolivro} onChange={(e) => setDescricaoLivro(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+          <label className="text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Data de Lançamento</label><br />
+          <input
+            type="date"
+            value={datalancamento}
+            onChange={(e) => setDataLancamento(e.target.value)}
+            className="mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            style={{ border: "1px solid #8c5c3d" }}
+          />
         </div>
         <div>
-          <label className=" text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Quantidade</label><br />
-          <input type="number" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} className=" mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }} />
+          <label className="text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Descrição</label><br />
+          <input
+            type="text"
+            value={descricaolivro}
+            onChange={(e) => setDescricaoLivro(e.target.value)}
+            className="mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            style={{ border: "1px solid #8c5c3d" }}
+          />
+        </div>
+        <div>
+          <label className="text-sm text-gray-500 dark:text-gray-500" style={{ color: "#8c5c3d" }}>Quantidade</label><br />
+          <input
+            type="number"
+            value={quantidade}
+            onChange={(e) => setQuantidade(e.target.value)}
+            className="mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            style={{ border: "1px solid #8c5c3d" }}
+          />
         </div>
         <div>
           <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Categoria</label><br />
-          <select onChange={(e) => setCategoriaLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+          <select
+            onChange={(e) => setCategoriaLivro(e.target.value)}
+            className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            style={{ border: "1px solid #8c5c3d" }}
+          >
             <option selected disabled>Selecione</option>
             {categoria.map(({ id, nome_categoria }) => (
               <option value={id} key={id}>{nome_categoria}</option>
@@ -186,7 +225,11 @@ export default function ConteudoLivro() {
         </div>
         <div>
           <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Editora</label><br />
-          <select onChange={(e) => setEditoraLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+          <select
+            onChange={(e) => setEditoraLivro(e.target.value)}
+            className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            style={{ border: "1px solid #8c5c3d" }}
+          >
             <option selected disabled>Selecione</option>
             {editora.map(({ id, nome_editora }) => (
               <option value={id} key={id}>{nome_editora}</option>
@@ -195,7 +238,11 @@ export default function ConteudoLivro() {
         </div>
         <div>
           <label className="text-sm text-gray-500" style={{ color: "#8c5c3d" }}>Autor</label><br />
-          <select onChange={(e) => setAutorLivro(e.target.value)} className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" style={{ border: "1px solid #8c5c3d" }}>
+          <select
+            onChange={(e) => setAutorLivro(e.target.value)}
+            className="select select-bordered mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            style={{ border: "1px solid #8c5c3d" }}
+          >
             <option selected disabled>Selecione</option>
             {autor.map(({ id, nome_autor }) => (
               <option value={id} key={id}>{nome_autor}</option>
@@ -204,12 +251,24 @@ export default function ConteudoLivro() {
         </div>
         <Botao type="submit">Salvar</Botao>
       </form>
+
+      <div>
+        <br/>
+        <input
+          type="text"
+          placeholder="Buscar livro..."
+          value={pesquisa}
+          onChange={(e) => setPesquisa(e.target.value)}
+          className="mt-2 w-80 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+          style={{ border: "1px solid #8c5c3d" }}
+        />
+      </div>
+
       <div>
         <ul>
-          {livros.map(({ id, nome_livro, autor_obj, editora_obj, categoria_obj, cover, data_cadastro, data_lancamento, quantidade, descricao_livro }) => (
+          {livrosFiltrados.map(({ id, nome_livro, autor_obj, editora_obj, categoria_obj, cover, data_cadastro, data_lancamento, quantidade, descricao_livro }) => (
             <li key={id} className={style.li}>
               <div style={{ maxWidth: "22%" }}>
-
                 <p>Nome do Livro: {nome_livro}</p>
                 <p>Data de Cadastro: {data_cadastro}</p>
                 <p>Data de Lançamento: {data_lancamento}</p>
@@ -223,7 +282,7 @@ export default function ConteudoLivro() {
               </div>
 
               <Image src={cover} width={100} height={100} alt='' />
-              
+
               <div style={{ display: "flex", gap: "10px" }}>
                 <Botao>Editar</Botao>
                 <Botao funcao={() => deleteLivro(id)}>Excluir</Botao>
