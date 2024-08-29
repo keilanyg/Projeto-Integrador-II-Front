@@ -36,8 +36,6 @@ interface Editora {
 }
 
 export default function Acervo() {
-  const [livros, setLivros] = useState<Livros[]>([]);
-  const [autor, setAutor] = useState<Autor[]>([]);
   const [editora, setEditora] = useState<Editora[]>([]);
   const [categoria, setCategoria] = useState<Categoria[]>([]);
   const [selectedLivro, setSelectedLivro] = useState<string>("");
@@ -51,6 +49,11 @@ export default function Acervo() {
   const [livrosApiAcervoIFRN, setLivrosApiAcervoIFRN] = useState<Livros[]>([]);
   const [livrosApiAcervoUERN, setLivrosApiAcervoUERN] = useState<Livros[]>([]);
   const [livrosApiAcervoUFERSA, setLivrosApiAcervoUFERSA] = useState<Livros[]>([]);
+
+  const [autorApiAcervo, setAutorApiAcervo] = useState<Autor[]>([]);
+  const [autorApiAcervoIFRN, setAutorApiAcervoIFRN] = useState<Autor[]>([]);
+  const [autorApiAcervoUERN, setAutorApiAcervoUERN] = useState<Autor[]>([]);
+  const [autorApiAcervoUFERSA, setAutorApiAcervoUFERSA] = useState<Autor[]>([]);
 
 
   const getLivros = async () => {
@@ -75,12 +78,22 @@ export default function Acervo() {
 
   const getAutor = async () => {
     try {
-      const { data } = await apiAcervo.get('autor/');
-      setAutor(data);
+      const [response1, response2, response3, response4] = await Promise.all([
+        apiAcervo.get('autor/'),
+        apiAcervoIFRN.get('autor/'),
+        apiAcervoUERN.get('autor/'),
+        apiAcervoUFERSA.get('autor/')
+      ]);
+
+      setAutorApiAcervo(response1.data);
+      setAutorApiAcervoIFRN(response2.data)
+      setAutorApiAcervoUERN(response3.data);
+      setAutorApiAcervoUFERSA(response4.data);
+
     } catch (error) {
-      console.error("Erro ao obter autores:", error);
+      console.error("Erro ao obter autor:", error);
     }
-  }
+  };
 
   const getCategoria = async () => {
     try {
@@ -109,7 +122,9 @@ export default function Acervo() {
 
   const handleFilter = () => {
     // Aplicar filtros aos livros
-    let filteredBooks = [...livrosApiAcervo, ...livrosApiAcervoIFRN, ...livrosApiAcervoUERN, ...livrosApiAcervoUFERSA];
+    let filteredBooks = [...livrosApiAcervo, ...livrosApiAcervoIFRN, ...livrosApiAcervoUERN, ...livrosApiAcervoUFERSA,
+                         ...autorApiAcervo, ...autorApiAcervoIFRN, ...autorApiAcervoUERN, ...autorApiAcervoUFERSA
+    ];
 
     if (selectedAutor !== null) {
       filteredBooks = filteredBooks.filter(livro => livro.autor === selectedAutor);
@@ -179,7 +194,7 @@ export default function Acervo() {
               onChange={(e) => setSelectedLivro(e.target.value)}
             >
               <option value="" disabled>Livro</option>
-              {livrosApiAcervo.concat(livrosApiAcervoIFRN,livrosApiAcervoUERN, livrosApiAcervoUFERSA).map(({id, nome_livro }) => (
+              {livrosApiAcervo.concat(livrosApiAcervoIFRN, livrosApiAcervoUERN, livrosApiAcervoUFERSA).map(({id, nome_livro }) => (
                 <option value={nome_livro} key={nome_livro}>{nome_livro}</option>
               ))}
             </select> 
@@ -206,7 +221,7 @@ export default function Acervo() {
               onChange={(e) => setSelectedAutor(Number(e.target.value))}
             >
               <option selected disabled>Autor</option>
-              {autor.map(({ id, nome_autor }) => (
+              {autorApiAcervo.concat(autorApiAcervoIFRN, autorApiAcervoUERN, autorApiAcervoUFERSA).map(({ id, nome_autor }) => (
                 <option value={id} key={id}>{nome_autor}</option>
               ))}
             </select>
