@@ -7,7 +7,7 @@ import BannerAcervo from 'public/BannerAcervo.png'
 import excluir from 'public/excluir.png'
 import Image from "next/image"
 import Botao from "@/components/Botao/index"
-import { api } from "@/app/services/api";
+import { apiAcervo,  apiAcervoIFRN, apiAcervoUERN, apiAcervoUFERSA } from "../services/api";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
@@ -29,6 +29,7 @@ interface Categoria {
   id: number;
   nome_categoria: string;
 }
+
 interface Editora {
   id: number;
   nome_editora: string;
@@ -46,18 +47,35 @@ export default function Acervo() {
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(21);
 
+  const [livrosApiAcervo, setLivrosApiAcervo] = useState<Livros[]>([]);
+  const [livrosApiAcervoIFRN, setLivrosApiAcervoIFRN] = useState<Livros[]>([]);
+  const [livrosApiAcervoUERN, setLivrosApiAcervoUERN] = useState<Livros[]>([]);
+  const [livrosApiAcervoUFERSA, setLivrosApiAcervoUFERSA] = useState<Livros[]>([]);
+
+
   const getLivros = async () => {
     try {
-      const { data } = await api.get('livro/');
-      setLivros(data);
+      const [response1, response2, response3, response4] = await Promise.all([
+        apiAcervo.get('livro/'),
+        apiAcervoIFRN.get('livro/'),
+        apiAcervoUERN.get('livro/'),
+        apiAcervoUFERSA.get('livro/')
+      ]);
+
+      setLivrosApiAcervo(response1.data);
+      setLivrosApiAcervoIFRN(response2.data)
+      setLivrosApiAcervoUERN(response3.data);
+      setLivrosApiAcervoUFERSA(response4.data);
+
     } catch (error) {
       console.error("Erro ao obter livros:", error);
     }
-  }
+  };
+
 
   const getAutor = async () => {
     try {
-      const { data } = await api.get('autor/');
+      const { data } = await apiAcervo.get('autor/');
       setAutor(data);
     } catch (error) {
       console.error("Erro ao obter autores:", error);
@@ -66,7 +84,7 @@ export default function Acervo() {
 
   const getCategoria = async () => {
     try {
-      const { data } = await api.get('categoria/');
+      const { data } = await apiAcervo.get('categoria/');
       setCategoria(data);
     } catch (error) {
       console.error("Erro ao obter categorias:", error);
@@ -75,7 +93,7 @@ export default function Acervo() {
 
   const getEditora = async () => {
     try {
-      const { data } = await api.get('editora/');
+      const { data } = await apiAcervo.get('editora/');
       setEditora(data);
     } catch (error) {
       console.error("Erro ao obter editora:", error);
@@ -91,7 +109,7 @@ export default function Acervo() {
 
   const handleFilter = () => {
     // Aplicar filtros aos livros
-    let filteredBooks = livros;
+    let filteredBooks = [...livrosApiAcervo, ...livrosApiAcervoIFRN, ...livrosApiAcervoUERN, ...livrosApiAcervoUFERSA];
 
     if (selectedAutor !== null) {
       filteredBooks = filteredBooks.filter(livro => livro.autor === selectedAutor);
@@ -161,7 +179,7 @@ export default function Acervo() {
               onChange={(e) => setSelectedLivro(e.target.value)}
             >
               <option value="" disabled>Livro</option>
-              {livros.map(({ nome_livro }) => (
+              {livrosApiAcervo.concat(livrosApiAcervoIFRN,livrosApiAcervoUERN, livrosApiAcervoUFERSA).map(({id, nome_livro }) => (
                 <option value={nome_livro} key={nome_livro}>{nome_livro}</option>
               ))}
             </select> 
