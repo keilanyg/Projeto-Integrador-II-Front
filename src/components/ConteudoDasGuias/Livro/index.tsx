@@ -3,7 +3,7 @@ import Image from "next/image";
 import style from './style.module.css'
 import React, { useState, useEffect } from "react";
 import Botao from "@/components/Botao/index";
-import { api } from "@/app/services/api";
+import { apiAcervo } from "@/app/services/api";
 
 /*Mensagens*/
 import { ToastContainer, toast } from 'react-toastify';
@@ -85,22 +85,22 @@ export default function ConteudoLivro() {
   const [pesquisa, setPesquisa] = useState(""); // Estado para armazenar o termo de pesquisa
 
   const getLivros = async () => {
-    const { data } = await api.get('livro/')
+    const { data } = await apiAcervo.get('livro/')
     setLivros(data)
   }
 
   const getCategoria = async () => {
-    const { data } = await api.get('categoria/')
+    const { data } = await apiAcervo.get('categoria/')
     setCategoria(data)
   }
 
   const getEditora = async () => {
-    const { data } = await api.get('editora/')
+    const { data } = await apiAcervo.get('editora/')
     setEditora(data)
   }
 
   const getAutor = async () => {
-    const { data } = await api.get('autor/')
+    const { data } = await apiAcervo.get('autor/')
     setAutor(data)
   }
 
@@ -132,7 +132,7 @@ export default function ConteudoLivro() {
       editora: editoralivro,
       autor: autorlivro
     }
-    await api.post('livro/', newLivro, {
+    await apiAcervo.post('livro/', newLivro, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
     notifyPost();
@@ -148,7 +148,7 @@ export default function ConteudoLivro() {
   };
 
   const deleteLivro = async (id: number) => {
-    await api.delete(`livro/${id}/`)
+    await apiAcervo.delete(`livro/${id}/`)
     notifyDelete();
     getLivros()
   };

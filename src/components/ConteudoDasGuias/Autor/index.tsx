@@ -2,7 +2,7 @@
 import style from './style.module.css';
 import React, { useState, useEffect } from 'react';
 import Botao from '@/components/Botao/index';
-import { api } from '@/app/services/api';
+import { apiAcervo } from '@/app/services/api';
 
 /*Mensagens*/
 import { ToastContainer, toast } from 'react-toastify';
@@ -59,7 +59,7 @@ export default function ConteudoAutor() {
   const [pesquisa, setPesquisa] = useState(""); // Estado para armazenar o termo de pesquisa
 
   const getAutor = async () => {
-    const { data } = await api.get('autor/');
+    const { data } = await apiAcervo.get('autor/');
     setAutor(data);
   }
 
@@ -73,13 +73,13 @@ export default function ConteudoAutor() {
 
     if (editando && autorId) {
       // Atualiza o autor existente
-      await api.put(`autor/${autorId}/`, newAutor);
+      await apiAcervo.put(`autor/${autorId}/`, newAutor);
       notifyPut();
       setEditando(false);
       setAutorId(null);
     } else {
       // Cria um novo autor
-      await api.post('autor/', newAutor);
+      await apiAcervo.post('autor/', newAutor);
       notifyPost();
     }
 
@@ -88,7 +88,7 @@ export default function ConteudoAutor() {
   };
 
   const deleteAutor = async (id: number) => {
-    await api.delete(`autor/${id}/`);
+    await apiAcervo.delete(`autor/${id}/`);
     notifyDelete();
     getAutor();
   };
