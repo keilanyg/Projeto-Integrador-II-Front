@@ -7,77 +7,47 @@ import BannerAcervo from 'public/BannerAcervo.png'
 import excluir from 'public/excluir.png'
 import Image from "next/image"
 import Botao from "@/components/Botao/index"
-import { apiAcervo,  apiAcervoIFRN, apiAcervoUERN, apiAcervoUFERSA } from "../services/api";
+import { apiAcervo, apiAcervoIFRN, apiAcervoUERN, apiAcervoUFERSA } from "../services/api";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-
-interface Livros {
-  id: number;
-  cover: string;
-  nome_livro: string;
-  autor: number;
-  editora: number;
-  categoria: number;
-}
-
-interface Autor {
-  id: number;
-  nome_autor: string;
-}
-
-interface Categoria {
-  id: number;
-  nome_categoria: string;
-}
-
-interface Editora {
-  id: number;
-  nome_editora: string;
-}
+import { Livros } from "@/@types/models";
 
 export default function Acervo() {
   const [selectedLivro, setSelectedLivro] = useState<string>("");
-  const [selectedAutor, setSelectedAutor] = useState<number | null>(null);
-  const [selectedEditora, setSelectedEditora] = useState<number | null>(null);
-  const [selectedCategoria, setSelectedCategoria] = useState<number | null>(null);
+  const [selectedAutor, setSelectedAutor] = useState<string>("");
+  const [selectedCategoria, setSelectedCategoria] = useState("");
+  const [selectedEditora, setSelectedEditora] = useState("");
+
+  // Paginação
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(21);
 
-  const [livrosApiAcervo, setLivrosApiAcervo] = useState<Livros[]>([]);
-  const [livrosApiAcervoIFRN, setLivrosApiAcervoIFRN] = useState<Livros[]>([]);
-  const [livrosApiAcervoUERN, setLivrosApiAcervoUERN] = useState<Livros[]>([]);
-  const [livrosApiAcervoUFERSA, setLivrosApiAcervoUFERSA] = useState<Livros[]>([]);
+  // Filtros
+  const [autores, setAutores] = useState<string[]>([])
+  const [editoras, setEditoras] = useState<string[]>([]);
+  const [categorias, setCategorias] = useState<string[]>([]);
+  const [nomeLivros, setNomeLivros] = useState<string[]>([])
 
-  const [autorApiAcervo, setAutorApiAcervo] = useState<Autor[]>([]);
-  const [autorApiAcervoIFRN, setAutorApiAcervoIFRN] = useState<Autor[]>([]);
-  const [autorApiAcervoUERN, setAutorApiAcervoUERN] = useState<Autor[]>([]);
-  const [autorApiAcervoUFERSA, setAutorApiAcervoUFERSA] = useState<Autor[]>([]);
+  const [livros, setLivros] = useState<Livros[]>([]);
+  const [filteredLivros, setFilteredListros] = useState<Livros[]>([])
 
-  const [editoraApiAcervo, setEditoraApiAcervo] = useState<Editora[]>([]);
-  const [editoraApiAcervoIFRN, setEditoraApiAcervoIFRN] = useState<Editora[]>([]);
-  const [editoraApiAcervoUERN, setEditoraApiAcervoUERN] = useState<Editora[]>([]);
-  const [editoraApiAcervoUFERSA, setEditoraApiAcervoUFERSA] = useState<Editora[]>([]);
-
-  const [categoriaApiAcervo, setCategoriaApiAcervo] = useState<Categoria[]>([]);
-  const [categoriaApiAcervoIFRN, setCategoriaApiAcervoIFRN] = useState<Categoria[]>([]);
-  const [categoriaApiAcervoUERN, setCategoriaApiAcervoUERN] = useState<Categoria[]>([]);
-  const [categoriaApiAcervoUFERSA, setCategoriaApiAcervoUFERSA] = useState<Categoria[]>([]);
-
+  const indexOfLastBook = currentPage * booksPerPage;
+  const indexOfFirstBook = indexOfLastBook - booksPerPage;
 
   const getLivros = async () => {
     try {
-      const [response1, response2, response3, response4] = await Promise.all([
-        apiAcervo.get('livro/'),
-        apiAcervoIFRN.get('livro/'),
-        apiAcervoUERN.get('livro/'),
-        apiAcervoUFERSA.get('livro/')
-      ]);
+      const response = await apiAcervo.get('livro/')
 
-      setLivrosApiAcervo(response1.data);
-      setLivrosApiAcervoIFRN(response2.data)
-      setLivrosApiAcervoUERN(response3.data);
-      setLivrosApiAcervoUFERSA(response4.data);
+      const nomeLivrosSet = new Set<string>();
+      response.data.forEach((item: { nome_livro: string; }) => nomeLivrosSet.add(item.nome_livro))
+      // response2.data.forEach((item: { nome_livro: string; }) => nomeLivrosSet.add(item.nome_livro))
+      // response3.data.forEach((item: { nome_livro: string; }) => nomeLivrosSet.add(item.nome_livro))
+      // response4.data.forEach((item: { nome_livro: string; }) => nomeLivrosSet.add(item.nome_livro))
 
+      // const livrosArray = [...response1.data, ...response2.data, ...response3.data, ...response4.data]
+      setLivros(response.data)
+      setFilteredListros(response.data.slice(indexOfFirstBook, indexOfLastBook))
+      setNomeLivros([...nomeLivrosSet])
     } catch (error) {
       console.error("Erro ao obter livros:", error);
     }
@@ -92,11 +62,13 @@ export default function Acervo() {
         apiAcervoUFERSA.get('autor/')
       ]);
 
-      setAutorApiAcervo(response1.data);
-      setAutorApiAcervoIFRN(response2.data)
-      setAutorApiAcervoUERN(response3.data);
-      setAutorApiAcervoUFERSA(response4.data);
+      const autoresSet = new Set<string>()
+      response1.data.forEach((item: { nome_autor: string; }) => autoresSet.add(item.nome_autor))
+      response2.data.forEach((item: { nome_autor: string; }) => autoresSet.add(item.nome_autor))
+      response3.data.forEach((item: { nome_autor: string; }) => autoresSet.add(item.nome_autor))
+      response4.data.forEach((item: { nome_autor: string; }) => autoresSet.add(item.nome_autor))
 
+      setAutores([...autoresSet]);
     } catch (error) {
       console.error("Erro ao obter autor:", error);
     }
@@ -104,18 +76,17 @@ export default function Acervo() {
 
   const getCategoria = async () => {
     try {
-      const [response1, response2, response3, response4] = await Promise.all([
-        apiAcervo.get('categoria/'),
-        apiAcervoIFRN.get('categoria/'),
-        apiAcervoUERN.get('categoria/'),
-        apiAcervoUFERSA.get('categoria/')
-      ]);
-
-      setCategoriaApiAcervo(response1.data);
-      setCategoriaApiAcervoIFRN(response2.data)
-      setCategoriaApiAcervoUERN(response3.data);
-      setCategoriaApiAcervoUFERSA(response4.data);
-
+      const response = await apiAcervo.get('categoria/')
+      // apiAcervoIFRN.get('categoria/'),
+      // apiAcervoUERN.get('categoria/'),
+      // apiAcervoUFERSA.get('categoria/')
+      // ]); 
+      const categoriaSet = new Set<string>()
+      response.data.forEach((item: { nome_categoria: string; }) => categoriaSet.add(item.nome_categoria))
+      // response2.data.forEach((item: { nome_categoria: string; }) => categoriaSet.add(item.nome_categoria))
+      // response3.data.forEach((item: { nome_categoria: string; }) => categoriaSet.add(item.nome_categoria))
+      // response4.data.forEach((item: { nome_categoria: string; }) => categoriaSet.add(item.nome_categoria))
+      setCategorias([...categoriaSet]);
     } catch (error) {
       console.error("Erro ao obter categoria:", error);
     }
@@ -130,11 +101,7 @@ export default function Acervo() {
         apiAcervoUFERSA.get('editora/')
       ]);
 
-      setEditoraApiAcervo(response1.data);
-      setEditoraApiAcervoIFRN(response2.data)
-      setEditoraApiAcervoUERN(response3.data);
-      setEditoraApiAcervoUFERSA(response4.data);
-
+      setEditoras(response2.data.map((item: { nome_editora: any; }) => item.nome_editora));
     } catch (error) {
       console.error("Erro ao obter editora:", error);
     }
@@ -147,42 +114,41 @@ export default function Acervo() {
     getEditora();
   }, []);
 
-  const handleFilter = () => {
-    let filteredBooks = [...livrosApiAcervo, ...livrosApiAcervoIFRN, ...livrosApiAcervoUERN, ...livrosApiAcervoUFERSA,
-                         ...autorApiAcervo, ...autorApiAcervoIFRN, ...autorApiAcervoUERN, ...autorApiAcervoUFERSA,
-                         ...editoraApiAcervo, ...editoraApiAcervoIFRN, ...editoraApiAcervoUERN, ...editoraApiAcervoUFERSA,
-                         ...categoriaApiAcervo, ...categoriaApiAcervoIFRN, ...categoriaApiAcervoUERN, ...categoriaApiAcervoUFERSA
-    ];
+  useEffect(() => {
+    handleFilter(true)
+  }, [selectedAutor, selectedCategoria, selectedLivro, selectedEditora, currentPage])
 
-    if (selectedAutor !== null) {
-      filteredBooks = filteredBooks.filter(livro => livro.autor === selectedAutor);
-    }
+  const handleFilter = (updateState = false) => {
+    let filteredBooks = [...livros];
 
-    if (selectedEditora !== null) {
-      filteredBooks = filteredBooks.filter(livro => livro.editora === selectedEditora);
-    }
-
-    if (selectedCategoria !== null) {
-      filteredBooks = filteredBooks.filter(livro => livro.categoria === selectedCategoria);
-    }
     if (selectedLivro.trim() !== "") {
       filteredBooks = filteredBooks.filter(livro =>
         livro.nome_livro.toLowerCase().includes(selectedLivro.toLowerCase())
       );
     }
 
-    return filteredBooks;
-  }
+    if (selectedAutor.trim() !== "") {
+      filteredBooks = filteredBooks.filter(livro =>
+        livro.autor_obj.nome_autor.toLowerCase().includes(selectedAutor.toLowerCase())
+      );
+    }
 
-  const indexOfLastBook = currentPage * booksPerPage;
-  const indexOfFirstBook = indexOfLastBook - booksPerPage;
-  const currentBooks = handleFilter().slice(indexOfFirstBook, indexOfLastBook);
+    if (selectedCategoria.trim() !== "") {
+      filteredBooks = filteredBooks.filter(livro =>
+        livro.categoria_obj.nome_categoria.toLowerCase().includes(selectedCategoria.toLowerCase())
+      );
+    }
+
+    if (updateState)
+      setFilteredListros(filteredBooks.slice(indexOfFirstBook, indexOfLastBook))
+    return filteredBooks
+  }
 
   const resetallFilters = () => {
     setSelectedLivro("");
-    setSelectedAutor(null);
-    setSelectedCategoria(null);
-    setSelectedEditora(null);
+    setSelectedAutor("");
+    setSelectedCategoria("");
+    setSelectedEditora("");
   };
 
   const resetFiltersLivro = () => {
@@ -190,15 +156,15 @@ export default function Acervo() {
   };
 
   const resetFiltersAutor = () => {
-    setSelectedAutor(null);
+    setSelectedAutor("");
   };
 
   const resetFiltersCategoria = () => {
-    setSelectedCategoria(null);
+    setSelectedCategoria("");
   };
 
   const resetFiltersEditora = () => {
-    setSelectedEditora(null);
+    setSelectedEditora("");
   };
 
   const paginate = (pageNumber: number) => {
@@ -220,21 +186,21 @@ export default function Acervo() {
               value={selectedLivro || ""}
               onChange={(e) => setSelectedLivro(e.target.value)}
             >
-              <option value="" disabled>Livro</option>
-              {livrosApiAcervo.concat(livrosApiAcervoIFRN, livrosApiAcervoUERN, livrosApiAcervoUFERSA).map(({id, nome_livro }) => (
-                <option value={nome_livro} key={nome_livro}>{nome_livro}</option>
+              <option value="">Livro</option>
+              {nomeLivros.map((nome_livro, i) => (
+                <option value={nome_livro} key={i}>{nome_livro}</option>
               ))}
-            </select> 
+            </select>
           </div>
-           {/*Botão de resetar*/}
-           <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+          {/*Botão de resetar*/}
+          <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
             <div onClick={resetFiltersLivro}>
               <Image
                 src={excluir}
                 alt="Descrição da Imagem"
                 width={20}
                 height={20}
-                style={{ marginRight: "15px", marginTop:"10px" }}
+                style={{ marginRight: "15px", marginTop: "10px" }}
                 onClick={resetFiltersLivro}
               />
             </div>
@@ -245,11 +211,12 @@ export default function Acervo() {
             <select
               className="select select-bordered mt-2 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               style={{ width: "100%", border: "1px solid #8c5c3d" }}
-              onChange={(e) => setSelectedAutor(Number(e.target.value))}
+              onChange={(e) => setSelectedAutor(e.target.value)}
+              value={selectedAutor || ""}
             >
-              <option selected disabled>Autor</option>
-              {autorApiAcervo.concat(autorApiAcervoIFRN, autorApiAcervoUERN, autorApiAcervoUFERSA).map(({ id, nome_autor }) => (
-                <option value={id} key={id}>{nome_autor}</option>
+              <option value="">Autor</option>
+              {autores.map((nome_autor, i) => (
+                <option value={nome_autor} key={i}>{nome_autor}</option>
               ))}
             </select>
           </div>
@@ -261,7 +228,7 @@ export default function Acervo() {
                 alt="Descrição da Imagem"
                 width={20}
                 height={20}
-                style={{ marginRight: "15px", marginTop:"10px" }}
+                style={{ marginRight: "15px", marginTop: "10px" }}
                 onClick={resetFiltersAutor}
               />
             </div>
@@ -272,11 +239,12 @@ export default function Acervo() {
             <select
               className="select select-bordered mt-2 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               style={{ width: "100%", border: "1px solid #8c5c3d" }}
-              onChange={(e) => setSelectedCategoria(Number(e.target.value))}
+              onChange={(e) => setSelectedCategoria(e.target.value)}
+              value={selectedCategoria || ""}
             >
-              <option selected disabled>Categoria</option>
-              {categoriaApiAcervo.concat(categoriaApiAcervoIFRN, categoriaApiAcervoUERN, categoriaApiAcervoUFERSA).map(({ id, nome_categoria }) => (
-                <option value={id} key={id}>{nome_categoria}</option>
+              <option value="">Categoria</option>
+              {categorias.map((nome_categoria, i) => (
+                <option key={i} value={nome_categoria}>{nome_categoria}</option>
               ))}
             </select>
           </div>
@@ -288,7 +256,7 @@ export default function Acervo() {
                 alt="Descrição da Imagem"
                 width={20}
                 height={20}
-                style={{ marginRight: "15px", marginTop:"10px" }}
+                style={{ marginRight: "15px", marginTop: "10px" }}
                 onClick={resetFiltersCategoria}
               />
             </div>
@@ -299,11 +267,12 @@ export default function Acervo() {
             <select
               className="select select-bordered mt-2 rounded-lg border border-gray-200 bg-white py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               style={{ width: "100%", border: "1px solid #8c5c3d" }}
-              onChange={(e) => setSelectedEditora(Number(e.target.value))}
+              onChange={(e) => setSelectedEditora(e.target.value)}
+              defaultValue=""
             >
-              <option value="" selected disabled>Editora</option>
-              {editoraApiAcervo.concat(editoraApiAcervoIFRN, editoraApiAcervoUERN, editoraApiAcervoUFERSA).map(({ id, nome_editora }) => (
-                <option value={id} key={id}>{nome_editora}</option>
+              <option value="">Editora</option>
+              {editoras.map((nome_editora, i) => (
+                <option value={nome_editora} key={i}>{nome_editora}</option>
               ))}
             </select>
           </div>
@@ -315,28 +284,28 @@ export default function Acervo() {
                 alt="Descrição da Imagem"
                 width={20}
                 height={20}
-                style={{ marginRight: "15px", marginTop:"10px" }}
+                style={{ marginRight: "15px", marginTop: "10px" }}
                 onClick={resetFiltersEditora}
               />
             </div>
           </div>
 
           <Botao funcao={resetallFilters}>Resetar tudo</Botao>
-        
+
         </div>
 
         <div className={style.livro}>
           <div>
             <ul className={" grid grid-cols-7 content-start"}>
-              {currentBooks.map(({ id, nome_livro, cover }) => (
-                <li key={id} className={style.li} style={{ display: "flex", margin: "0 10px", justifyContent: "space-between", flexDirection: "column" }}>
+              {filteredLivros.map(({ id, nome_livro, cover, instituicao }, i) => (
+                <li key={i} className={style.li} style={{ display: "flex", margin: "0 10px", justifyContent: "space-between", flexDirection: "column" }}>
                   <div>
                     <br /><Image className={style.imagemlivro} src={cover} width={130} height={160} alt="Capa do livro" />
                   </div>
                   <div className={style.titulo}>
                     <p>{nome_livro}</p>
                   </div>
-                  <Link href={`acessolivro/${id}`}>
+                  <Link href={`acessolivro/${id}?instituicao=${instituicao}`}>
                     <Botao>Acessar</Botao>
                   </Link>
                 </li>
@@ -358,7 +327,13 @@ export default function Acervo() {
   )
 }
 
-const Pagination = ({ booksPerPage, totalBooks, paginate, currentPage }) => {
+type PaginationProps = {
+  booksPerPage: number
+  totalBooks: number
+  paginate: number
+}
+
+const Pagination = ({ booksPerPage, totalBooks, paginate, currentPage }: any) => {
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(totalBooks / booksPerPage); i++) {
     pageNumbers.push(i);
@@ -368,9 +343,9 @@ const Pagination = ({ booksPerPage, totalBooks, paginate, currentPage }) => {
     <nav>
       <ul className="pagination" style={{ color: '#8C5C3D', display: 'flex', justifyContent: 'center', padding: '30px' }} >
         <li className={currentPage === 1 ? 'page-item disabled' : 'page-item'}>
-          <a onClick={() => paginate(currentPage - 1)} href="#!" className="page-link relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+          <button onClick={() => paginate(currentPage - 1)} className="page-link relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
             Anterior
-          </a>
+          </button>
         </li><br />
         {pageNumbers.map(number => (
           <li key={number} className={currentPage === number ? 'page-item active' : 'page-item'}>
@@ -380,9 +355,9 @@ const Pagination = ({ booksPerPage, totalBooks, paginate, currentPage }) => {
           </li>
         ))}
         <li className={currentPage === pageNumbers.length ? 'page-item disabled' : 'page-item'}>
-          <a onClick={() => paginate(currentPage + 1)} href="#!" className="page-link relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+          <button onClick={() => paginate(currentPage + 1)} className="page-link relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
             Próxima
-          </a>
+          </button>
         </li>
       </ul>
     </nav>
