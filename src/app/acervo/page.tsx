@@ -94,14 +94,17 @@ export default function Acervo() {
 
   const getEditora = async () => {
     try {
-      const [response1, response2, response3, response4] = await Promise.all([
-        apiAcervo.get('editora/'),
-        apiAcervoIFRN.get('editora/'),
-        apiAcervoUERN.get('editora/'),
-        apiAcervoUFERSA.get('editora/')
-      ]);
-
-      setEditoras(response2.data.map((item: { nome_editora: any; }) => item.nome_editora));
+      const response = await apiAcervo.get('editora/')
+      // apiAcervoIFRN.get('categoria/'),
+      // apiAcervoUERN.get('categoria/'),
+      // apiAcervoUFERSA.get('categoria/')
+      // ]); 
+      const editoraSet = new Set<string>()
+      response.data.forEach((item: { nome_editora: string; }) => editoraSet.add(item.nome_editora))
+      // response2.data.forEach((item: { nome_categoria: string; }) => categoriaSet.add(item.nome_categoria))
+      // response3.data.forEach((item: { nome_categoria: string; }) => categoriaSet.add(item.nome_categoria))
+      // response4.data.forEach((item: { nome_categoria: string; }) => categoriaSet.add(item.nome_categoria))
+      setEditoras([...editoraSet]);
     } catch (error) {
       console.error("Erro ao obter editora:", error);
     }
