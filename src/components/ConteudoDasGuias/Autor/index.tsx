@@ -2,7 +2,7 @@
 import style from './style.module.css';
 import React, { useState, useEffect } from 'react';
 import Botao from '@/components/Botao/index';
-import { apiAcervo } from '@/app/services/api';
+import { apiAcervo } from '@/services/api';
 
 /*Mensagens*/
 import { ToastContainer, toast } from 'react-toastify';

@@ -2,7 +2,7 @@
 
 import style from './style.module.css'
 import React, { useState, useEffect } from "react";
-import { apiAcervo } from "@/app/services/api";
+import { apiAcervo } from "@/services/api";
 import Botao from "@/components/Botao/index";
 
 /*Mensagens*/
