@@ -1,11 +1,18 @@
 "use client";
 
-import { SessionProvider } from "next-auth/react";
+import { AuthProvider } from "@/context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = {
   children?: React.ReactNode;
 };
 
-export const NextAuthProvider = ({ children }: Props) => {
-  return <SessionProvider>{children}</SessionProvider>;
+export const Providers = ({ children }: Props) => {
+  return (
+    <AuthProvider>
+      {children}
+      <ToastContainer />
+    </AuthProvider>
+  );
 };

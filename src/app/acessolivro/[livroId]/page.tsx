@@ -5,9 +5,11 @@ import style from './style.module.css'
 import Rodape from "@/components/Rodape/index";
 import InformacaoLivro from "@/components/InfoLivro/index";
 import ApresentacaoProps from "@/components/CamposdeInformacao/Apresentacao/index"
-import { api } from "../../services/api";
+import { apiAcervo } from "../../../services/api";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 
 interface livroprops {
   params: {
@@ -44,10 +46,12 @@ interface Livros {
 }
 
 export default function AcessoLivro({ params }: livroprops) {
-
+  const searchParams = useSearchParams()
+  
   const [livros, setLivros] = useState<Livros>();
   const getLivros = async () => {
-    const { data } = await api.get(`livro/${params.livroId}/`)
+    const instituicao = searchParams.get('instituicao')
+    const { data } = await apiAcervo.get(`livro/${params.livroId}?instituicao=${instituicao}`)
     setLivros(data)
   }
   useEffect(() => {
@@ -69,12 +73,12 @@ export default function AcessoLivro({ params }: livroprops) {
               <ApresentacaoProps titulo="Autor" conteudo={livros?.autor_obj.nome_autor} />
               <ApresentacaoProps titulo="Categoria" conteudo={livros?.categoria_obj.nome_categoria} />
               <ApresentacaoProps titulo="Editora" conteudo={livros?.editora_obj.nome_editora} />
-            </div>
-
-            <div className={style.coluna}>
               <ApresentacaoProps titulo="Quantidade disponível" conteudo={livros?.quantidade} />
               <ApresentacaoProps titulo="Data de Cadastro" conteudo={livros?.data_cadastro} />
               <ApresentacaoProps titulo="Data de Lançamento" conteudo={livros?.data_lancamento} />
+            </div>
+
+            <div className={style.coluna}>
               <ApresentacaoProps titulo="Descrição" conteudo={livros?.descricao_livro} />
             </div>
           </div>

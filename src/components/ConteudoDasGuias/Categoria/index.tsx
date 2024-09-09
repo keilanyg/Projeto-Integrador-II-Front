@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Botao from "@/components/Botao/index";
 import style from './style.module.css';
-import { api } from "@/app/services/api";
+import { apiAcervo } from "@/services/api";
 
 /*Mensagens*/
 import { ToastContainer, toast } from 'react-toastify';
@@ -61,7 +61,7 @@ export default function ConteudoCategoria() {
     const [pesquisa, setPesquisa] = useState(""); // Estado para armazenar o termo de pesquisa
 
     const getCategoria = async () => {
-        const { data } = await api.get('categoria/');
+        const { data } = await apiAcervo.get('categoria/');
         setCategoria(data);
     };
 
@@ -76,13 +76,13 @@ export default function ConteudoCategoria() {
         };
         if (editando && categoriaId) {
             // Atualiza a categoria existente
-            await api.put(`categoria/${categoriaId}/`, newCat);
+            await apiAcervo.put(`categoria/${categoriaId}/`, newCat);
             notifyPut();
             setEditando(false);
             setCategoriaId(null);
         } else {
             // Cria uma nova categoria
-            await api.post('categoria/', newCat);
+            await apiAcervo.post('categoria/', newCat);
             notifyPost();
         }
 
@@ -91,7 +91,7 @@ export default function ConteudoCategoria() {
     };
 
     const deleteCategoria = async (id: number) => {
-        await api.delete(`categoria/${id}/`);
+        await apiAcervo.delete(`categoria/${id}/`);
         notifyDelete();
         getCategoria();
     };

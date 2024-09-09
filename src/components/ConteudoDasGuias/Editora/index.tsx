@@ -2,7 +2,7 @@
 
 import style from './style.module.css'
 import React, { useState, useEffect } from "react";
-import { api } from "@/app/services/api";
+import { apiAcervo } from "@/services/api";
 import Botao from "@/components/Botao/index";
 
 /*Mensagens*/
@@ -60,7 +60,7 @@ export default function ConteudoEditora() {
   const [pesquisa, setPesquisa] = useState(""); // Estado para armazenar o termo de pesquisa
 
   const getEditora = async () => {
-    const { data } = await api.get('editora/')
+    const { data } = await apiAcervo.get('editora/')
     setEditora(data)
   }
 
@@ -74,13 +74,13 @@ export default function ConteudoEditora() {
 
     if (editando && editoraId) {
       // Atualiza a editora existente
-      await api.put(`editora/${editoraId}/`, newEditora);
+      await apiAcervo.put(`editora/${editoraId}/`, newEditora);
       notifyPut();
       setEditando(false);
       setEditoraId(null);
     } else {
       // Cria uma editora nova
-      await api.post('editora/', newEditora);
+      await apiAcervo.post('editora/', newEditora);
       notifyPost();
     }
 
@@ -89,7 +89,7 @@ export default function ConteudoEditora() {
   };
 
   const deleteEditora = async (id: number) => {
-    await api.delete(`editora/${id}/`)
+    await apiAcervo.delete(`editora/${id}/`)
     notifyDelete();
     getEditora();
   };
