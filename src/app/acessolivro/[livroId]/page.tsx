@@ -5,7 +5,7 @@ import style from './style.module.css'
 import Rodape from "@/components/Rodape/index";
 import InformacaoLivro from "@/components/InfoLivro/index";
 import ApresentacaoProps from "@/components/CamposdeInformacao/Apresentacao/index"
-import { apiAcervo } from "../../services/api";
+import { apiAcervo } from "@/services/api";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -38,9 +38,9 @@ interface Livros {
   quantidade: number;
   descricao_livro: string;
   categoria: string;
-  categoria_obj: Categoria
+  categoria_obj: Categoria;
   editora: string;
-  editora_obj: Editora
+  editora_obj: Editora;
   autor: string;
   autor_obj: Autor;
 }
@@ -54,8 +54,15 @@ export default function AcessoLivro({ params }: livroprops) {
     const { data } = await apiAcervo.get(`livro/${params.livroId}?instituicao=${instituicao}`)
     setLivros(data)
   }
+  const [categoria, setCategoria] = useState<Categoria>();
+  const getCategoria = async () => {
+    const instituicao = searchParams.get('instituicao')
+    const { data } = await apiAcervo.get(`categoria/${params.livroId}?instituicao=${instituicao}`)
+    setCategoria(data)
+  }
   useEffect(() => {
     getLivros();
+    getCategoria();
   }, []);
 
   return (
@@ -65,21 +72,21 @@ export default function AcessoLivro({ params }: livroprops) {
         <InformacaoLivro>
           <div className={style.linha}>
             <div>
-              <Image src={livros?.cover} width={250} height={250} alt='' />
+              <Image src={livros?.cover} width={200} height={200} alt='' />
             </div>
 
             <div className={style.coluna}>
               <ApresentacaoProps titulo="Nome do livro" conteudo={livros?.nome_livro} />
+              <ApresentacaoProps titulo="Descrição" conteudo={livros?.descricao_livro} />             
+            </div>
+
+            <div className={style.coluna}>
               <ApresentacaoProps titulo="Autor" conteudo={livros?.autor_obj.nome_autor} />
               <ApresentacaoProps titulo="Categoria" conteudo={livros?.categoria_obj.nome_categoria} />
               <ApresentacaoProps titulo="Editora" conteudo={livros?.editora_obj.nome_editora} />
               <ApresentacaoProps titulo="Quantidade disponível" conteudo={livros?.quantidade} />
               <ApresentacaoProps titulo="Data de Cadastro" conteudo={livros?.data_cadastro} />
               <ApresentacaoProps titulo="Data de Lançamento" conteudo={livros?.data_lancamento} />
-            </div>
-
-            <div className={style.coluna}>
-              <ApresentacaoProps titulo="Descrição" conteudo={livros?.descricao_livro} />
             </div>
           </div>
         </InformacaoLivro>

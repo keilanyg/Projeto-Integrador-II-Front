@@ -2,7 +2,7 @@
 import BarraNavegacao from "@/components/BarraNavegacao/index";
 import style from "./style.module.css";
 import Rodape from "@/components/Rodape/index";
-import Estudante from "public/Estudante.jpg";
+import Estudante from "public/Estudante.png";
 import Image from "next/image";
 import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
@@ -23,13 +23,18 @@ export default function PerfilUsuario() {
             <Image src={Estudante} width={200} height={200} alt="" />
           </div>
           <div className={style.info}>
-            <p>Username: {user.first_name}</p>
+            <p>Nome:<br/> {user.first_name} </p>
             <br />
 
-            <p>Email: {user.email}</p>
+            <p>Sobrenome:<br/>{user.last_name}</p>
+            <br />
+
+            <p>E-mail: {user.email}</p>
             <br />
           </div>
-          {JSON.stringify(user, null, 2)}
+          <br />
+
+          {/* {JSON.stringify(user, null, 2)} */}
         </div>
       )}
 

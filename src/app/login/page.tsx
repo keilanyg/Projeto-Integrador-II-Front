@@ -42,64 +42,70 @@ export default function Home() {
   }
 
   return (
-    <section className="flex items-center justify-center h-[80vh]">
-      <div className="flex flex-col items-center">
-        <h2 className="m-[1rem] font-extrabold text-[30px]">
-          {" "}
-          Faça seu login{" "}
+    <section className="flex items-center justify-center h-screen bg-[#8C5C3D]">
+      <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+        <h2 className="text-center text-2xl font-extrabold text-[#8C5C3D] mb-6">
+          Faça seu login
         </h2>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="felx flex-col gap-2 w-[100%] max-w-[100%]"
-        >
-          <div className="flex flex-col gap-2">
-            <label htmlFor="email"> Username </label>
-
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-[#8C5C3D]"
+            >
+              Email
+            </label>
             <input
-              className="p-[10px] bg-slate-900 outline-0 rounded"
+              id="email"
+              type="email"
+              className="mt-1 p-2 w-full bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               {...register("email", { required: true })}
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="password"> Senha </label>
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-[#8C5C3D]"
+            >
+              Senha
+            </label>
             <input
-              className="p-[10px] bg-slate-900 outline-0 rounded"
+              id="password"
               type="password"
-              {...register("password", { min: 8, max: 12, required: true })}
+              className="mt-1 p-2 w-full bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              {...register("password", { required: true, minLength: 8 })}
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <p>
-              Não tem conta? <span> Cadastre-se </span>{" "}
+          <div className="text-sm">
+            <p className="text-gray-600">
+              Não tem conta? <a href={"usuario/criar"} className="text-indigo-600">Cadastre-se</a>
             </p>
           </div>
 
           <button
             type="submit"
-            className="p-[10px] w-[100%] max-w-[100%] bg-green-800  text-gray-50 font-medium rounded-0"
+            className="w-full py-2 bg-[#8C5C3D] text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            {" "}
             Fazer Login
           </button>
 
-          <fieldset className="border-t border-slate-50 mt-[10px]">
-            <legend className="mx-auto px-4 text-white text-1xl italic">
-              {" "}
-              ou{" "}
-            </legend>
-            <div className="text-white pt-4 p-[10px] w-[100%] max-w-[100%] justify-center">
-              Acesse com o seu:
+          <div className="relative mt-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
             </div>
-          </fieldset>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-white px-2 text-gray-500">ou</span>
+            </div>
+          </div>
 
           <button
             type="button"
             onClick={handleSignInGitHub}
-            className="p-[10px] w-[100%] max-w-[100%] justify-center text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 mr-2 mb-2"
+            className="w-full py-2 flex items-center justify-center bg-gray-800 text-white rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           >
-            <GithubSvg />
+            <GithubSvg className="mr-2" size={20} color="#fff" />
             Sign in with Github
           </button>
         </form>

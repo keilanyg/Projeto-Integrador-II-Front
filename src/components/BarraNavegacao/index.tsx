@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Logo from "public/Logo.png";
+import Estudante from "public/Estudante.png";
 import style from "./style.module.css";
 import Link from "next/link";
 import { useContext } from "react";
@@ -22,7 +23,7 @@ const Elementoaexibir = (show: boolean, user: User) => {
                 height={180}
               />
             ) : (
-              <Image src={Logo} alt="Estudante" />
+              <Image src={Estudante} alt="Estudante" />
             )}
           </div>
         </label>
@@ -70,9 +71,10 @@ export default function BarraNavegacao() {
           </div>
           {isAuthenticated && (
             <div className={style.cadalink}>
-              <Link href="/usuario/perfil">Perfil</Link>
+              <Link href="/usuario/perfil">Perfil Usuário</Link>
             </div>
           )}
+
         </div>
         <div>{Elementoaexibir(isAuthenticated, user)}</div>
       </div>

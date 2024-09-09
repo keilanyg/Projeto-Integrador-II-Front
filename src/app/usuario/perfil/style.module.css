@@ -1,6 +1,7 @@
 .body {
     background-color: #fff;
     min-height: 100vh;
+
 }
 
 .fotoperfil {
@@ -8,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin: 47.5px 120px;
+    margin: 88px 120px;
 }
 
 .info {
