@@ -71,7 +71,7 @@ export default function BarraNavegacao() {
           </div>
           {isAuthenticated && (
             <div className={style.cadalink}>
-              <Link href="/usuario/perfil">Perfil Usuário</Link>
+              <Link href="/usuario/perfil">Perfil</Link>
             </div>
           )}
 

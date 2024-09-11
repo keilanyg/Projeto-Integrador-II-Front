@@ -58,7 +58,7 @@ function AuthProvider({ children }: AuthProviderProps) {
       if (response.data.groups[0].name === "usuarios") {
         return router.push("/acervo");
       } else {
-        return router.push("/instituicao");
+        return router.push("/perfil");
       }
     } catch (error) {
       toast.error("Error");

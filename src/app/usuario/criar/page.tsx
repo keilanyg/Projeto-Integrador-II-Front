@@ -56,7 +56,7 @@ export default function UsuarioCriar() {
           <label htmlFor="first_name" className="flex flex-col">
             <span className="font-semibold">Primeiro Nome</span>
             <input
-              className="border bg-white p-2 rounded outline-none focus:ring-2 focus:ring-blue-500"
+              className="border bg-black p-2 rounded outline-none focus:ring-2 focus:ring-blue-500"
               {...register("first_name", {
                 required: {
                   value: true,
@@ -76,7 +76,7 @@ export default function UsuarioCriar() {
           <label htmlFor="last_name" className="flex flex-col">
             <span className="font-semibold">Sobrenome</span>
             <input
-              className="border bg-white p-2 rounded outline-none focus:ring-2 focus:ring-blue-500"
+              className="border bg-black p-2 rounded outline-none focus:ring-2 focus:ring-blue-500"
               {...register("last_name", {
                 required: {
                   value: true,
@@ -97,7 +97,7 @@ export default function UsuarioCriar() {
             <span className="font-semibold">Email</span>
             <input
               type="email"
-              className="border bg-white p-2 rounded outline-none focus:ring-2 focus:ring-blue-500"
+              className="border bg-black p-2 rounded outline-none focus:ring-2 focus:ring-blue-500"
               {...register("email", {
                 required: { value: true, message: "Email é obrigatório" },
               })}
@@ -115,7 +115,7 @@ export default function UsuarioCriar() {
             <span className="font-semibold">Senha</span>
             <input
               type="password"
-              className="border bg-white p-2 rounded outline-none focus:ring-2 focus:ring-blue-500"
+              className="border bg-black p-2 rounded outline-none focus:ring-2 focus:ring-blue-500"
               {...register("password", {
                 required: {
                   value: true,

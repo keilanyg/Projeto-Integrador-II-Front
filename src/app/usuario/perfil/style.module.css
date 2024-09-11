@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin: 88px 120px;
+    margin: 30px 20px;
 }
 
 .info {
@@ -19,4 +19,16 @@
     margin-top: 15px;
     flex-direction: column;
     justify-content: center;
+}
+.li {
+    display: flex;
+    margin: 20px 50px 0 10px;
+    padding: 5px 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.li:hover {
+    background-color: #eae8dc;
+    border-radius: 10px;
 }
