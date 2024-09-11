@@ -43,6 +43,7 @@ interface Livros {
   editora_obj: Editora;
   autor: string;
   autor_obj: Autor;
+  instituicao:string;
 }
 
 export default function AcessoLivro({ params }: livroprops) {
@@ -77,6 +78,7 @@ export default function AcessoLivro({ params }: livroprops) {
 
             <div className={style.coluna}>
               <ApresentacaoProps titulo="Nome do livro" conteudo={livros?.nome_livro} />
+              <ApresentacaoProps titulo="Instituição" conteudo={livros?.instituicao} />              
               <ApresentacaoProps titulo="Descrição" conteudo={livros?.descricao_livro} />             
             </div>
 
